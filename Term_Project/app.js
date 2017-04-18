@@ -9,6 +9,10 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
 var register = require('./routes/register');
+var passport = require('passport');
+
+require('./config/passport.js');
+
 
 
 var app = express();
@@ -24,6 +28,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.session({secret: 'some secret i guess'}));
+//app.use(passport.initialize());
+//app.use(passport.sessions());
 
 app.use('/', index);
 app.use('/users', users);

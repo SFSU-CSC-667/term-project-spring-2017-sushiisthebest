@@ -12,15 +12,18 @@ var db = pgp(connection);
 
 
 module.exports = {
-	getUser: email =>{
-		db.oneOrNone('SELECT * FROM User WHERE email = $1' , email)
-		.then(user => {
-			return user;
-		})
-		.catch(error => {
-			console.log(error);
+	findUserByEmail: email =>{
+		return db.oneOrNone('SELECT * FROM User WHERE email = $1' , email)
+	},
+
+	findUserById: id =>{
+		db.oneOrNone({
+			name:'find-user-by-id',
+			text: 'SELECT * FROM user WHERE id = $1',
+			values: [id]
 		})
 	},
+
 	create:(email,username,password_hash) => {
 		/* This is an example of a prepared statement in
 		using pg-promise. This helps  prevent sql injections and
@@ -38,6 +41,8 @@ module.exports = {
 		})
 		*/
 	}
+
+	
 };
 
 

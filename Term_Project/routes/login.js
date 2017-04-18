@@ -1,6 +1,10 @@
 var express  = require('express');
 var router = express.Router();
-var passport = require('passport'), LocalStrategy = require('passport-local');
+
+var passport = require('passport');
+
+require('../config/passport.js')(passport);
+
 
 
 
@@ -8,9 +12,7 @@ router.get('/',function(req,res,next){
 	res.render('login');
 });
 
-router.post('/',function(req, res, next){
-	var username = req.body.username;
-	var password = req.body.password;
-});
+router.post('/', passport.authenticate('local', { successRedirect: 'http://www.google.com',
+												  failureRedirect: '/login'	}));
 
 module.exports = router;
