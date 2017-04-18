@@ -13,7 +13,7 @@ var db = pgp(connection);
 
 module.exports = {
 	findUserByEmail: email =>{
-		return db.oneOrNone('SELECT * FROM User WHERE email = $1' , email)
+		return db.oneOrNone('SELECT * FROM "User" WHERE email = $1' , email)
 	},
 
 	findUserById: id =>{
@@ -27,12 +27,13 @@ module.exports = {
 	create:(email,username,password_hash) => {
 		/* This is an example of a prepared statement in
 		using pg-promise. This helps  prevent sql injections and
-		makes the declaration rather explicit. we should probably use this method 
+		makes the eclaration rather explicit. we should probably use this method 
 		*/
-		db.one({
+
+		return db.none({
 			name:'create-user',
-			text: 'INSERT into Users(email, username, password) VALUES ($1,$2,$3) RETURNING id',
-			values: arguments
+			text: 'INSERT INTO \"User\"(email, username, password, userstatsid) VALUES ($1, $2, $3, $4)',
+			values: [email,username,password_hash, 1]
 			})
 		/*
 		.then(new_user_id => {
