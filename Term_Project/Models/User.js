@@ -19,7 +19,7 @@ module.exports = {
 	findUserById: id =>{
 		return db.oneOrNone({
 			name:'find-user-by-id',
-			text: 'SELECT * FROM user WHERE id = $1',
+			text: 'SELECT * FROM \"User\" WHERE id = $1',
 			values: [id]
 		})
 	},
