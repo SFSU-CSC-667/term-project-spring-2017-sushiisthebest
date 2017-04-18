@@ -1,5 +1,5 @@
 var pgp = require('pg-promise')();
 
 module.exports = (file) = > {
-	return new pgp.Qu
+	return new pgp.QueryFile(file,{minify:true});
 }
