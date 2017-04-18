@@ -22,9 +22,9 @@ router.post('/', function(req, res, next){
 	bcrypt.hash(req.body.password, 10)
 	.then(hash =>{
 		debug ? console.log("Hash: ", hash): null;
-		debug ? console.log("Attempting to insert email:", req.body.email, "username:",req.body.username, "password:", req.body.password) : null;
-		User.create(req.body.email, req.body.username, req.body.password)
-		.then(()=>{66
+		debug ? console.log("Attempting to store email:", req.body.email, "username:",req.body.username, "password_hash:", hash) : null;
+		User.create(req.body.email, req.body.username, hash)
+		.then(()=>{
 			res.redirect('/login');
 		})
 		.catch(error=>{

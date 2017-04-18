@@ -1,5 +1,6 @@
 var User = require('../Models/User');
 var LocalStrategy = require('passport-local');
+var bcrypt = require('bcrypt');
 
 
 var passport_config = function(passport){
@@ -22,18 +23,27 @@ var passport_config = function(passport){
 		usernameFeild: 'email',
 		passwordField: 'password'
 },function(email,password,done){
+	console.log('searching for user:',email, 'password:',password);
 	User.findUserByEmail(email)
 	.then( user => {
-		if(!user) {return done(null,false);}
+		if(!user) {
+			console.log('user not found');
+			return done(null,false);
+		}
 		
-		var passMatches = bcrypt.compareSync(password,user[0].password);
+		var passMatches = bcrypt.compareSync(password,user.password);
 
-		if (!passMatches) { return done(null,false);}
+		if (!passMatches) {
+			console.log('password does not match');
+			return done(null,false);
+		}
 
-		return done(null, user[0]);
+		console.log('success');
+		return done(null, user);
 		
 	})
 	.catch(error=>{
+		console.log(error);
 		return done(error);
 	})
 }))

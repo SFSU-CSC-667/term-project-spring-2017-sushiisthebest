@@ -13,11 +13,11 @@ var db = pgp(connection);
 
 module.exports = {
 	findUserByEmail: email =>{
-		return db.oneOrNone('SELECT * FROM "User" WHERE email = $1' , email)
+		return db.oneOrNone('SELECT * FROM \"User\" WHERE email = $1' , email);
 	},
 
 	findUserById: id =>{
-		db.oneOrNone({
+		return db.oneOrNone({
 			name:'find-user-by-id',
 			text: 'SELECT * FROM user WHERE id = $1',
 			values: [id]

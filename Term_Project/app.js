@@ -14,7 +14,7 @@ var passport = require('passport');
 
 //var debug = false;
 
-//`require('./config/passport.js');
+require('./config/passport.js')(passport);
 
 
 
@@ -33,8 +33,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({secret: 'some secret i guess',resave: false, saveUninitialized: true, cookie: {secure:false}}));
-//app.use(passport.initialize());
-//app.use(passport.sessions());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', index);
 app.use('/users', users);
