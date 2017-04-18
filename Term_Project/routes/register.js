@@ -1,21 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt');
-var User = require('../Modles/User');
-
-var pgp = require('pg-promise')();
-
-var connection = {
-  host: "localhost",
-  port: 5432,
-  database: "csc667",
-  user: 'postgres',
-  password: "6848broken"
-};
-
-var db = pgp(connection);
-
-
+var User = require('../Models/User');
 
 router.get('/',function(req, res, next){
 	res.render('register');

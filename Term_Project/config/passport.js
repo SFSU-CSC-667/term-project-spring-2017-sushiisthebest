@@ -1,4 +1,5 @@
-var User = require('../model/User');
+var User = require('../Models/User');
+var LocalStrategy = require('passport-local');
 
 
 var passport_config = function(passport){
@@ -17,7 +18,7 @@ var passport_config = function(passport){
 		})
 	});
 
-	passport.use('local' new LocalStrategy({
+	passport.use('local', new LocalStrategy({
 		usernameFeild: 'email',
 		passwordField: 'password'
 },function(email,password,done){
@@ -39,3 +40,5 @@ var passport_config = function(passport){
 
 	
 }
+
+module.exports = passport_config;
