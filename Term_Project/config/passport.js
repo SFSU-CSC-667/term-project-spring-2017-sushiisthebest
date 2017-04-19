@@ -23,7 +23,8 @@ var passport_config = function(passport){
 
 	passport.use('local', new LocalStrategy({
 		usernameFeild: 'email',
-		passwordField: 'password'
+		passwordField: 'password',
+		session: false
 },function(email,password,done){
 	console.log('searching for user:',email, 'password:',password);
 	User.findUserByEmail(email)

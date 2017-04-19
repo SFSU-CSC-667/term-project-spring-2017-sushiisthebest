@@ -35,8 +35,11 @@ router.post('/login', function(req, res, next){
 
     //user has authenticated correctly thus we create a JWT token 
     var jwt = res.jwt({id: user.id, username: user.username, email: user.email})
-    res.send(jwt.token);
+    res.json({token: jwt.token});
+  	next();
 })(req, res, next);
+}, function(req, res, next){
+	res.redirect('/');
 });
 
 router.get('/register',function(req, res, next){
@@ -70,7 +73,7 @@ router.post('/register', function(req, res, next){
 	})
 });
 
-router.get('/:id([0-9]{1-8})', ensureLoggedIn.ensureLoggedIn('users/login'), function(req,res,next){
+router.get('/:id([0-9]{1-8})', function(req,res,next){
 	console.log('in get /:id route','user: ', req.user, 'user id;', req.user.id);
 	res.render('profile', {foo: req.user.id});
 
