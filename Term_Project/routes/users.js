@@ -22,11 +22,22 @@ router.get('/', function(req,res,next){
 });
 
 router.get('/login',function(req,res,next){
+	//if(req.user){re}
 	res.render('login');
 });
 
-router.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/users',
-												  failureRedirect: 'users/login'	}));
+router.post('/login', function(req, res, next){
+	passport.authenticate('local', function(error,user, info){
+    if (error) { return next(err) }
+    if (!user) {
+      return res.json(401, { error: 'some fucked up shizz' });
+    }
+
+    //user has authenticated correctly thus we create a JWT token 
+    var jwt = res.jwt({id: user.id, username: user.username, email: user.email})
+    res.send(jwt.token);
+})(req, res, next);
+});
 
 router.get('/register',function(req, res, next){
 	res.render('register');

@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt');
 
 
 var passport_config = function(passport){
+	/* NO LONGER USING SESSIONS CODE IS HERE FOR REFERENCE. TO BE REMOVED
 	passport.serializeUser(function(user,done) {
 		done(null,user.id);
 	});
@@ -18,6 +19,7 @@ var passport_config = function(passport){
 			done(error, null);
 		})
 	});
+	*/
 
 	passport.use('local', new LocalStrategy({
 		usernameFeild: 'email',
