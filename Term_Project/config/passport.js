@@ -1,6 +1,14 @@
 var User = require('../Models/User');
 var LocalStrategy = require('passport-local');
 var bcrypt = require('bcrypt');
+var JwtStrategy = require('passport-jwt').Strategy;
+var ExtractJwt = require('passport-jwt').ExtractJwt
+
+var options = {
+	jwtFromRequest: ExtractJwt.fromAuthHeader(),
+	secretOrKey: 'secret',
+
+}
 
 
 var passport_config = function(passport){
@@ -51,7 +59,17 @@ var passport_config = function(passport){
 	})
 }))
 
-	
+	passport.use('jwt', new JwtStrategy(options, function(jwt_payload, done){
+		User.findUserById(jwt_payload.id)
+		.then(user=>{
+
+		if(!user){
+			done(null, false);
+		}
+
+		done(null, user);
+	})
+	}));	
 }
 
 module.exports = passport_config;

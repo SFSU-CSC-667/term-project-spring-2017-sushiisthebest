@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt');
 var User = require('../Models/User');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var ensureLoggedIn = require('connect-ensure-login');
+var jwt = require('jwt-simple');
 require('../config/passport.js')(passport);
 
 
@@ -34,12 +34,12 @@ router.post('/login', function(req, res, next){
     }
 
     //user has authenticated correctly thus we create a JWT token 
-    var jwt = res.jwt({id: user.id, username: user.username, email: user.email})
-    res.json({token: jwt.token});
-  	next();
+    var token = jwt.encode({id: user.id, username: user.username, email: user.email}, "secret");
+    
+    res.json({token: token});
+
+
 })(req, res, next);
-}, function(req, res, next){
-	res.redirect('/');
 });
 
 router.get('/register',function(req, res, next){
@@ -47,6 +47,7 @@ router.get('/register',function(req, res, next){
 });
 
 router.post('/register', function(req, res, next){
+
 	User.findUserByEmail(req.body.email)
 	.then(user=>{
 		if(!user){

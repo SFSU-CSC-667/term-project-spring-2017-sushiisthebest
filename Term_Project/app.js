@@ -5,7 +5,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var jwt = require('jwt-express');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -32,9 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(jwt.init('trololol',{cookies:false}))
 
-app.use(session({secret: 'some secret i guess',resave: false, saveUninitialized: true, cookie: {secure:false}}));
 app.use(passport.initialize());
 app.use(passport.session());
 
