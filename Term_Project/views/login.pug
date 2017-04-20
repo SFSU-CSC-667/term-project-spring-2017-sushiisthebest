@@ -1,4 +1,4 @@
-form(method="post" action="/users/login")
+form#login(method="post" action="/users/login")
 	div
 		label(for='username') Username:
 		input#username(type='text', placeholder='username', name='username')
@@ -7,3 +7,7 @@ form(method="post" action="/users/login")
 		label(for='password') Password:
 		input#password(type='password', name='password')
 	button(type="submit") login
+
+
+script(src="/javascripts/jquery-3.2.1.js")
+script(src="/javascripts/token.js")
