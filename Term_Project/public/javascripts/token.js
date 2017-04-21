@@ -1,10 +1,22 @@
+var token;
+
 $('#login').submit(function(e) {
 	e.preventDefault();
-	$.post('users/login', { username: $(#username).val(), password: $(#password)})
-	.done(function(response){
-		if(response.token) {
-			$window.sessionStorage.accessToken = response.token;
-			console.log("Success!!! token=",response.token);
-		} else { console.log("token not found");}
-	})
-	}, 'json');
+	$.ajax({
+        type: "POST",
+        url: '/users/login',
+        data: $('#login').serialize(),
+        success: storeJwt,
+        dataType: 'json'
+    });
+});
+
+function storeJwt(data){
+	console.log('bleh');
+	console.log('data:', data);
+	localStorage.setItem('access_token',data.token);
+	console.log("data.token:", data.token);
+
+}
+
+if(token)

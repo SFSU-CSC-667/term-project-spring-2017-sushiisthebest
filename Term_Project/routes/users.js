@@ -6,6 +6,7 @@ var User = require('../Models/User');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var jwt = require('jwt-simple');
+
 require('../config/passport.js')(passport);
 
 
@@ -23,7 +24,7 @@ router.get('/', function(req,res,next){
 
 router.get('/login',function(req,res,next){
 	//if(req.user){re}
-	res.render('login');
+	res.render('login', {token_url: "/javascripts/token.js"});
 });
 
 router.post('/login', function(req, res, next){
