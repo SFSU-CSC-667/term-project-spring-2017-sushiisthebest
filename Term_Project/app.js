@@ -5,21 +5,21 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var io = require('socket.io')(server);
+
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-//var login = require('./routes/login');
-//var register = require('./routes/register');
+
+
 var passport = require('passport');
-
-//var debug = false;
-
 require('./config/passport.js')(passport);
 
-
-
 var app = express();
+
+//var web_socket_server = require('http').createServer(app);
+//var io = require('socket.io')(web_socket_server);
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -58,5 +58,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+//web_socket_server.listen(4200);
 
 module.exports = app;

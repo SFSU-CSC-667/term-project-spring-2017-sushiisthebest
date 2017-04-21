@@ -16,7 +16,11 @@ function storeJwt(data){
 	console.log('data:', data);
 	localStorage.setItem('access_token',data.token);
 	console.log("data.token:", data.token);
+    let socket = io.connect('http://localhost:4200');
+    socket.on('connect', (data) => {
+        socket.emit('send-token', localStorage.getItem('access_token'));
+    });
 
-}
+};
 
-if(token)
+

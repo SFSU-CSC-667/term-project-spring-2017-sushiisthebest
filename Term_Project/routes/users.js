@@ -1,4 +1,5 @@
 var express = require('express');
+var app = express();
 var router = express.Router();
 var debug = true;
 var bcrypt = require('bcrypt');
@@ -8,7 +9,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var jwt = require('jwt-simple');
 
 require('../config/passport.js')(passport);
-
+var io = require('socket.io').listen()
 
 /* GET users listing. */
 
