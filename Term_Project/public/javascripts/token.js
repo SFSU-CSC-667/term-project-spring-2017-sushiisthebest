@@ -1,4 +1,4 @@
-var token;
+const socket = io();
 
 $('#login').submit(function(e) {
 	e.preventDefault();
@@ -18,7 +18,10 @@ function storeJwt(data){
 	console.log("data.token:", data.token);
     let socket = io.connect('http://localhost:4200');
     socket.on('connect', (data) => {
-        socket.emit('send-token', localStorage.getItem('access_token'));
+
+        socket.on('send-token', (data) => {
+            socket.emit('auth', localStorage.getItem('access_token'));
+        });
     });
 
 };
