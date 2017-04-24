@@ -1,5 +1,6 @@
 const socket = io();
 
+
 $('#login').submit(function(e) {
 	e.preventDefault();
 	$.ajax({
@@ -11,12 +12,12 @@ $('#login').submit(function(e) {
     });
 });
 
-function storeJwt(data){
+function storeJwt(token){
 	console.log('bleh');
-	console.log('data:', data);
-	localStorage.setItem('access_token',data.token);
-	console.log("data.token:", data.token);
-    let socket = io.connect('http://localhost:4200');
+	console.log('data:', token);
+	localStorage.setItem('access_token',token.token);
+	console.log("data.token:", token.token);
+    let socket = io.connect('http://localhost:3000/');
     socket.on('connect', (data) => {
 
         socket.on('send-token', (data) => {
@@ -24,6 +25,11 @@ function storeJwt(data){
         });
     });
 
-};
+}
 
+if(window.localStorage.getItem('access_token')){
+    $.ajaxSetup({
+        headers: {'Authorization': 'Bearer ' + window.localStorage.getItem('access_token')}
+    })
+}
 

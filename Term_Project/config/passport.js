@@ -7,8 +7,9 @@ var ExtractJwt = require('passport-jwt').ExtractJwt
 var options = {
 	jwtFromRequest: ExtractJwt.fromAuthHeader(),
 	secretOrKey: 'secret',
+	authScheme: 'Bearer'
 
-}
+};
 
 
 var passport_config = function(passport){

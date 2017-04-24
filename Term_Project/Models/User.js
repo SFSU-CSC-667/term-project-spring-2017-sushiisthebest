@@ -24,7 +24,7 @@ module.exports = {
 		})
 	},
 
-	create:(email,username,password_hash) => {
+	create: (email,username,password_hash) => {
 		/* This is an example of a prepared statement in
 		using pg-promise. This helps  prevent sql injections and
 		makes the eclaration rather explicit. we should probably use this method 
