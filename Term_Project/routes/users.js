@@ -1,5 +1,5 @@
 var express = require('express');
-var app = require('../app.js');
+var app = require('../app');
 var router = express.Router();
 var debug = true;
 var bcrypt = require('bcrypt');
