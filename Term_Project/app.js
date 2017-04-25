@@ -7,8 +7,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 
-var index = require('./routes/index');
-var users = require('./routes/users');
 
 
 var passport = require('passport');
@@ -35,9 +33,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
 app.use(passport.session());
+var index = require('./routes/index');
+var users = require('./routes/users');
 
 app.use('/', index);
 app.use('/users', users);
+app.use(function(req, res, next){
+
+})
 //app.use('/login', login);
 //app.use('/register', register);
 

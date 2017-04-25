@@ -1,8 +1,12 @@
+var debug = true;
+
 var User = require('../Models/User');
 var LocalStrategy = require('passport-local');
 var bcrypt = require('bcrypt');
 var JwtStrategy = require('passport-jwt').Strategy;
-var ExtractJwt = require('passport-jwt').ExtractJwt
+var ExtractJwt = require('passport-jwt').ExtractJwt;
+
+
 
 var options = {
 	jwtFromRequest: ExtractJwt.fromAuthHeader(),
@@ -35,7 +39,9 @@ var passport_config = function(passport){
 		passwordField: 'password',
 		session: false
 },function(email,password,done){
-	console.log('searching for user:',email, 'password:',password);
+
+	debug ? console.log('searching for user:',email, 'password:',password) : null;
+
 	User.findUserByEmail(email)
 	.then( user => {
 		if(!user) {
@@ -43,7 +49,7 @@ var passport_config = function(passport){
 			return done(null,false);
 		}
 		
-		var passMatches = bcrypt.compareSync(password,user.password);
+		let passMatches = bcrypt.compareSync(password,user.password);
 
 		if (!passMatches) {
 			console.log('password does not match');
@@ -58,7 +64,7 @@ var passport_config = function(passport){
 		console.log(error);
 		return done(error);
 	})
-}))
+}));
 
 	passport.use('jwt', new JwtStrategy(options, function(jwt_payload, done){
 		User.findUserById(jwt_payload.id)
@@ -71,6 +77,6 @@ var passport_config = function(passport){
 		done(null, user);
 	})
 	}));	
-}
+};
 
 module.exports = passport_config;

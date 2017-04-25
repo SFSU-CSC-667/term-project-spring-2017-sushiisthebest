@@ -5,19 +5,31 @@ var debug = true;
 var bcrypt = require('bcrypt');
 var User = require('../Models/User');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+// var LocalStrategy = require('passport-local').Strategy;
+// var JwtStrategy = require('passport-jwt').Strategy;
+// var ExtractJwt = require('passport-jwt').ExtractJwt;
 var jwt = require('jwt-simple');
+
+
+var io = app.get('io');
+
+
+
 
 require('../config/passport.js')(passport);
 
 
 /* GET users listing. */
 
-router.get('/', function(req,res,next){
+router.get('/', passport.authenticate('JWT', {session: false}), function(req,res,next) {
+    next();
+
+},  function(req,res,next){
 	if(req.user){
 		debug ? console.log("sessions appear to be working") : null;
 		debug ? console.log("user session object:", req.user) : null;
-		res.redirect('/users/' + req.user.id);
+
+		res.redirect('/users/' + req.user.username);
 	} else {
 		debug ? console.log("not logged in ???") : null;
 	}
@@ -25,7 +37,8 @@ router.get('/', function(req,res,next){
 
 router.get('/login',function(req,res,next){
 	//if(req.user){re}
-	res.render('login', {token_url: "/javascripts/token.js"});
+	//res.render('login', {token_url: "/javascripts/token.js"});
+	res.render('login');
 });
 
 router.post('/login', function(req, res, next){
@@ -76,10 +89,9 @@ router.post('/register', function(req, res, next){
 	})
 });
 
-router.get('/:id([0-9]{1-8})', function(req,res,next){
-	console.log('in get /:id route','user: ', req.user, 'user id;', req.user.id);
-	res.render('profile', {foo: req.user.id});
-
+router.get('/:username', passport.authenticate('JWT', {session: false}), function(req,res,next){
+	console.log('in get /:username route','username: ', req.user, 'user id;', req.user.id);
+	res.render('profile', {foo: req.user.username});
 });
 
 module.exports = router;
