@@ -9,10 +9,9 @@ var ExtractJwt = require('passport-jwt').ExtractJwt;
 
 
 var options = {
-	jwtFromRequest: ExtractJwt.fromAuthHeader(),
-	secretOrKey: 'secret',
-	authScheme: 'Bearer'
-
+	jwtFromRequest: ExtractJwt.fromHeader('Cookie'),
+	secretOrKey: 'secret'
+	//authScheme: 'Bearer'
 };
 
 
@@ -67,6 +66,9 @@ var passport_config = function(passport){
 }));
 
 	passport.use('jwt', new JwtStrategy(options, function(jwt_payload, done){
+		 console.log('Hello from the jwt verifi');
+		debug ? console.log('ID',jwt_payload.id,'username:', jwt_payload.username) : null;
+
 		User.findUserById(jwt_payload.id)
 		.then(user=>{
 

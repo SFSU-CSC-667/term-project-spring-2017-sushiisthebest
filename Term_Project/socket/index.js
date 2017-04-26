@@ -11,7 +11,7 @@ const init = (app, server) => {
 
 
 
-
+    console.log('app set');
     app.set('io', io);
 
 

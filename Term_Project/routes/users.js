@@ -11,7 +11,7 @@ var passport = require('passport');
 var jwt = require('jwt-simple');
 
 
-var io = app.get('io');
+//var io = app.get('io');
 
 
 
@@ -21,7 +21,8 @@ require('../config/passport.js')(passport);
 
 /* GET users listing. */
 
-router.get('/', passport.authenticate('JWT', {session: false}), function(req,res,next) {
+router.get('/', passport.authenticate('jwt', {session: false}), function(req,res,next) {
+	console.log('hiya');
     next();
 
 },  function(req,res,next){
@@ -37,7 +38,7 @@ router.get('/', passport.authenticate('JWT', {session: false}), function(req,res
 
 router.get('/login',function(req,res,next){
 	//if(req.user){re}
-	//res.render('login', {token_url: "/javascripts/token.js"});
+	//res.render('login', {token_url: "/javascripts/token.js"});TerTerm_Projectm_Project
 	res.render('login');
 });
 
@@ -50,8 +51,10 @@ router.post('/login', function(req, res, next){
 
     //user has authenticated correctly thus we create a JWT token 
     var token = jwt.encode({id: user.id, username: user.username, email: user.email}, "secret");
-    
-    res.json({token: token});
+    var opts = {maxAge:90000};
+    res.cookie('jwt', token, opts);
+
+    //res.json({token: token});
 
 
 })(req, res, next);
@@ -89,7 +92,7 @@ router.post('/register', function(req, res, next){
 	})
 });
 
-router.get('/:username', passport.authenticate('JWT', {session: false}), function(req,res,next){
+router.get('/:username', passport.authenticate('jwt', {session: false}), function(req,res,next){
 	console.log('in get /:username route','username: ', req.user, 'user id;', req.user.id);
 	res.render('profile', {foo: req.user.username});
 });

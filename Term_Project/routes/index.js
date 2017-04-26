@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-const app = require('../app.js');
+const app = require('../app');
 
-var io = app.get('io');
 
 
 /* GET home page. */
