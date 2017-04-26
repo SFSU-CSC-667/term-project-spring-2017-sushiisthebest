@@ -6,13 +6,23 @@ var bcrypt = require('bcrypt');
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 
+var cookieExtractor = function(req) {
+    let token = null;
+
+    if (req && req.cookies) {
+        token = req.cookies['jwt'];
+    }
+
+    return token;
+};
 
 
 var options = {
-	jwtFromRequest: ExtractJwt.fromHeader('Cookie'),
+	jwtFromRequest: cookieExtractor,
 	secretOrKey: 'secret'
-	//authScheme: 'Bearer'
 };
+
+
 
 
 var passport_config = function(passport){

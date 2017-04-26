@@ -5,9 +5,6 @@ var debug = true;
 var bcrypt = require('bcrypt');
 var User = require('../Models/User');
 var passport = require('passport');
-// var LocalStrategy = require('passport-local').Strategy;
-// var JwtStrategy = require('passport-jwt').Strategy;
-// var ExtractJwt = require('passport-jwt').ExtractJwt;
 var jwt = require('jwt-simple');
 
 
@@ -27,9 +24,6 @@ router.get('/', passport.authenticate('jwt', {session: false}), function(req,res
 
 },  function(req,res,next){
 	if(req.user){
-		debug ? console.log("sessions appear to be working") : null;
-		debug ? console.log("user session object:", req.user) : null;
-
 		res.redirect('/users/' + req.user.username);
 	} else {
 		debug ? console.log("not logged in ???") : null;
@@ -37,25 +31,23 @@ router.get('/', passport.authenticate('jwt', {session: false}), function(req,res
 });
 
 router.get('/login',function(req,res,next){
-	//if(req.user){re}
-	//res.render('login', {token_url: "/javascripts/token.js"});TerTerm_Projectm_Project
 	res.render('login');
 });
 
 router.post('/login', function(req, res, next){
 	passport.authenticate('local', function(error,user, info){
     if (error) { return next(err) }
+
     if (!user) {
       return res.json(401, { error: 'some fucked up shizz' });
     }
 
-    //user has authenticated correctly thus we create a JWT token 
     var token = jwt.encode({id: user.id, username: user.username, email: user.email}, "secret");
+
     var opts = {maxAge:90000};
     res.cookie('jwt', token, opts);
 
-    //res.json({token: token});
-
+    res.redirect('/users');
 
 })(req, res, next);
 });
@@ -65,9 +57,9 @@ router.get('/register',function(req, res, next){
 });
 
 router.post('/register', function(req, res, next){
-
-	User.findUserByEmail(req.body.email)
+    User.findUserByEmail(req.body.email)
 	.then(user=>{
+
 		if(!user){
 			console.log('Sucess: user does not already exist');
 			next();
@@ -93,7 +85,6 @@ router.post('/register', function(req, res, next){
 });
 
 router.get('/:username', passport.authenticate('jwt', {session: false}), function(req,res,next){
-	console.log('in get /:username route','username: ', req.user, 'user id;', req.user.id);
 	res.render('profile', {foo: req.user.username});
 });
 
