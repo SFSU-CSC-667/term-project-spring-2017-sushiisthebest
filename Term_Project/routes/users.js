@@ -42,9 +42,9 @@ router.post('/login', function(req, res, next){
       return res.json(401, { error: 'some fucked up shizz' });
     }
 
-    var token = jwt.encode({id: user.id, username: user.username, email: user.email}, "secret");
+    let token = jwt.encode({id: user.id, username: user.username, email: user.email}, "secret");
 
-    var opts = {maxAge:90000};
+    let opts = {maxAge:90000};
     res.cookie('jwt', token, opts);
 
     res.redirect('/users');
