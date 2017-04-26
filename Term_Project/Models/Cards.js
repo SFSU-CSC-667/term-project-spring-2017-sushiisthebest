@@ -1,20 +1,24 @@
+//
+// var connection = {
+//   host: "localhost",
+//   port: 5432,
+//   database: "csc667",
+//   user: 'postgres',
+//   password: "6848broken"
+// };
+//
+// var pgp =  require('pg-promise')();
+// var db = pgp(connection);
 
-var connection = {
-  host: "localhost",
-  port: 5432,
-  database: "csc667",
-  user: 'postgres',
-  password: "6848broken"
-};
 
-var pgp =  require('pg-promise')();
-var db = pgp(connection);
+var db = require('../config/database');
 
 
-module.exports = {
+
+	var Cards = {
 	findCardByID: id =>{
 		return db.oneOrNone({
-      name: 'find-card-by-id'
+      name: 'find-card-by-id',
       text: 'SELECT * FROM \"Card\" WHERE ID = $1' ,
       values: [id]
     })
@@ -43,3 +47,5 @@ module.exports = {
 
 
 };
+
+	module.exports = Cards;

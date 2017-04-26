@@ -1,7 +1,11 @@
 extends layout
-
 block content
     div
         table
-            tr: th Game
-                th playersCount
+            thead
+                tr: th Game
+                    th playersCount
+            tbody
+            each game in games
+                tr: th=game.name
+                    th=game.playercount + "/5"

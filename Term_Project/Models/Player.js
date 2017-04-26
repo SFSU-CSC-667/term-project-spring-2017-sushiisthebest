@@ -1,20 +1,11 @@
 
-var connection = {
-  host: "localhost",
-  port: 5432,
-  database: "csc667",
-  user: 'postgres',
-  password: "6848broken"
-};
 
-var pgp =  require('pg-promise')();
-var db = pgp(connection);
-
+var db = require('../config/database');
 
 module.exports = {
 	findPlayerByID: id =>{
 		return db.oneOrNone({
-      name: 'find-game-by-id'
+      name: 'find-game-by-id',
       text: 'SELECT * FROM \"Player\" WHERE ID = $1' ,
       values: [id]
     })
