@@ -3,5 +3,9 @@ extends layout
 block content
     div
         table
-            tr: th Game
-                th playersCount
+            thead
+                tr: th Name
+                    th= playersCount + '/6'
+                each game in games
+                    tr: td=game.gameName
+                        td=game.playerCount
