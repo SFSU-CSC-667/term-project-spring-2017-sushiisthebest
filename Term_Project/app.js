@@ -6,17 +6,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-
-
+var index = require('./routes/index');
+var users = require('./routes/users');
+var games = require('./routes/games');
 
 var passport = require('passport');
 require('./config/passport.js')(passport);
 
 var app = express();
-
-//var web_socket_server = require('http').createServer(app);
-//var io = require('socket.io')(web_socket_server);
-
 
 
 // view engine setup
@@ -33,14 +30,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
 app.use(passport.session());
-var index = require('./routes/index');
-var users = require('./routes/users');
+
+
 
 app.use('/', index);
 app.use('/users', users);
-app.use(function(req, res, next){
+app.use('/games', games);
 
-})
 //app.use('/login', login);
 //app.use('/register', register);
 
