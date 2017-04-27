@@ -19,5 +19,11 @@ router.get('/' , (req, res, next) => {
     res.render('games', {games: res.locals.games })
 });
 
+// router.get('/gamelobby/:id', (req, res, next) => {
+//     Games.
+//
+//
+//
+// })
 
 module.exports = router;
