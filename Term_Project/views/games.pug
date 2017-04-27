@@ -1,11 +1,12 @@
 extends layout
-
 block content
     div
         table
             thead
-                tr: th Name
-                    th= playersCount + '/6'
-                each game in games
-                    tr: td=game.gameName
-                        td=game.playerCount
+                tr: th Game
+                    th playersCount
+            tbody
+            each game in games
+                tr: th=game.name
+                    th=game.playercount + "/5"
+
