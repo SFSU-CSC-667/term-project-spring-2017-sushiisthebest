@@ -62,18 +62,18 @@ router.get('/login',function(req,res,next){
 
 router.post('/login', function(req, res, next){
 	passport.authenticate('local', function(error,user, info){
-    if (error) { return next(err) }
 
-    if (!user) {
-      return res.json(401, { error: 'some fucked up shizz' });
-    }
+		if (error) { return next(err) }
 
-    let token = jwt.encode({id: user.id, username: user.username, email: user.email}, "secret");
+		if (!user) {
+		  return res.json(401, { error: 'some fucked up shizz' });
+		}
 
-    let opts = {maxAge:90000};
-    res.cookie('jwt', token, opts);
+		let token = jwt.encode({id: user.id, username: user.username, email: user.email}, "secret");
+		let opts = {maxAge:90000};
+		res.cookie('jwt', token, opts);
 
-    res.redirect('/users');
+		res.redirect('/users');
 
 })(req, res, next);
 });
