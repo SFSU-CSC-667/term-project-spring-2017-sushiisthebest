@@ -2,7 +2,9 @@ extends layout
 block content
     h1= foo
 
-        img(src="/images/603px-Sir_Francis_Drake_by_Jodocus_Hondius.jpg" alt="Image Title")
+        img#previous-avatar(src='/images/leftArrow.jpg', onclick=previousAvatar)
+        img#avatar(src=avatar_url, alt="Image Title")
+        img#next-avatar(src=nextArrowImageUrl, alt="right arrow" , onclick=nextAvatar)
 
         div
             button(type="submit" onclick="location.href='/games'" value='Next') Thumb Master
@@ -16,3 +18,4 @@ block content
             button(type="submit" onclick="location.href='/games'" value='Next') God Of The Sea!
         div
             button(type="submit" onclick="location.href='/games'" value='Next') Find A Game
+script(src='/javascripts/toggle-avatar.js')
