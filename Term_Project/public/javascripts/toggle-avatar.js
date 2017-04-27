@@ -1,10 +1,10 @@
 $(function() {
+    var avatar_id = $.fromUrlQueryParameter('avatar_id');
 
     function previousAvatar(){
-        var avatar_id = $.fromUrlQueryParameter('avatar_id');
 
         $.ajax({
-            url: '/users?avatar_id='+ avatar_id,
+            url: '/users?avatar_id='+ (avatar_id - 1 < 1 ? avatar_id = 4 : avatar_id -= 10),
             type: 'get',
             dataType: 'json',
 

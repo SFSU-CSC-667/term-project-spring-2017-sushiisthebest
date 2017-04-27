@@ -23,8 +23,10 @@ router.get('/', passport.authenticate('jwt', {session: false}), function(req,res
     next();
 
 },  function(req,res,next){
+	var avatar_id = '?avatar_id='+req.query.avatar_id;
+
 	if(req.user){
-		res.redirect('/users/' + req.user.username);
+		res.redirect('/users/' + req.user.username +avatar_id);
 	} else {
 		debug ? console.log("not logged in ???") : null;
 	}
