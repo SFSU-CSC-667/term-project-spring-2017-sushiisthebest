@@ -18,7 +18,7 @@ module.exports = {
 	create: (email,username,password_hash) => {
 		/* This is an example of a prepared statement in
 		using pg-promise. This helps  prevent sql injections and
-		makes the eclaration rather explicit. we should probably use this method 
+		makes the eclaration rather explicit. we should probably use this method
 		*/
 
 		return db.none({
@@ -32,7 +32,17 @@ module.exports = {
 			return new_user_id;
 		})
 		*/
-	}
+	},
+
+	setAvatar: (user_id, avatar_id) => {
+		return db.none({
+			name: 'set-avatar',
+			text: 'UPDATE \"User\" SET avatarid=$1 WHERE id=$2',
+			values: [avatar_id, user_id]
+		})
+	},
+
+	
 
 	
 };

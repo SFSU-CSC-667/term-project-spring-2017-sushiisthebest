@@ -7,6 +7,8 @@ var User = require('../Models/User');
 var passport = require('passport');
 var jwt = require('jwt-simple');
 
+var Image = require('../Models/ImageTables');
+
 
 //var io = app.get('io');
 
@@ -15,6 +17,28 @@ var jwt = require('jwt-simple');
 
 require('../config/passport.js')(passport);
 
+var translateAvatarId = (req,res,next) => {
+	var true_id;
+
+	switch (req.query.avatar_id) {
+		case 1 :
+			true_id = 70;
+			break;
+		case 2 :
+			true_id = 71;
+			break;
+		case 3 :
+			true_id = 72;
+			break;
+		case 4 :
+			true_id = 73;
+			break;
+	}
+
+	res.locals.true_id = true_id;
+
+	next();
+};
 
 /* GET users listing. */
 
@@ -86,7 +110,10 @@ router.post('/register', function(req, res, next){
 	})
 });
 
-router.get('/:username', passport.authenticate('jwt', {session: false}), function(req,res,next){
+router.get('/:username', passport.authenticate('jwt', {session: false}), translateAvatarId, function(req,res,next){
+
+
+
 	res.render('profile', {foo: req.user.username});
 });
 
