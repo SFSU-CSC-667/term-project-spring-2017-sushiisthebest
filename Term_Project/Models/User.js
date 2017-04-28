@@ -1,5 +1,7 @@
 
 var db = require('../config/database');
+var Image = require('../ImageTable');
+//var Avatar = require('../Avatar');
 
 
 module.exports = {
@@ -15,10 +17,43 @@ module.exports = {
 		})
 	},
 
+    getUserProfileById: id => {
+
+	    var profile = {};
+
+        var initialQuery = 'SELECT * FROM \"User\" WHERE id = $1';
+        var avatarQuery = 'SELECT \"Avatar\".name, imagetable.path FROM \"Avatar\"'+
+            ' INNER JOIN imagetable ON (\"Avatar\".imageid = imagetable.id) WHERE \"Avatar\".id = $1';
+
+
+        db.task( t => {
+            return t.one(initialQuery, id)
+                .then(user => {
+                    console.log('user', user);
+
+                    profile.username = user.username;
+                    profile.avatarID = user.avatarid;
+
+                    return t.one(avatarQuery, user.avatarid);
+                });
+        })
+            .then(avatar => {
+                console.log('avatar:' , avatar);
+
+               profile.avatarName = avatar.name;
+               profile.avatarImgPath = avatar.path;
+
+               return profile;
+            });
+
+    },
+
+
+
 	create: (email,username,password_hash) => {
 		/* This is an example of a prepared statement in
 		using pg-promise. This helps  prevent sql injections and
-		makes the eclaration rather explicit. we should probably use this method
+		makes the eclaration rather explicit. we should probably use this methodu
 		*/
 
 		return db.none({
