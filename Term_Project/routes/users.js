@@ -107,4 +107,10 @@ router.get('/:username', passport.authenticate('jwt', {session: false}),  functi
 
 });
 
+router.post('/:username/nextAvatar', (req, res, next) => {
+
+
+
+});
+
 module.exports = router;

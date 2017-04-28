@@ -62,12 +62,19 @@ module.exports = {
 		*/
 	},
 
-	setAvatar: (user_id, avatar_id) => {
-		return db.none({
-			name: 'set-avatar',
-			text: 'UPDATE \"User\" SET avatarid=$1 WHERE id=$2',
-			values: [avatar_id, user_id]
-		})
+	changeAvatar: (userID, avatarID) => {
+
+	    var initialQuery = 'UPDATE \"User\" SET avatarid=$1 WHERE id=$2';
+	    var secondQuery = 'SELECT \"Avatar\".name, \"Avatar\".id, imagetable.path FROM \"Avatar\"'+
+        ' INNER JOIN imagetable ON (\"Avatar\".imageid = imagetable.id) WHERE \"Avatar\".id = $1';
+
+		return db.tx(t => {
+		    var q1 = t.none(initialQuery, [avatarID,userID]);
+		    var q2 = t.one(secondQuery, [avatarID]);
+
+		    return t.batch([q1, q2]);
+        })
+
 	},
 
 
