@@ -14,7 +14,6 @@ require('../config/passport.js')(passport);
 
 
 router.get('/', passport.authenticate('jwt', {session: false}), function(req,res,next) {
-	console.log('hiya');
     next();
 
 },  function(req,res,next){
@@ -81,7 +80,6 @@ router.post('/register', function(req, res, next){
 });
 
 router.get('/:username', passport.authenticate('jwt', {session: false}),  function(req,res,next){
-	console.log('userIDFROM COOKIE: ' , req.user.id);
 	var profile = {};
 	profile.username= req.user.username;
 	// let promise = new Promise((resolve, reject) => {
@@ -107,8 +105,19 @@ router.get('/:username', passport.authenticate('jwt', {session: false}),  functi
 
 });
 
-router.post('/:username/nextAvatar', (req, res, next) => {
+router.post('/:username/changeAvatar', passport.authenticate('jwt',{session:false}) , (req, res, next) => {
+	console.log('---ENTERING /:username/changeAvatar Route---');
+	console.log('userID FROM COOKIE', req.user.id);
+	console.log('avatarID from BODY', req.body.avatarID);
 
+	User.changeAvatar(req.user.id, req.body.avatarID)
+		.then(avatar => {
+			console.log('avatar', avatar[1]);
+			res.json(avatar[1]);
+		})
+		.catch(error => {
+			console.log(error);
+		})
 
 
 });

@@ -3,9 +3,11 @@ extends layout
 block content
     h1= username
 
-    h2= avatarName
+    h2#avatarName= avatarName
 
-    img#avatar(src=avatarImgPath, alt="Image Title", data-avatarID = avatarID)
+    img#previousAvatar(src='/images/leftArrow.jpg', width='50' , height='50')
+    img#avatar(src=avatarImgPath, alt="Image Title", data-avatarid = avatarID , height="200", width = '200')
+    img#nextAvatar(src= '/images/rightArrow.jpg', width = '50' , height = '50')
 
     div
         button(type="submit" onclick="location.href='/games'" value='Next') Thumb Master
@@ -20,4 +22,5 @@ block content
     div
         button(type="submit" onclick="location.href='/games'" value='Next') Find A Gamez
 
+    script(src='/javascripts/jquery-3.2.1.js')
     script(src='/javascripts/toggle-avatar.js')

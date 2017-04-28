@@ -68,11 +68,12 @@ module.exports = {
 	    var secondQuery = 'SELECT \"Avatar\".name, \"Avatar\".id, imagetable.path FROM \"Avatar\"'+
         ' INNER JOIN imagetable ON (\"Avatar\".imageid = imagetable.id) WHERE \"Avatar\".id = $1';
 
-		return db.tx(t => {
-		    var q1 = t.none(initialQuery, [avatarID,userID]);
-		    var q2 = t.one(secondQuery, [avatarID]);
-
-		    return t.batch([q1, q2]);
+		return db.task( t => {
+            console.log('inside task');
+		    return t.batch([
+		        t.none(initialQuery, [avatarID,userID]),
+                t.one(secondQuery,avatarID)
+            ]);
         })
 
 	},
