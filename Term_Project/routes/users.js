@@ -18,10 +18,9 @@ router.get('/', passport.authenticate('jwt', {session: false}), function(req,res
     next();
 
 },  function(req,res,next){
-	var avatar_id = '?avatar_id='+req.query.avatar_id;
 
 	if(req.user){
-		res.redirect('/users/' + req.user.username +avatar_id);
+		res.redirect('/users/' + req.user.username);
 	} else {
 		debug ? console.log("not logged in ???") : null;
 	}
@@ -41,7 +40,7 @@ router.post('/login', function(req, res, next){
 		}
 
 		let token = jwt.encode({id: user.id, username: user.username, email: user.email}, "secret");
-		let opts = {maxAge:90000};
+		let opts = {maxAge:9000000};
 		res.cookie('jwt', token, opts);
 
 		res.redirect('/users');
@@ -82,10 +81,30 @@ router.post('/register', function(req, res, next){
 });
 
 router.get('/:username', passport.authenticate('jwt', {session: false}),  function(req,res,next){
+	console.log('userIDFROM COOKIE: ' , req.user.id);
+	var profile = {};
+	profile.username= req.user.username;
+	// let promise = new Promise((resolve, reject) => {
+     //    let profile = User.getUserProfileById(req.user.id);
+     //    console.log('profile object inside promise:', profile);
+	// 	resolve(profile);
+	// });
+    //
+	// promise.then((profile) => {
+	// 	console.log('profile:', profile);
+	// 	res.render('profile', profile);
+	// });
 
-	 let profile = User.getUserProfileById(req.user.id);
+	User.getUserProfileById(req.user.id)
+		.then(avatar=>{
+			profile.avatarID = avatar.id;
+			profile.avatarName = avatar.name;
+			profile.avatarImgPath = avatar.path;
 
-	res.render('profile', profile);
+			console.log('profile object:',profile);
+			res.render('profile', profile);
+		})
+
 });
 
 module.exports = router;

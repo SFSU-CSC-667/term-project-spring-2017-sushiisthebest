@@ -1,21 +1,23 @@
 extends layout
+
 block content
-    h1= foo
+    h1= username
 
-        img#previous-avatar(src='/images/leftArrow.jpg', onclick=previousAvatar)
-        img#avatar(src=avatar_url, alt="Image Title")
-        img#next-avatar(src=nextArrowImageUrl, alt="right arrow" , onclick=nextAvatar)
+    h2= avatarName
 
-        div
-            button(type="submit" onclick="location.href='/games'" value='Next') Thumb Master
-            button(type="submit" onclick="location.href='/games'" value='Next') Question Keeper
-            button(type="submit" onclick="location.href='/games'" value='Next') Secret Storer
-            button(type="submit" onclick="location.href='/games'" value='Next') Fuck Ya!
-        div
-            button(type="submit" onclick="location.href='/games'" value='Next') Party Rum!
-            button(type="submit" onclick="location.href='/games'" value='Next') Selfish Salve!
-            button(type="submit" onclick="location.href='/games'" value='Next') Fire The Cannon!
-            button(type="submit" onclick="location.href='/games'" value='Next') God Of The Sea!
-        div
-            button(type="submit" onclick="location.href='/games'" value='Next') Find A Game
-script(src='/javascripts/toggle-avatar.js')
+    img#avatar(src=avatarImgPath, alt="Image Title", data-avatarID = avatarID)
+
+    div
+        button(type="submit" onclick="location.href='/games'" value='Next') Thumb Master
+        button(type="submit" onclick="location.href='/games'" value='Next') Question Keeper
+        button(type="submit" onclick="location.href='/games'" value='Next') Secret Storer
+        button(type="submit" onclick="location.href='/games'" value='Next') Fuck Ya!
+    div
+        button(type="submit" onclick="location.href='/games'" value='Next') Party Rum!
+        button(type="submit" onclick="location.href='/games'" value='Next') Selfish Salve!
+        button(type="submit" onclick="location.href='/games'" value='Next') Fire The Cannon!
+        button(type="submit" onclick="location.href='/games'" value='Next') God Of The Sea!
+    div
+        button(type="submit" onclick="location.href='/games'" value='Next') Find A Gamez
+
+    script(src='/javascripts/toggle-avatar.js')

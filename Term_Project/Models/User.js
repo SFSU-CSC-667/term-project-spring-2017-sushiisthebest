@@ -1,6 +1,6 @@
 
 var db = require('../config/database');
-var Image = require('../ImageTable');
+//var Image = require('../ImageTable');
 //var Avatar = require('../Avatar');
 
 
@@ -19,34 +19,27 @@ module.exports = {
 
     getUserProfileById: id => {
 
-	    var profile = {};
+	    //var profile = {};
 
         var initialQuery = 'SELECT * FROM \"User\" WHERE id = $1';
-        var avatarQuery = 'SELECT \"Avatar\".name, imagetable.path FROM \"Avatar\"'+
+        var avatarQuery = 'SELECT \"Avatar\".name, \"Avatar\".id, imagetable.path FROM \"Avatar\"'+
             ' INNER JOIN imagetable ON (\"Avatar\".imageid = imagetable.id) WHERE \"Avatar\".id = $1';
 
 
-        db.task( t => {
+        return db.task( t => {
             return t.one(initialQuery, id)
                 .then(user => {
                     console.log('user', user);
 
-                    profile.username = user.username;
-                    profile.avatarID = user.avatarid;
+                    //profile.username = user.username;
+                    //profile.avatarID = user.avatarid;
 
                     return t.one(avatarQuery, user.avatarid);
                 });
         })
-            .then(avatar => {
-                console.log('avatar:' , avatar);
 
-               profile.avatarName = avatar.name;
-               profile.avatarImgPath = avatar.path;
 
-               return profile;
-            });
-
-    },
+     },
 
 
 
