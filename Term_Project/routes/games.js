@@ -21,7 +21,11 @@ router.get('/' , (req, res, next) => {
 });
 
 router.post('/:gameID/join', (req, res, next) => {
-    const gameID = req.params;
+    const gameID = req.params.gameID;
+    Games.findGameByID(ParseInt(gameID))
+        .then(game => {
+            
+        })
 
 });
 
