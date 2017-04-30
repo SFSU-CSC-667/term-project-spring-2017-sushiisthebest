@@ -5,10 +5,12 @@ block content
             thead
                 tr: th Game
                     th playersCount
+                    th Description
             tbody
             each game in games
-                tr: th=game.name
-                    th=game.playercount + "/5"
+                tr: td=game.name
+                    td=game.playercount + "/5"
+                    td A description
 
     div
         button(type="submit" onclick="location.href='/games'" value='Next') Create a Game

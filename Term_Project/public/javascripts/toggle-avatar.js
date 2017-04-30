@@ -4,6 +4,8 @@ $(function() {
     $('#nextAvatar').on("click", nextAvatar);
 });
 
+
+
     function previousAvatar(){
         var avatarID = $('#avatar').data('avatarid');
         console.log('CLIENT SIDE avatarID:', avatarID);

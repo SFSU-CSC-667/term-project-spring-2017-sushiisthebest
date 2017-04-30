@@ -5,7 +5,7 @@ module.exports = {
 	findGameByID: id =>{
 		return db.oneOrNone({
       name: 'find-game-by-id',
-      text: 'SELECT * FROM \"Game\" WHERE ID = $1' ,
+      text: 'SELECT * FROM \"Game\" WHERE id = $1' ,
       values: [id]
     })
 	},
@@ -21,7 +21,7 @@ module.exports = {
 	getVisibleGames: () => {
 		return db.manyOrNone({
 			name:'get-visible-games',
-			text:'SELECT id, name, hasstarted, playercount FROM \"Game\" WHERE \"playercount\" != 5 AND hasstarted = false',
+			text:'SELECT id, name, hasstarted, playercount FROM \"Game\" WHERE hasstarted = false AND playercount != 5',
             values: undefined
 		})
 	},
@@ -40,4 +40,4 @@ module.exports = {
 	}
 
 
-}
+};

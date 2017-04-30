@@ -13,10 +13,16 @@ router.get('/' , (req, res, next) => {
     Games.getVisibleGames()
         .then(games => {
            res.locals.games = games;
+           console.log('Games Object:',games );
            next()
         })
 }, (req, res, next) => {
     res.render('games', {games: res.locals.games })
+});
+
+router.post('/:gameID/join', (req, res, next) => {
+    const gameID = req.params;
+
 });
 
 // router.get('/gamelobby/:id', (req, res, next) => {
