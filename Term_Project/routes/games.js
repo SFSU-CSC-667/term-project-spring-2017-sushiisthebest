@@ -24,7 +24,7 @@ router.post('/:gameID/join', (req, res, next) => {
     const gameID = req.params.gameID;
     Games.findGameByID(ParseInt(gameID))
         .then(game => {
-            
+            if(game.playercount >= 5)
         })
 
 });
