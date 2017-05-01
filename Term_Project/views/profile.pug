@@ -3,24 +3,19 @@ extends layout
 block content
     h1= username
 
+    //eventually make this a profile block
     h2#avatarName= avatarName
+    h2(class="jack-card")
+    h2(class="sushi-ability")
 
     img#previousAvatar(src='/images/leftArrow.jpg', width='50' , height='50')
     img#avatar(src=avatarImgPath, alt="Image Title", data-avatarid = avatarID , height="200", width = '200')
     img#nextAvatar(src= '/images/rightArrow.jpg', width = '50' , height = '50')
 
-    div
-        button(type="submit" onclick="location.href='/games'" value='Next') Thumb Master
-        button(type="submit" onclick="location.href='/games'" value='Next') Question Keeper
-        button(type="submit" onclick="location.href='/games'" value='Next') Secret Storer
-        button(type="submit" onclick="location.href='/games'" value='Next') Fuck Ya!
-    div
-        button(type="submit" onclick="location.href='/games'" value='Next') Party Rum!
-        button(type="submit" onclick="location.href='/games'" value='Next') Selfish Salve!
-        button(type="submit" onclick="location.href='/games'" value='Next') Fire The Cannon!
-        button(type="submit" onclick="location.href='/games'" value='Next') God Of The Sea!
-    div
-        button(type="submit" onclick="location.href='/games'" value='Next') Find A Gamez
+    h2(class="create-character")
+    img#create-button(src='/images/create-button.jpg')
 
+    //SUSHI CARD
+    h1(class= "sushi-ability")
     script(src='/javascripts/jquery-3.2.1.js')
     script(src='/javascripts/toggle-avatar.js')
