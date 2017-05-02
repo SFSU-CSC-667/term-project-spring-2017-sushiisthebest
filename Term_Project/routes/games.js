@@ -22,7 +22,7 @@ router.get('/' , (req, res, next) => {
     res.render('games', {games: res.locals.games })
 });
 
-router.post('/:gameID/join', (req, res, next) => {
+router.post('/:gameID/join', (req, res, next) => {conf
     const gameID = req.params.gameID;
     Games.findGameByID(ParseInt(gameID))
         .then(game => {
