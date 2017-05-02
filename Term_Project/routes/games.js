@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 
 const Games = require('../Models/Games');
-const broadcast = require('../socket/broadcast')
+const broadcast = require('../socket/broadcast');
 
 
 
@@ -22,12 +22,18 @@ router.get('/' , (req, res, next) => {
     res.render('games', {games: res.locals.games })
 });
 
-router.post('/:gameID/join', (req, res, next) => {conf
+
+//might not be an actual page at one point
+router.get('/create', (req, res, next) => {
+    res.render('createGame');
+});
+
+router.post('/:gameID/join', (req, res, next) => {
     const gameID = req.params.gameID;
     Games.findGameByID(ParseInt(gameID))
         .then(game => {
-            if(game.playercount >= 5 || game.hasstarted == true){
-                req.app.get('io')
+            if(game.playercount >= 5 || game.hasstarted === true){
+                broadcast(req.app.get('io'), '')
             }
         })
 
