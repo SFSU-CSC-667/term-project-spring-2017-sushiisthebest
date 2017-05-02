@@ -6,9 +6,11 @@ const express = require('express');
 const router = express.Router();
 
 const Games = require('../Models/Games');
+const Player = require('../Models/Player');
+
 const broadcast = require('../socket/broadcast');
 
-
+ fo
 
 
 router.get('/' , (req, res, next) => {
@@ -27,6 +29,11 @@ router.get('/' , (req, res, next) => {
 router.get('/create', (req, res, next) => {
     res.render('createGame');
 });
+
+router.post('create', (req, res, next) => {
+
+    Games.create(req.body.gameName,)
+})
 
 router.post('/:gameID/join', (req, res, next) => {
     const gameID = req.params.gameID;

@@ -8,7 +8,7 @@ module.exports = {
       name: 'find-game-by-id',
       text: 'SELECT * FROM \"Player\" WHERE ID = $1' ,
       values: [id]
-    })
+		})
 	},
 
 	findPlayerByName: name =>{
@@ -19,11 +19,11 @@ module.exports = {
 		})
 	},
 
-	create:(id, userid, gameid, isturn, health, lastcard) => {
+	create:(userID, gameID) => {
 		return db.none({
 			name:'create-player',
-			text: 'INSERT INTO \"Player\"(id, userid, gameid, isturn, health, lastcard) VALUES ($1, $2, $3, $4, $5, $6)',
-			values: [id,userid,gameid,isturn,health,lastcard, 1]
+			text: 'INSERT INTO \"Player\"(userid, gameid) VALUES ($1, $2)',
+			values: [userID, gameID]
 			})
 		.then(new_player_id => {
 			console.log('new player created with id:', new_player_id);
