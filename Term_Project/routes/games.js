@@ -8,9 +8,9 @@ const router = express.Router();
 const Games = require('../Models/Games');
 const Player = require('../Models/Player');
 
+const passport = require('passport');
 const broadcast = require('../socket/broadcast');
 
- fo
 
 
 router.get('/' , (req, res, next) => {
@@ -30,10 +30,18 @@ router.get('/create', (req, res, next) => {
     res.render('createGame');
 });
 
-router.post('create', (req, res, next) => {
+router.post('create', passport.authenticate('jwt',{session:false}, (req, res, next) => {
+    Games.create(req.body.gameName, req.body.gameDescription)
+        .then(gameID => {
+            return Promise.all([gameID, Player.create(req.user.id, gameID)]);
+        })
+        .then(results => {
+            console.log('GameID:', results[0]);
 
-    Games.create(req.body.gameName,)
-})
+
+            res.redirect('/' + [results[0]]);
+        })
+});
 
 router.post('/:gameID/join', (req, res, next) => {
     const gameID = req.params.gameID;
@@ -46,11 +54,9 @@ router.post('/:gameID/join', (req, res, next) => {
 
 });
 
-// router.get('/gamelobby/:id', (req, res, next) => {
-//     Games.
-//
-//
-//
-// })
+router.get('/:gameID', (req, res, next) => {
+    Games.
+
+});
 
 module.exports = router;

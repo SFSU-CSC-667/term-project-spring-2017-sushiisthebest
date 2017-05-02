@@ -11,6 +11,20 @@ const Games = require('../Models/Games');
 
 const init = (app, server) => {
     const io = socketIo(server);
+    const gameio = io.of('/game');
+
+    gameio.on('connection', socket => {
+        console.log('socket connected:',socket);
+
+        socket.on('join-game', gameID => {
+            socket.join(gameID);
+        })
+
+        socket.on('disconnect', data => {
+            console.log('client disconnected');
+        })
+
+    });
 
     console.log('io set');
     app.set('io', io);

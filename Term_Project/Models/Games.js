@@ -26,11 +26,11 @@ module.exports = {
 		})
 	},
 
-	create:(name, playerid) => {
-		return db.none({
+	create:(name, description) => {
+		return db.one({
 			name:'create-game',
-			text: 'INSERT INTO \"Game\"(name, hasstarted, playercount, playerturnid) VALUES ($1, $2, $3, $4 )',
-			values: [id,name, false, 1, playerid]
+			text: 'INSERT INTO \"Game\"(name, hasstarted, playercount, description) VALUES ($1, $2, $3, $4) RETURNING id',
+			values: [name, false, 1, description]
 			})
 	}
 };
