@@ -2,9 +2,11 @@
  * Created by euphoric on 4/26/17.
  */
 
-var express = require('express');
-var router = express.Router();
-var Games = require('../Models/Games');
+const express = require('express');
+const router = express.Router();
+
+const Games = require('../Models/Games');
+const broadcast = require('../socket/broadcast')
 
 
 
@@ -24,7 +26,9 @@ router.post('/:gameID/join', (req, res, next) => {
     const gameID = req.params.gameID;
     Games.findGameByID(ParseInt(gameID))
         .then(game => {
-            if(game.playercount >= 5)
+            if(game.playercount >= 5 || game.hasstarted == true){
+                req.app.get('io')
+            }
         })
 
 });

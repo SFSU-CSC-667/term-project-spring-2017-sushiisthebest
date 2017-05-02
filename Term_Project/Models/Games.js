@@ -26,18 +26,11 @@ module.exports = {
 		})
 	},
 
-	create:(id, name, hashstarted, playerturnid, currentcard, minigameturn) => {
+	create:(name, playerid) => {
 		return db.none({
 			name:'create-game',
-			text: 'INSERT INTO \"Game\"(id, name, hashstarted, playerturnid, currentcard, minigameturn) VALUES ($1, $2, $3, $4, $5, $6)',
-			values: [id,name,hashstarted, playerturnid, minigameturn, 1]
+			text: 'INSERT INTO \"Game\"(name, hasstarted, playercount, playerturnid) VALUES ($1, $2, $3, $4 )',
+			values: [id,name, false, 1, playerid]
 			})
-		.then(new_game_id => {
-			console.log('new game created with id:', new_game_id);
-			return new_game_id;
-		})
-
 	}
-
-
 };
