@@ -22,7 +22,7 @@ module.exports = {
 	create:(userID, gameID) => {
 		return db.one({
 			name:'create-player',
-			text: 'INSERT INTO \"Player\"(userid, gameid, health,) VALUES ($1, $2, $3) RETURNING id',
+			text: 'INSERT INTO \"Player\"(userid, gameid, health) VALUES ($1, $2, $3) RETURNING id',
 			values: [userID, gameID, HEALTH]
 			})
 	},
