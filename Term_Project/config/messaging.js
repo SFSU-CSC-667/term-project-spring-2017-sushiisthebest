@@ -11,13 +11,17 @@ const Games = require('../Models/Games');
 
 const init = (app, server) => {
     const io = socketIo(server);
-    const gameio = io.of('/game');
+    const gameIO = io.of('/game');
+    console.log('io set');
+    app.set('io', io);
+    console.log('game namespace set');
+    app.set('gameio', gameIO);
 
-    gameio.on('connection', socket => {
+    gameIO.on('connection', socket => {
         console.log('socket connected:',socket);
 
         socket.on('join-game', gameID => {
-            socket.join(gag
+            socket.join(gameID);
         });
 
         socket.on('disconnect', data => {
@@ -26,8 +30,6 @@ const init = (app, server) => {
 
     });
 
-    console.log('io set');
-    app.set('io', io);
 
     io.on('connection', socket => {
         console.log('client connected');

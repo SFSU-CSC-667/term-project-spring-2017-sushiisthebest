@@ -3,7 +3,8 @@
  */
 
 (function () {
-
+    let currentLocation = window.location.href;
+    let gameID = currentLocation.split('games/')
     const gameSocket = io('/game');
     const test = 2;
 

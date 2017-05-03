@@ -1,5 +1,8 @@
 
-var db = require('../config/database');
+const db = require('../config/database');
+const User = require('../Models/User');
+const Player = require('../Models/Player');
+
 
 module.exports = {
 	findGameByID: id =>{
@@ -32,5 +35,10 @@ module.exports = {
 			text: 'INSERT INTO \"Game\"(name, hasstarted, playercount, description) VALUES ($1, $2, $3, $4) RETURNING id',
 			values: [name, false, 1, description]
 			})
+	},
+
+	getLobby: id => {
+
+
 	}
 };

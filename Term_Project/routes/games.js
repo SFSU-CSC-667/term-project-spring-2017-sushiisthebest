@@ -55,7 +55,14 @@ router.post('/:gameID/join', (req, res, next) => {
 });
 
 router.get('/:gameID', (req, res, next) => {
-    Games.
+    Games.findGameByID(req.params.gameID).
+        then(game => {
+            const profile = {
+
+            }
+
+            res.render('gamelobby',)
+    })
 
 });
 

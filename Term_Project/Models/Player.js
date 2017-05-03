@@ -30,6 +30,13 @@ module.exports = {
 			return new_player_id;
 		})
 
+	},
+
+	findPlayersInGame: gameID => {
+		const query = 'SELECT \"'
+
+		return db.any()
+
 	}
 
 
