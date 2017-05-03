@@ -20,9 +20,9 @@ module.exports = {
 	},
 
 	create:(userID, gameID) => {
-		return db.none({
+		return db.o({
 			name:'create-player',
-			text: 'INSERT INTO \"Player\"(userid, gameid) VALUES ($1, $2)',
+			text: 'INSERT INTO \"Player\"(userid, gameid) VALUES ($1, $2) RETURNING id',
 			values: [userID, gameID]
 			})
 		.then(new_player_id => {
@@ -33,9 +33,13 @@ module.exports = {
 	},
 
 	findPlayersInGame: gameID => {
-		const query = 'SELECT \"'
+		let query = 'SELECT \"Player.*\", \"User.*\", imagetable.path, \"Avatar\".* FROM \"Player\"'+
+					'INNER JOIN \"User\" ON \"Player.userid\"=\"User\".id'+
+					'INNER JOIN \"Avatar\" ON (\"Avatar\".id = \"User\".avatarid)'+
+					'INNER JOIN imagetable ON (imagetable.id = \"Avatar\".imageid)'+
+					'WHERE \"Player\".gameid = $1';
 
-		return db.any()
+		return db.any(query, gameid)
 
 	}
 
