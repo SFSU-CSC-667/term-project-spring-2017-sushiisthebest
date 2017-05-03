@@ -17,12 +17,12 @@ const init = (app, server) => {
         console.log('socket connected:',socket);
 
         socket.on('join-game', gameID => {
-            socket.join(gameID);
-        })
+            socket.join(gag
+        });
 
         socket.on('disconnect', data => {
             console.log('client disconnected');
-        })
+        });
 
     });
 
