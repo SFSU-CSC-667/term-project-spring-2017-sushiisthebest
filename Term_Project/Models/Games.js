@@ -39,7 +39,7 @@ module.exports = {
 
 	getLobby: id => {
 		let gameQuery = 'SELECT name, playercount FROM \"Game\" WHERE id = S1';
-        let playerQuery = 'SELECT \"Player.*\", \"User.*\", imagetable.path, \"Avatar\".* FROM \"Player\"'+
+        let playerQuery = 'SELECT \"Game\".id, \"Player\".*, \"User\".*, imagetable.path, \"Avatar\".* FROM \"Player\"'+
             'INNER JOIN \"User\" ON \"Player.userid\"=\"User\".id'+
             'INNER JOIN \"Avatar\" ON (\"Avatar\".id = \"User\".avatarid)'+
             'INNER JOIN imagetable ON (imagetable.id = \"Avatar\".imageid)'+

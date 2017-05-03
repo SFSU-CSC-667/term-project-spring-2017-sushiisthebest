@@ -1,4 +1,4 @@
-
+const HEALTH =  100;
 
 var db = require('../config/database');
 
@@ -20,10 +20,10 @@ module.exports = {
 	},
 
 	create:(userID, gameID) => {
-		return db.on({
+		return db.one({
 			name:'create-player',
-			text: 'INSERT INTO \"Player\"(userid, gameid) VALUES ($1, $2) RETURNING id',
-			values: [userID, gameID]
+			text: 'INSERT INTO \"Player\"(userid, gameid, health,) VALUES ($1, $2, $3) RETURNING id',
+			values: [userID, gameID, HEALTH]
 			})
 	},
 

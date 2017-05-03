@@ -30,16 +30,16 @@ router.get('/create', (req, res, next) => {
     res.render('createGame');
 });
 
-router.post('create', passport.authenticate('jwt',{session:false}, (req, res, next) => {
+//TODO improve to check if a game with that name arleady exists
+router.post('create', passport.authenticate('jwt',{session:false}), (req, res, next) => {
     Games.create(req.body.gameName, req.body.gameDescription)
         .then(gameID => {
             return Promise.all([gameID, Player.create(req.user.id, gameID)]);
         })
-        .then(results => {
+        .then(results => {enou
             console.log('GameID:', results[0]);
 
-
-            res.redirect('/' + [results[0]]);
+            res.send('Game Created ID:', [results[0]])
         })
 });
 
