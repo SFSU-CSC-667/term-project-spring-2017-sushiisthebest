@@ -55,15 +55,13 @@ router.post('/:gameID/join', (req, res, next) => {
 });
 
 router.get('/:gameID', (req, res, next) => {
-    Games.findGameByID(req.params.gameID).
-        then(game => {
-            const profile = {
+    let view = {};
+        Games.getLobby(req.params.gameID)
+            .then(players => {
 
-            }
-
-            res.render('gamelobby',)
+            })
     })
 
-});
+})
 
 module.exports = router;

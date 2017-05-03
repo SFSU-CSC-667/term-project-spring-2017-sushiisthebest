@@ -124,6 +124,5 @@ router.post('/:username/changeAvatar', passport.authenticate('jwt',{session:fals
 
 //TODO THIS IS AN EXAMPLE NEEDS TO BE FINISHED
 
-router.get('/:username/')
 
 module.exports = router;

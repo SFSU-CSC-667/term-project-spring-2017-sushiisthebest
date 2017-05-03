@@ -20,16 +20,11 @@ module.exports = {
 	},
 
 	create:(userID, gameID) => {
-		return db.o({
+		return db.on({
 			name:'create-player',
 			text: 'INSERT INTO \"Player\"(userid, gameid) VALUES ($1, $2) RETURNING id',
 			values: [userID, gameID]
 			})
-		.then(new_player_id => {
-			console.log('new player created with id:', new_player_id);
-			return new_player_id;
-		})
-
 	},
 
 	findPlayersInGame: gameID => {

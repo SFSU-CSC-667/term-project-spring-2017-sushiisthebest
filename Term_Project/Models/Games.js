@@ -38,7 +38,21 @@ module.exports = {
 	},
 
 	getLobby: id => {
+		let gameQuery = 'SELECT name, playercount FROM \"Game\" WHERE id = S1';
+        let playerQuery = 'SELECT \"Player.*\", \"User.*\", imagetable.path, \"Avatar\".* FROM \"Player\"'+
+            'INNER JOIN \"User\" ON \"Player.userid\"=\"User\".id'+
+            'INNER JOIN \"Avatar\" ON (\"Avatar\".id = \"User\".avatarid)'+
+            'INNER JOIN imagetable ON (imagetable.id = \"Avatar\".imageid)'+
+            'WHERE \"Player\".gameid = $1';
 
-
+		return db.task(t => {
+			return t.batch([
+				t.one(gameQuery, id),
+				t.any(playerQuery, id)
+			])
+		});
 	}
+
+
+
 };
