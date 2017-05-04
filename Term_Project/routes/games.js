@@ -36,6 +36,7 @@ router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, 
         .then(gameID => {
             console.log('about to call Promise.ALL');
             console.log('user id from cookie:', req.user.id);
+
             return Promise.all([gameID.id, Player.create(req.user.id, gameID.id)]);
         })
         .then(results => {
@@ -60,10 +61,32 @@ router.post('/:gameID/join', (req, res, next) => {
 });
 
 router.get('/:gameID', (req, res, next) => {
-   let view = {};
+   let view = {
+       gameName: '',
+       statusMessage: '',
+       players: []
+   };
    Games.getLobby(req.params.gameID)
-       .then()
+       .then(lobby => {
+            view.gameName = lobby.gamename;
+            view.statusMessage = "Waiting For Players";
 
+            lobby.forEach(item => {
+                let player = {
+                    id: item.id,
+                    username: item.username,
+                    path: item.imageurl
+                };
+
+                view.player.add(player);
+            });
+       });
+
+    res.render('gamelobby', view);
 });
+
+
+
+
 
 module.exports = router;

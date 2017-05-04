@@ -1,7 +1,4 @@
 extends layout
-
-
-
 block content
     div(class="container")
         div(class= "game-lobby")
@@ -11,7 +8,7 @@ block content
                 h3= statusMessage
             div(class = "players")
             each player in players
-                img(class=player, src=player.path)
+                img(class=player.id, src=player.path)
                 h3=player.username
             div(class="chat-area")
                 ul(class ="messages")

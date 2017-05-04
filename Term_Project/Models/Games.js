@@ -39,8 +39,8 @@ module.exports = {
 	//TODO move big shit to sql query files. because they are fucking annoying
 	getLobby: id => {
 		let query = 'SELECT \"Game\".name AS gamename, \"Game\".id AS gameid, \"Game\".description AS gameinfo, \"Player\".*, \"User\".username , imagetable.path AS imageurl FROM \"Game\"'
-		+			'INNER JOIN \"Player\" ON \"Game\".id \"Player\".gameid'
-		+			'INNER JOIN \"User\" ON \"Player\".id = \"User\".id'
+		+			'INNER JOIN \"Player\" ON \"Game\".id = \"Player\".gameid'
+		+			'INNER JOIN \"User\" ON \"Player\".userid = \"User\".id'
 		+			'INNER JOIN \"Avatar\" ON \"User\".avatarid = \"Avatar\".id'
 		+			'INNER JOIN  imagetable on imagetable.id = \"Avatar\".id'
 		+			'WHERE \"Game\".id = $1';
