@@ -71,7 +71,7 @@ router.post('/register', function(req, res, next){
 		
 		User.create(req.body.email, req.body.username, hash)
 		.then(()=>{
-			res.redirect('/login');
+			res.redirect('login');
 		})
 		.catch(error=>{
 			console.log(error);

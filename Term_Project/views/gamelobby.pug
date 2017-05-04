@@ -1,4 +1,7 @@
 extends layout
+
+
+
 block content
     div(class="container")
         div(class= "game-lobby")
@@ -7,14 +10,9 @@ block content
                 h2= gameName
                 h3= statusMessage
             div(class = "players")
-                img#player-one-avatar-img(src=p1img)
-                h3#player-one-username=p1username
-                img#player-two-avatar-img(src=p2img)
-                h3#player-two-username=p2username
-                img#player-three-avatar-img(src=p3img)
-                h3#player-three-username=p3username
-                img#player-four-avatar-img(src=p4img)
-                h3#player-four-username=p4username
+            each player in players
+                img(class=player, src=player.path)
+                h3=player.username
             div(class="chat-area")
                 ul(class ="messages")
             input(class = "input-messages" placeholder = ".. Chat ..")

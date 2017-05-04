@@ -36,22 +36,19 @@ module.exports = {
 			values: [name, false, 1, description]
 			})
 	},
-
+	//TODO move big shit to sql query files. because they are fucking annoying
 	getLobby: id => {
-		let gameQuery = 'SELECT name, playercount FROM \"Game\" WHERE id = S1';
-        let playerQuery = 'SELECT \"Game\".id, \"Player\".*, \"User\".*, imagetable.path, \"Avatar\".* FROM \"Player\"'+
-            'INNER JOIN \"User\" ON \"Player.userid\"=\"User\".id'+
-            'INNER JOIN \"Avatar\" ON (\"Avatar\".id = \"User\".avatarid)'+
-            'INNER JOIN imagetable ON (imagetable.id = \"Avatar\".imageid)'+
-            'WHERE \"Player\".gameid = $1';
+		let query = 'SELECT \"Game\".name AS gamename, \"Game\".id AS gameid, \"Game\".description AS gameinfo, \"Player\".*, \"User\".username , imagetable.path AS imageurl FROM \"Game\"'
+		+			'INNER JOIN \"Player\" ON \"Game\".id \"Player\".gameid'
+		+			'INNER JOIN \"User\" ON \"Player\".id = \"User\".id'
+		+			'INNER JOIN \"Avatar\" ON \"User\".avatarid = \"Avatar\".id'
+		+			'INNER JOIN  imagetable on imagetable.id = \"Avatar\".id'
+		+			'WHERE \"Game\".id = $1';
 
-		return db.task(t => {
-			return t.batch([
-				t.one(gameQuery, id),
-				t.any(playerQuery, id)
-			])
-		});
-	}
+		return db.any(query,id);
+
+
+    }
 
 
 

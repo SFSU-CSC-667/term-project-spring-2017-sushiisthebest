@@ -1,3 +1,5 @@
+const DEFAULT_AVATAR = 1;
+
 
 var db = require('../config/database');
 //var Image = require('../ImageTable');
@@ -51,8 +53,8 @@ module.exports = {
 
 		return db.none({
 			name:'create-user',
-			text: 'INSERT INTO \"User\"(email, username, password, userstatsid) VALUES ($1, $2, $3, $4)',
-			values: [email,username,password_hash, 1]
+			text: 'INSERT INTO \"User\"(email, username, password, avatarid) VALUES ($1, $2, $3, $4)',
+			values: [email,username,password_hash, DEFAULT_AVATAR]
 			})
 		/*
 		.then(new_user_id => {

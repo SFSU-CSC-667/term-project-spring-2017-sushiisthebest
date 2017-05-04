@@ -32,7 +32,7 @@ router.get('/create', (req, res, next) => {
 
 //TODO improve to check if a game with that name arleady exists
 router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, next) => {
-    Games.create(req.body.gameName, req.body.gameDescription)
+    Games.create(req.body.game_name, req.body.game_description)
         .then(gameID => {
             console.log('about to call Promise.ALL');
             console.log('user id from cookie:', req.user.id);
@@ -40,8 +40,8 @@ router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, 
         })
         .then(results => {
             console.log('GameID:', results[0]);
-
-            res.status(200).send('Game Created ID:', results[0]);
+            res.status(200).send('Sucess');
+            //res.redirect('/'+ results[0].id);
         })
         .catch(err => {
           console.log("Error in post /create route", error);
@@ -51,7 +51,7 @@ router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, 
 router.post('/:gameID/join', (req, res, next) => {
     const gameID = req.params.gameID;
     Games.findGameByID(ParseInt(gameID))
-        .then(game => {ti
+        .then(game => {
             if(game.playercount >= 5 || game.hasstarted === true){
                 broadcast(req.app.get('io'), '')
             }
@@ -59,14 +59,11 @@ router.post('/:gameID/join', (req, res, next) => {
 
 });
 
-// router.get('/:gameID', (req, res, next) => {
-//     let view = {};
-//         Games.getLobby(req.params.gameID)
-//             .then(players => {
-//
-//             })
-//     })
-//
-// })
+router.get('/:gameID', (req, res, next) => {
+   let view = {};
+   Games.getLobby(req.params.gameID)
+       .then()
+
+});
 
 module.exports = router;
