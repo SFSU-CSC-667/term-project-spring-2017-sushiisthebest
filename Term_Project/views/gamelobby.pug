@@ -8,7 +8,7 @@ block content
                 h3= statusMessage
             div(class = "players")
             each player in players
-                img(class=player.id, src=player.path)
+                img(class=player.id, src=player.path, width="150", height="150")
                 h3=player.username
             div(class="chat-area")
                 ul(class ="messages")

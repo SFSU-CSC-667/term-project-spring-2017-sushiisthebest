@@ -54,7 +54,7 @@ router.post('/:gameID/join', (req, res, next) => {
     Games.findGameByID(ParseInt(gameID))
         .then(game => {
             if(game.playercount >= 5 || game.hasstarted === true){
-                broadcast(req.app.get('io'), '')
+                res.redirect("games");
             }
         })
 
@@ -66,23 +66,31 @@ router.get('/:gameID', (req, res, next) => {
        statusMessage: '',
        players: []
    };
+   console.log('game id from url: ', req.params.gameID);
+
    Games.getLobby(req.params.gameID)
        .then(lobby => {
-            view.gameName = lobby.gamename;
+            view.gameName = lobby[0].gamename;
             view.statusMessage = "Waiting For Players";
 
+            console.log('Getting:', view.gameName);
+
+
             lobby.forEach(item => {
+                console.log('item id:',item.id,'item username:',item.username,'item path:', item.imageurl);
                 let player = {
                     id: item.id,
                     username: item.username,
                     path: item.imageurl
                 };
 
-                view.player.add(player);
-            });
-       });
+                console.log(player);
 
-    res.render('gamelobby', view);
+                view.players.push(player);
+            });
+           console.log(view);
+           res.render('gamelobby', view);
+       });
 });
 
 
