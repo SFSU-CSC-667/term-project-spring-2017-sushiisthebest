@@ -49,13 +49,36 @@ router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, 
         })
 });
 
-router.post('/:gameID/join', (req, res, next) => {
-    const gameID = req.params.gameID;
-    Games.findGameByID(ParseInt(gameID))
+router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+    let gameID = req.body.gameid;
+
+    console.log(req.body);
+
+    console.log('gameID posted to server: ',req.body.gameid);
+    //if(!req.query.id) {res.redirect('/') }
+
+    Games.findGameByID(gameID)
         .then(game => {
-            if(game.playercount >= 5 || game.hasstarted === true){
-                res.redirect("games");
+
+            if(gameID === undefined){
+                console.log('gameid undefined');
+                res.json({msg:'Game Is No Longer Available', path: null})
             }
+
+            if(game.playercount >= 5 || game.hasstarted === true){
+                //TODO needs to inform the user that the game is full
+                console.log('game is full');
+                res.json({msg:'Game Has Already Started ... Updating list', path:null});
+            }
+
+            return Promise.all([game.id , Player.create(req.user.id, gameID)]);
+        })
+        .then(results => {
+            console.log('results index zero:', results[0]);
+            res.json(
+                {msg:'success',
+                path:'/' + results[0]
+                });
         })
 
 });
