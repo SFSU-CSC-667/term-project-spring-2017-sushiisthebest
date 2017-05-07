@@ -17,6 +17,28 @@ const init = (app, server) => {
     console.log('game namespace set');
     app.set('gameio', gameIO);
 
+    io.on('connection', socket => {
+
+       socket.on('join', data => {
+           console.log('socket joining room',data.room);
+           socket.join(data.room);
+           socket.username = data.username;
+           socket.to(data.room).emit('user-joined', data.username)
+       });
+
+        socket.on('disconnect', data => {
+            console.log('client disconnected');
+        })
+
+
+
+
+    });
+
+
+
+
+
     gameIO.on('connection', socket => {
         console.log('socket connected:',socket);
 
@@ -31,28 +53,6 @@ const init = (app, server) => {
     });
 
 
-    io.on('connection', socket => {
-        console.log('client connected');
-
-        socket.on('disconnect', data => {
-            console.log('client disconnected');
-        });
-
-        socket.on('create-game', function(game){
-
-        });
-
-        socket.on('check-game-status' , data => {
-            Games.findGameByID(data.gameID)
-                .then(game => {
-                    if(game.playercount != 5 && game.hasstarted == false){
-                        broadcast(io, 'status-check-success', game);
-                    }
-                })
-
-        })
-
-    })
 
 };
 

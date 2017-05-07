@@ -41,7 +41,7 @@ router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, 
         })
         .then(results => {
             console.log('GameID:', results[0]);
-            res.status(200).send('Sucess');
+            res.status(200).send('Success');
             //res.redirect('/'+ results[0].id);
         })
         .catch(err => {
@@ -75,12 +75,18 @@ router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, n
         })
         .then(results => {
             console.log('results index zero:', results[0]);
-            res.json(
-                {msg:'success',
-                path:'/' + results[0]
+            res.status(200).json({
+                msg:'success',
+                path:'/' + results[0],
+                currentGameId: results[0]
                 });
         })
 
+});
+
+router.get("/test", (req,res,next) => {
+   const io = req.app.get('io');
+   broad
 });
 
 router.get('/:gameID', (req, res, next) => {

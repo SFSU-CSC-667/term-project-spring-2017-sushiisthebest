@@ -46,9 +46,9 @@ module.exports = {
 		+			'WHERE \"Game\".id = $1';
 
 		return db.any(query,id);
-
-
     }
+
+
 
 
 

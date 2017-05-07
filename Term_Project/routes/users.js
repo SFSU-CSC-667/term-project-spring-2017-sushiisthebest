@@ -41,8 +41,9 @@ router.post('/login', function(req, res, next){
 		let token = jwt.encode({id: user.id, username: user.username, email: user.email}, "secret");
 		let opts = {maxAge:9000000};
 		res.cookie('jwt', token, opts);
-
-		res.redirect('/users');
+		const data = {username: user.username, path: '/users'};
+		console.log('data being prepared: ',data);
+		res.status(200).json(data);
 
 })(req, res, next);
 });
