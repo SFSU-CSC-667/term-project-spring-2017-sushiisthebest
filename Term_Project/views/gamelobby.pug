@@ -6,14 +6,15 @@ block content
             div(class="title-section")
                 h2= gameName
                 h3= statusMessage
-            div(class = "players")
-            each player in players
-                img(class=player.id, src=player.path, width="150", height="150")
-                h3=player.username
+            div#players
+                each player in players
+                    img(class=player.id, src=player.path, width="150", height="150")
+                    h3=player.username
             div(class="chat-area")
                 ul(class ="messages")
             input(class = "input-messages" placeholder = ".. Chat ..")
     script(src='/socket.io/socket.io.js')
+    script(src='/javascripts/jquery-3.2.1.js')
     script(src='/javascripts/chat.js')
 
 

@@ -9,10 +9,10 @@ socket.on('connect', ()=> {
     socket.emit('join', msg);
 });
 
-socket.on('user-joined', () =>{
-
+socket.on('user-joined', (data) =>{
+    console.log(data);
     console.log(document.URL);
-    $('.players').load(document.URL + ' #players')
+    $('#players').load(document.URL + ' #players')
 });
 
 

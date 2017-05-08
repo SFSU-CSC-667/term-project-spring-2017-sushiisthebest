@@ -12,14 +12,9 @@ $(function () {
             type: 'post',
             data: {'gameid' : id},
             dataType: 'json',
-
             success: join
-
         })
-
     })
-
-
 });
 
 //TODO IMPLeMENT WAY TO COMMUNICATE to the USER < not the console when the game is full or has already started
