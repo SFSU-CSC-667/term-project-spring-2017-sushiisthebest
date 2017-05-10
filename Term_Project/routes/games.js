@@ -73,10 +73,10 @@ router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, n
         })
         .then(results => {
             console.log('results index zero:', results[0]);
-            broadcast(req.app.get('io'),results[0], 'user-joined', req.user.username);
+            broadcast(req.app.get('io'), results[0], 'user-joined', req.user.username);
             res.status(200).json({
                 msg:'success',
-                path: results[0],
+                path: '/' + results[0],
                 currentGameId: results[0]
                 });
         })
