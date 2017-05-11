@@ -1,11 +1,11 @@
-var express = require('express');
-var app = require('../app');
-var router = express.Router();
-var debug = true;
-var bcrypt = require('bcrypt');
-var User = require('../Models/User');
-var passport = require('passport');
-var jwt = require('jwt-simple');
+const express = require('express');
+const app = require('../app');
+const router = express.Router();
+const debug = true;
+const bcrypt = require('bcrypt');
+const User = require('../Models/User');
+const passport = require('passport');
+const jwt = require('jwt-simple');
 
 
 
@@ -31,7 +31,6 @@ router.get('/login',function(req,res,next){
 
 router.post('/login', function(req, res, next){
 	passport.authenticate('local', function(error,user, info){
-
 		if (error) { return next(err) }
 
 		if (!user) {
@@ -41,11 +40,11 @@ router.post('/login', function(req, res, next){
 		let token = jwt.encode({id: user.id, username: user.username, email: user.email}, "secret");
 		let opts = {maxAge:9000000};
 		res.cookie('jwt', token, opts);
+
 		const data = {username: user.username, path: '/users'};
-		console.log('data being prepared: ',data);
 		res.status(200).json(data);
 
-})(req, res, next);
+	})(req, res, next);
 });
 
 router.get('/register',function(req, res, next){
@@ -80,12 +79,14 @@ router.post('/register', function(req, res, next){
 	})
 });
 
+//TODO FIGURE OUT WHY /USERS/GAMES/ <<< route does not send a 401 response
 router.get('/:username', passport.authenticate('jwt', {session: false}),  function(req,res,next){
 	let profile = {};
 	profile.username= req.user.username;
 
 	User.getUserProfileById(req.user.id)
 		.then(avatar=>{
+			//builds profile object for rendering
 			profile.avatarID = avatar.id;
 			profile.avatarName = avatar.name;
 			profile.avatarImgPath = avatar.path;
@@ -93,8 +94,11 @@ router.get('/:username', passport.authenticate('jwt', {session: false}),  functi
 			console.log('profile object:',profile);
 			res.render('profile', profile);
 		})
+		.catch(error => console.log(error));
 
 });
+
+
 
 router.post('/:username/changeAvatar', passport.authenticate('jwt',{session:false}) , (req, res, next) => {
 	console.log('---ENTERING /:username/changeAvatar Route---');
@@ -112,8 +116,5 @@ router.post('/:username/changeAvatar', passport.authenticate('jwt',{session:fals
 
 
 });
-
-//TODO THIS IS AN EXAMPLE NEEDS TO BE FINISHED
-
 
 module.exports = router;

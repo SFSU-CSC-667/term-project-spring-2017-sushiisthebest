@@ -24,7 +24,7 @@ module.exports = {
 		const incrementPlayerCount = 'UPDATE \"Game\" SET playercount = $1 WHERE id=$2 RETURNING playercount';
 
 		if(playerCount === undefined) { playerCount = 0}
-		
+
 		return db.task( t=> {
 			return t.one(playerQuery, [userID, gameID , HEALTH])
 				.then(playerID => {
