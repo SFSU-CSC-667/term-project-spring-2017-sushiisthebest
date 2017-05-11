@@ -19,12 +19,20 @@ module.exports = {
 		})
 	},
 
-	create:(userID, gameID) => {
-		return db.one({
-			name:'create-player',
-			text: 'INSERT INTO \"Player\"(userid, gameid, health) VALUES ($1, $2, $3) RETURNING id',
-			values: [userID, gameID, HEALTH]
-			})
+	create:(userID, gameID, playerCount) => {
+		const playerQuery = 'INSERT INTO \"Player\"(userid, gameid, health) VALUES ($1, $2, $3) RETURNING id';
+		const incrementPlayerCount = 'UPDATE \"Game\" SET playercount = $1 WHERE id=$2 RETURNING playercount';
+
+		if(playerCount === undefined) { playerCount = 0}
+		
+		return db.task( t=> {
+			return t.one(playerQuery, [userID, gameID , HEALTH])
+				.then(playerID => {
+					console.log('Player ID inside new Player.create function', playerID);
+					playerCount++;
+					return t.one(incrementPlayerCount, [playerCount, gameID])
+                })
+         })
 	},
 
 	findPlayersInGame: gameID => {
@@ -37,6 +45,4 @@ module.exports = {
 		return db.any(query, gameid)
 
 	}
-
-
 };

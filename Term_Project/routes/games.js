@@ -49,15 +49,13 @@ router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, 
 
 router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, next) => {
     let gameID = req.body.gameid;
-
-    console.log(req.body);
-
     console.log('gameID posted to server: ',req.body.gameid);
-    //if(!req.query.id) {res.redirect('/') }
+
 
     Games.findGameByID(gameID)
         .then(game => {
 
+            //TODO THIS TEST THIS BLOCK
             if(gameID === undefined){
                 console.log('gameid undefined');
                 res.json({msg:'Game Is No Longer Available', path: null})
@@ -69,10 +67,12 @@ router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, n
                 res.json({msg:'Game Has Already Started ... Updating list', path:null});
             }
 
-            return Promise.all([game.id , Player.create(req.user.id, gameID)]);
+            //TODO END OF TEST BLOCK
+
+            return Promise.all([game.id , Player.create(req.user.id, gameID, game.playercount)]);
         })
         .then(results => {
-            console.log('results index zero:', results[0]);
+            console.log('Updated Game Player Count:', results[1]);
             broadcast(req.app.get('io'), results[0], 'user-joined', req.user.username);
             res.status(200).json({
                 msg:'success',

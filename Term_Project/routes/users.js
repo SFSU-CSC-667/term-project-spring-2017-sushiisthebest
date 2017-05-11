@@ -81,18 +81,8 @@ router.post('/register', function(req, res, next){
 });
 
 router.get('/:username', passport.authenticate('jwt', {session: false}),  function(req,res,next){
-	var profile = {};
+	let profile = {};
 	profile.username= req.user.username;
-	// let promise = new Promise((resolve, reject) => {
-     //    let profile = User.getUserProfileById(req.user.id);
-     //    console.log('profile object inside promise:', profile);
-	// 	resolve(profile);
-	// });
-    //
-	// promise.then((profile) => {
-	// 	console.log('profile:', profile);
-	// 	res.render('profile', profile);
-	// });
 
 	User.getUserProfileById(req.user.id)
 		.then(avatar=>{
