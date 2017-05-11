@@ -19,6 +19,11 @@ module.exports = {
 		})
 	},
 
+	destroyPlayer: id => {
+		const psql = 'DELETE FROM \"Player\" WHERE id = $1';
+		return db.none(psql, id);
+	},
+
 	create:(userID, gameID, playerCount) => {
 		const playerQuery = 'INSERT INTO \"Player\"(userid, gameid, health) VALUES ($1, $2, $3) RETURNING id';
 		const incrementPlayerCount = 'UPDATE \"Game\" SET playercount = $1 WHERE id=$2 RETURNING playercount';
