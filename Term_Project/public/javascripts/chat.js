@@ -45,7 +45,7 @@ function addNewMessage(data) {
     let $usernameDiv = $('<span class = "username"/>')
         .text(data.username);
 
-    let $messageBodyDiv = $('<span class = "messageBody">')
+    let $messageBodyDiv = $('<span class = "messageBody"/>')
         .text(data.message);
 
     let $messageDiv = $('<li class  = "message"/>')
