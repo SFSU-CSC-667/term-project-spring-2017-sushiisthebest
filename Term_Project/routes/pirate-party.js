@@ -14,3 +14,6 @@ const broadcast = require('../socket/broadcast');
 router.get('/', (req, res) =>{
    res.render('game-table');
 });
+
+
+module.exports = router;
