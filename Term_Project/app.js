@@ -37,7 +37,7 @@ app.use(passport.session());
 app.use('/', index);
 app.use('/users', users);
 app.use('/games', games);
-app.use('PirateParty', pirate)
+app.use('/PirateParty', pirate);
 
 //app.use('/login', login);
 //app.use('/register', register);
