@@ -17,9 +17,9 @@ $(function () {
 
 
 socket.on('connect', ()=> {
-    const msg = {room: localStorage.getItem('current-game-id'), username: localStorage.getItem('username')};
+    const data= {room: localStorage.getItem('current-game-id'), username: localStorage.getItem('username')};
     connected = true;
-    socket.emit('join', msg);
+    socket.emit('join', data);
 });
 
 function sendMessage(){
