@@ -9,3 +9,8 @@ const Player = require('../Models/Player');
 
 const passport = require('passport');
 const broadcast = require('../socket/broadcast');
+
+
+router.get('/', (req, res) =>{
+   res.render('game-table');
+});
