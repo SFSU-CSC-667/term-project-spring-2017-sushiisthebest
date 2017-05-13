@@ -33,31 +33,62 @@ router.get('/create', (req, res, next) => {
 //TODO improve to check if a game with that name arleady exists
 router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, next) => {
     Games.create(req.body.game_name, req.body.game_description)
-        .then(gameID => {
-            console.log('about to call Promise.ALL');
-            console.log('user id from cookie:', req.user.id);
-
-            return Promise.all([gameID.id, Player.create(req.user.id, gameID.id)]);
+        .then(game => {
+            return Promise.all([game.id, Player.create(req.user.id, game.id)]);
         })
         .then(results => {
-            console.log('GameID:', results[0]);
-            res.status(200).send('Sucess');
-            //res.redirect('/'+ results[0].id);
+            const response = {currentGameId: results[0], path: '/games/' + results[0]};
+
+            res.status(200).json(response);
         })
-        .catch(err => {
-          console.log("Error in post /create route", error);
+        .catch(error => {
+          console.log("Game is not unique... probablly", error);
+          res.redirect('/')
         })
 });
 
-router.post('/:gameID/join', (req, res, next) => {
-    const gameID = req.params.gameID;
-    Games.findGameByID(ParseInt(gameID))
+router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+    let gameID = req.body.gameid;
+    console.log('gameID posted to server: ',req.body.gameid);
+
+
+    Games.findGameByID(gameID)
         .then(game => {
-            if(game.playercount >= 5 || game.hasstarted === true){
-                res.redirect("games");
+
+            //TODO THIS TEST THIS BLOCK
+            if(gameID === undefined){
+                console.log('gameid undefined');
+                res.json({msg:'Game Is No Longer Available', path: null})
             }
+
+            if(game.playercount >= 5 || game.hasstarted === true){
+                //TODO needs to inform the user that the game is full
+                console.log('game is full');
+                res.json({msg:'Game Has Already Started ... Updating list', path:null});
+            }
+
+            //TODO END OF TEST BLOCK
+
+            return Promise.all([game.id , Player.create(req.user.id, gameID, game.playercount)]);
+        })
+        .then(results => {
+            console.log('Updated Game Player Count:', results[1]);
+            broadcast(req.app.get('io'), results[0], 'user-joined', req.user.username);
+            res.status(200).json({
+                msg:'success',
+                path: '/' + results[0],
+                currentGameId: results[0]
+                });
+        })
+        .catch(error => {
+            console.log(error);
         })
 
+});
+
+router.get("/test", (req,res,next) => {
+   const io = req.app.get('io');
+   broadcast(io,34,'user-joined', 'BOOO')
 });
 
 router.get('/:gameID', (req, res, next) => {
@@ -73,9 +104,6 @@ router.get('/:gameID', (req, res, next) => {
             view.gameName = lobby[0].gamename;
             view.statusMessage = "Waiting For Players";
 
-            console.log('Getting:', view.gameName);
-
-
             lobby.forEach(item => {
                 console.log('item id:',item.id,'item username:',item.username,'item path:', item.imageurl);
                 let player = {
@@ -88,7 +116,6 @@ router.get('/:gameID', (req, res, next) => {
 
                 view.players.push(player);
             });
-           console.log(view);
            res.render('gamelobby', view);
        });
 });

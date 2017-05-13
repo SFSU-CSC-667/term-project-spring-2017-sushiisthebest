@@ -4,6 +4,7 @@ const User = require('../Models/User');
 const Player = require('../Models/Player');
 
 
+
 module.exports = {
 	findGameByID: id =>{
 		return db.oneOrNone({
@@ -19,6 +20,10 @@ module.exports = {
 			text: 'SELECT * FROM \"Game\" WHERE name = $1',
 			values: [name]
 		})
+	},
+
+	updatePlayerCount: (gameID, options) => {
+		return
 	},
 
 	getVisibleGames: () => {
@@ -46,9 +51,9 @@ module.exports = {
 		+			'WHERE \"Game\".id = $1';
 
 		return db.any(query,id);
-
-
     }
+
+
 
 
 

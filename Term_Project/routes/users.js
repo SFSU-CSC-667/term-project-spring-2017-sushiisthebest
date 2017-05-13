@@ -1,12 +1,13 @@
-var express = require('express');
-var app = require('../app');
-var router = express.Router();
-var debug = true;
-var bcrypt = require('bcrypt');
-var User = require('../Models/User');
-var passport = require('passport');
-var jwt = require('jwt-simple');
-var Card = require('../Models/Cards');
+const express = require('express');
+const app = require('../app');
+const router = express.Router();
+const debug = true;
+const bcrypt = require('bcrypt');
+const User = require('../Models/User');
+const passport = require('passport');
+const jwt = require('jwt-simple');
+const Card = require('../Models/Cards');
+
 
 
 
@@ -33,7 +34,6 @@ router.get('/login',function(req,res,next){
 
 router.post('/login', function(req, res, next){
 	passport.authenticate('local', function(error,user, info){
-
 		if (error) { return next(err) }
 
 		if (!user) {
@@ -44,9 +44,10 @@ router.post('/login', function(req, res, next){
 		let opts = {maxAge:9000000};
 		res.cookie('jwt', token, opts);
 
-		res.redirect('/users');
+		const data = {username: user.username, path: '/users'};
+		res.status(200).json(data);
 
-})(req, res, next);
+	})(req, res, next);
 });
 
 router.get('/register',function(req, res, next){
@@ -81,19 +82,11 @@ router.post('/register', function(req, res, next){
 	})
 });
 
+//TODO FIGURE OUT WHY /USERS/GAMES/ <<< route does not send a 401 response
 router.get('/:username', passport.authenticate('jwt', {session: false}),  function(req,res,next){
-	var profile = {};
+	let profile = {};
 	profile.username= req.user.username;
-	// let promise = new Promise((resolve, reject) => {
-     //    let profile = User.getUserProfileById(req.user.id);
-     //    console.log('profile object inside promise:', profile);
-	// 	resolve(profile);
-	// });
-    //
-	// promise.then((profile) => {
-	// 	console.log('profile:', profile);
-	// 	res.render('profile', profile);
-	// });
+
 	Promise.all([User.getUserProfileById(req.user.id),Card.findSushiCards(),Card.findRuleCards()])
 		.then(values => {
             profile.avatarID = values[0].id;
@@ -106,9 +99,10 @@ router.get('/:username', passport.authenticate('jwt', {session: false}),  functi
 
 			console.log(values);
 			res.render('profile', profile);
-
 		})
 });
+
+
 
 router.post('/:username/changeAvatar', passport.authenticate('jwt',{session:false}) , (req, res, next) => {
 	console.log('---ENTERING /:username/changeAvatar Route---');
@@ -160,7 +154,5 @@ router.post('/:username/changeRuleCard', passport.authenticate('jwt',{session:fa
 
 
 });
-
-
 
 module.exports = router;
