@@ -80,9 +80,36 @@ module.exports = {
 
 	},
 
+    changeRuleCard: (userID, ruleCardID) => {
 
+        var initialQuery = 'UPDATE \"User\" SET rulescardid=$1 WHERE id=$2';
+        var secondQuery = 'SELECT \"Card\".ruletext FROM \"Card\" WHERE \"Card\".id = $1';
 
-	
+        return db.task( t => {
+            console.log('inside task');
+            return t.batch([
+                t.none(initialQuery, [ruleCardID,userID]),
+                t.one(secondQuery,ruleCardID)
+            ]);
+        })
+
+    },
+
+    changeSushiCard: (userID, ruleCardID) => {
+
+        var initialQuery = 'UPDATE \"User\" SET sushicardid=$1 WHERE id=$2';
+        var secondQuery = 'SELECT \"Card\".ruletext FROM \"Card\" WHERE \"Card\".id = $1';
+
+        return db.task( t => {
+            console.log('inside task');
+            return t.batch([
+                t.none(initialQuery, [ruleCardID,userID]),
+                t.one(secondQuery,ruleCardID)
+            ]);
+        })
+
+    },
+
 };
 
 

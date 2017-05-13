@@ -18,10 +18,10 @@ var db = require('../config/database');
 	var Cards = {
 	findCardByID: id =>{
 		return db.oneOrNone({
-      name: 'find-card-by-id',
-      text: 'SELECT * FROM \"Card\" WHERE ID = $1' ,
-      values: [id]
-    })
+			  name: 'find-card-by-id',
+			  text: 'SELECT * FROM \"Card\" WHERE ID = $1' ,
+			  values: [id]
+    	})
 	},
 
 	findCardByName: name =>{
@@ -32,11 +32,31 @@ var db = require('../config/database');
 		})
 	},
 
+	findSushiCards: () =>{
+		return db.many({
+			name:'find-sushi-cards',
+			text: 'SELECT \"Card\".*, imagetable.path FROM \"Card\" ' +
+			'INNER JOIN imagetable ON (imagetable.id = \"Card\".imageid) ' +
+			'WHERE \"Card\".id > 0 AND \"Card\".id < 5',
+			values: []
+		})
+	},
+
+	findRuleCards: () =>{
+		return db.many({
+			name:'find-rule-cards',
+			text: 'SELECT \"Card\".*, imagetable.path FROM \"Card\" ' +
+			'INNER JOIN imagetable ON (imagetable.id = \"Card\".imageid) ' +
+			'WHERE \"Card\".id > 4 AND \"Card\".id < 9',
+			values: []
+		})
+	},
+
 	create:() => {
 		return db.none({
 			name:'create-user',
-			text: 'INSERT INTO \"User\"(id, ruletext, name) VALUES ($1, $2, $3)',
-			values: [id,ruletext, name, 1]
+			text: 'INSERT INTO \"User\"(id, ruletext, name, imageid) VALUES ($1, $2, $3, $4)',
+			values: [id,ruletext, name, imageid]
 			})
 		.then(new_card_id => {
 			console.log('new card created with id:', new_card_id);
