@@ -22,6 +22,8 @@ socket.on('connect', ()=> {
     socket.emit('join', msg);
 });
 
+
+
 function sendMessage(){
     let msg = $input.val();
     msg = cleanInput(msg);

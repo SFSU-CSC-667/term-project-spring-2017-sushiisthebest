@@ -1,73 +1,43 @@
-//
-   Created by euphoric on 5/12/17.
+extends game-layout
+block content
+    .container
+        #players-group
+            .box1
+                img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
+                img.plate(src='/images/in-game-static-images/avatar-plate.png')
+                h3.health-text 99%
+                h3.xp-text 100
+            .box2
+                img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
+                img(src='/images/in-game-static-images/avatar-plate.png')
+                h3.health-text 99%
+                h3.xp-text 100
+            .box3
+                img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
+                img(src='/images/in-game-static-images/avatar-plate.png')
+                h3.health-text 99%
+                h3.xp-text 100
+            .box4
+                img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
+                img(src='/images/in-game-static-images/avatar-plate.png')
+                h3.health-text 99%
+                h3.xp-text 100
+        .game-play-area
+            | Game-Play-Area
+        #user-interface
+            .card-board
+                img(src='/images/in-game-static-images/card-board.png')
+            .mood-board
+                img(src='/images/in-game-static-images/avatar-icon.png')
+            .chat
+                img#modal-btn(src='/images/in-game-static-images/chat-icon.png')
+                // The Modal
+                #chat-modal.modal
+                    // Modal content
+                    .modal-content
+                        span.close ×
+                        ul(class ="messages")
+                            input(class = "input-messages" placeholder = ".. Chat ..")
+    script(src='/javascripts/in-game-scripts.js')
 
-doctype html
-html(lang='en')
-    head
-        //
-          Basic Page Needs
-          ––––––––––––––––––––––––––––––––––––––––––––––––––
-        meta(charset='utf-8')
-        title Party Pirate Pals
-        meta(name='description', content='')
-        meta(name='author', content='')
-        //
-          Favicon
-          ––––––––––––––––––––––––––––––––––––––––––––––––––
-        link(rel='icon', type='image/png', href='/images/in-game-static-images/favicon.png')
-        //
-          Mobile Specific Metas
-          ––––––––––––––––––––––––––––––––––––––––––––––––––
-        meta(name='viewport', content='width=device-width, initial-scale=1')
-        link(rel='stylesheet', type='text/css', href='../stylesheets/normalize.css')
-        link(rel='stylesheet', type='text/css', href='../stylesheets/style.css')
-    body
-        .container
-            #players-group
-                .box1
-                    img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
-                    img.plate(src='/images/in-game-static-images/avatar-plate.png')
-                    h3.health-text 99%
-                    h3.xp-text 100
-                .box2
-                    img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
-                    img(src='/images/in-game-static-images/avatar-plate.png')
-                    h3.health-text 99%
-                    h3.xp-text 100
-                .box3
-                    img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
-                    img(src='/images/in-game-static-images/avatar-plate.png')
-                    h3.health-text 99%
-                    h3.xp-text 100
-                .box4
-                    img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
-                    img(src='/images/in-game-static-images/avatar-plate.png')
-                    h3.health-text 99%
-                    h3.xp-text 100
-            .game-play-area
-                | Game-Play-Area
-            #user-interface
-                .card-board
-                    img(src='/images/in-game-static-images/card-board.png')
-                .mood-board
-                    img(src='/images/in-game-static-images/avatar-icon.png')
-                .chat
-                    img#modal-btn(src='/images/in-game-static-images/chat-icon.png')
-                    // The Modal
-                    #chat-modal.modal
-                        // Modal content
-                        .modal-content
-                            span.close ×
-                            p
-                            h4 Zack:
-                            |  Hey Fuck You Derek
-                            br
-                            h4 Derek:
-                            |  Your right Zack, im a poo poo head
-                            br
-                            h4 Logan:
-                            |  Hey guys, are we still playinfg?
-                            p
-        script(src='/javascripts/jquery-3.2.1.js')
-        script(src= '/javascripts/in-game-scripts.js')
 
