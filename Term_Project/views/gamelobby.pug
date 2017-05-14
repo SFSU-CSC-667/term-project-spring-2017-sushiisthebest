@@ -1,6 +1,6 @@
 extends game-layout
 block content
-    div#gamewindow(class="container")
+    div#game-window(class="container")
         div(class= "game-lobby")
             h1 Game Lobby
             div(class="title-section")
@@ -13,12 +13,13 @@ block content
             div(class="chat-area")
                 ul(class ="messages")
             input(class = "input-messages" placeholder = ".. Chat ..")
-    button.start start
+        button.start start
 block foot
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/jquery-3.2.1.js')
     script(src='/javascripts/chat.js')
     script(src='/javascripts/game-client.js')
+    script(src='/javascripts/in-game-scripts.js')
 
 
 
