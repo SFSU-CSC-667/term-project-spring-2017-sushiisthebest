@@ -7,6 +7,7 @@ const router = express.Router();
 
 const Games = require('../Models/Games');
 const Player = require('../Models/Player');
+const Cards = require('../Models/Cards');
 
 const passport = require('passport');
 const broadcast = require('../socket/broadcast');

@@ -52,6 +52,14 @@ var db = require('../config/database');
 		})
 	},
 
+	getPlayingCards: () =>{
+		return db.many({
+			name: 'get-playing-cards',
+			text: 'SELECT \"Card\".* FROM \"Card\" WHERE \"Card\".id > 8',
+			values:[]
+		})
+	},
+
 	create:() => {
 		return db.none({
 			name:'create-user',

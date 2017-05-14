@@ -1,6 +1,3 @@
-/**
- * Created by euphoric on 5/6/17.
- */
 const socket = io.connect();
 const FADE_TIME = 150;
 let connected = false;
