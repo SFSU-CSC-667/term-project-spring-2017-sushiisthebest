@@ -18,7 +18,6 @@ router.get('/:gameid', (req, res) => {
           view.players = players;
            res.render('game-table', view);
        })
-
 });
 
 
