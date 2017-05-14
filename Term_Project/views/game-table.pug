@@ -1,0 +1,43 @@
+extends game-layout
+block content
+    .container
+        #players-group
+            .box1
+                img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
+                img.plate(src='/images/in-game-static-images/avatar-plate.png')
+                h3.health-text 99%
+                h3.xp-text 100
+            .box2
+                img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
+                img(src='/images/in-game-static-images/avatar-plate.png')
+                h3.health-text 99%
+                h3.xp-text 100
+            .box3
+                img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
+                img(src='/images/in-game-static-images/avatar-plate.png')
+                h3.health-text 99%
+                h3.xp-text 100
+            .box4
+                img.avatar-on-plate(src='/images/in-game-static-images/avatar-on-plate.png')
+                img(src='/images/in-game-static-images/avatar-plate.png')
+                h3.health-text 99%
+                h3.xp-text 100
+        .game-play-area
+            | Game-Play-Area
+        #user-interface
+            .card-board
+                img(src='/images/in-game-static-images/card-board.png')
+            .mood-board
+                img(src='/images/in-game-static-images/avatar-icon.png')
+            .chat
+                img#modal-btn(src='/images/in-game-static-images/chat-icon.png')
+                // The Modal
+                #chat-modal.modal
+                    // Modal content
+                    .modal-content
+                        span.close ×
+                        ul#modal-messages(class ="messages")
+                        input#modal-input.input-messages(placeholder = ".. Chat ..")
+    script(src='/javascripts/in-game-scripts.js')
+
+

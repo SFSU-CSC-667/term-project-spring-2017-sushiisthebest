@@ -1,21 +1,8 @@
-//
-// var connection = {
-//   host: "localhost",
-//   port: 5432,
-//   database: "csc667",
-//   user: 'postgres',
-//   password: "6848broken"
-// };
-//
-// var pgp =  require('pg-promise')();
-// var db = pgp(connection);
-
-
-var db = require('../config/database');
+	const db = require('../config/database');
 
 
 
-	var Cards = {
+	const Cards = {
 	findCardByID: id =>{
 		return db.oneOrNone({
 			  name: 'find-card-by-id',

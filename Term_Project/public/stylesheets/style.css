@@ -11,8 +11,9 @@ a {
 html, body{
   height: 100%;
 }
+
 body {
-  background-image: url('/images/bg1.jpg');
+  background-image: url('../images/in-game-static-images/bg1.jpg');
   background-position: center center;
   background-repeat:  no-repeat;
   background-attachment: fixed;

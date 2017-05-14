@@ -1,27 +1,19 @@
-const fs = require('fs');
-var path = require('path');
-var pgp = require('pg-promise')();
-var db = require('../config/database');
+const db = require('../config/database');
 
-var GameCard = {
-    createNewDeck: (gameid, cards) =>{
-        var gid = gameid;
-        Promise.all(cards.map(card => {
-            var resolved_path = "/public/images/" + card;
-            db.any('INSERT INTO \"GameCard\" (gameid, cardid, ruletext, name, imageid, played) VALUES ($1, $2, $3, $4, $5, $6)',
-                [gid, cards.id, cards.ruletext, cards.name, cards.imageid, false])
-            .then(() => {
-                console.log("Created New Deck in \"GameCard\"");
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        }))
-        .then(() => {
-            console.log("done");
-        })
-
-    },
+   module.exports = {
+       createNewDeck: (gameid, cards) =>{
+            return Promise.all(cards.map(card => {
+                console.log('Adding Card INDEX:',card.index);
+                const query = 'INSERT INTO \"GameCard\" (gameid, cardid, cardorder) VALUES ($1, $2, $3)';
+                db.any(query, [gameid, card.id, cards.index])
+                .then(results => {
+                    console.log("Created new deck for Game ID:", gameid);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }))
+       },
 
     drawNextCard: gameid =>{
         return db.oneOrNone({
