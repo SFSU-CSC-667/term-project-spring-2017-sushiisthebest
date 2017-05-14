@@ -76,10 +76,12 @@ router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, n
         .then(results => {
             broadcast(req.app.get('io'), results[0], 'user-joined', req.user.username);
 
+            console.log('results index 1', results[1]);
             res.status(200).json({
                 msg:'success',
                 path: '/' + results[0],
-                currentGameId: results[0]
+                currentGameId: results[0],
+                currentPlayerId: results[1]
                 });
         })
         .catch(error => {
@@ -122,6 +124,10 @@ router.get('/:gameID', (req, res, next) => {
 
 
 router.post('/leave', (req, res, next) => {
-    Promise.all(Player.destroyPlayer(req.body.playerid), Games.
+    Player.destroyPlayer(req.body.id, req.body.gameid)
+        .then(results => {
+            broadcast(req.app.get('io'),req.body.gameid, 'user-left');
+            res.redirect('/games');
+        })
 });
 module.exports = router;

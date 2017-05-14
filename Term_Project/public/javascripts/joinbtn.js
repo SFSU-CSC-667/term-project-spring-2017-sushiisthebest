@@ -17,6 +17,7 @@ $(function () {
     })
 });
 
+
 //TODO IMPLeMENT WAY TO COMMUNICATE to the USER < not the console when the game is full or has already started
 function join (response){
 
@@ -24,27 +25,11 @@ function join (response){
 
     if(response.msg !== 'success') { console.log(response.msg); location.reload(true) }
     localStorage.setItem('current-game-id', response.currentGameId);
+    localStorage.setItem('current-player-id', response.currentPlayerId);
 
     window.location = window.location + response.path;
-
 }
 
-// $(document).ready( () => {
-//     $(".btnjoin").on('click', (event)=>{
-//         event.stopPropagation();
-//         event.preventDefault();
-//         //onsole.log(event.target.id);
-//         console.log(this);
-//         console.log($(this).id);
-//         console.log($(this) .attr("id"));
-//
-//
-//         //path = 'games/join?id='+event.target.id;
-//
-//         //window.location.href = path;
-//
-//     })
-// })
 
 
 
