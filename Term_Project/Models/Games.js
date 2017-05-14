@@ -22,13 +22,13 @@ module.exports = {
 		})
 	},
 
-	destroyGame: gameID => {
-	    // this function deletes game and all players tied to game
-        // to be used when game ends or HOST leaves the game before it has started
-        const gameQuery = 'SELECT'
-		return
-
-	},
+	// destroyGame: gameID => {
+	//     // this function deletes game and all players tied to game
+     //    // to be used when game ends or HOST leaves the game before it has started
+     //    const gameQuery = 'SELECT'
+	// 	return
+    //
+	// },
 
 	getVisibleGames: () => {
 		return db.manyOrNone({

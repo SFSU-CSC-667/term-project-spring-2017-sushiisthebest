@@ -11,8 +11,14 @@ const passport = require('passport');
 const broadcast = require('../socket/broadcast');
 
 
-router.get('/', (req, res) =>{
-   res.render('game-table');
+router.get('/:gameid', (req, res) => {
+   let view = {};
+   Games.getLobby(req.params.gameid)
+       .then(players => {
+          view.players = players;
+           res.render('game-table', view);
+       })
+
 });
 
 

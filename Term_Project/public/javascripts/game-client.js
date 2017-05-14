@@ -6,7 +6,7 @@ $(function () {
         const id = localStorage.getItem('current-game-id');
         console.log('testing is local storage is available',id);
         hasStarted = true;
-        $('#game-window').load('/PirateParty .container');
+        $('#game-window').load('/PirateParty/'+ id + ' .container');
 
         // $.get('/PirateParty', (result) => {
         //     console.log(result);

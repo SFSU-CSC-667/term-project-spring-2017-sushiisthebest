@@ -40,14 +40,14 @@ module.exports = {
          })
 	},
 
-	findPlayersInGame: gameID => {
-		let query = 'SELECT \"Player.*\", \"User.*\", imagetable.path, \"Avatar\".* FROM \"Player\"'+
-					'INNER JOIN \"User\" ON \"Player.userid\"=\"User\".id'+
-					'INNER JOIN \"Avatar\" ON (\"Avatar\".id = \"User\".avatarid)'+
-					'INNER JOIN imagetable ON (imagetable.id = \"Avatar\".imageid)'+
-					'WHERE \"Player\".gameid = $1';
-
-		return db.any(query, gameid)
-
-	}
+	// findPlayersInGame: gameID => {
+	// 	let query = 'SELECT \"Player.*\", \"User.*\", imagetable.path, \"Avatar\".* FROM \"Player\"'+
+	// 				'INNER JOIN \"User\" ON \"Player.userid\"=\"User\".id'+
+	// 				'INNER JOIN \"Avatar\" ON (\"Avatar\".id = \"User\".avatarid)'+
+	// 				'INNER JOIN imagetable ON (imagetable.id = \"Avatar\".imageid)'+
+	// 				'WHERE \"Player\".gameid = $1';
+    //
+	// 	return db.any(query, gameid)
+    //
+	// }
 };
