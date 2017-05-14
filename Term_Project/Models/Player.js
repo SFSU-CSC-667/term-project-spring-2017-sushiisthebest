@@ -31,13 +31,19 @@ module.exports = {
 
 		if(playerCount === undefined) { playerCount = 0}
 
-		return db.task( t=> {
-			return t.one(playerQuery, [userID, gameID , HEALTH])
-				.then(playerID => {
-					console.log('Player ID inside new Player.create function', playerID);
-					playerCount++;
-					return t.one(incrementPlayerCount, [playerCount, gameID])
-                })
-         })
+		db.one(playerQuery, [userID, gameID, HEALTH])
+			.then(playerid => {
+				playerCount++;
+				return Promise.all([playerid, db.one(incrementPlayerCount, [playerCount, playerid])])
+			})
+
+		// return db.task( t=> {
+		// 	return t.one(playerQuery, [userID, gameID , HEALTH])
+		// 		.then(playerID => {
+		// 			console.log('Player ID inside new Player.create function', playerID);
+		// 			playerCount++;
+		// 			return t.one(incrementPlayerCount, [playerCount, gameID])
+         //        })
+         // })
 	},
 };

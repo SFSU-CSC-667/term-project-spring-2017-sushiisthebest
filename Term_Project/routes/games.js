@@ -38,8 +38,8 @@ router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, 
             return Promise.all([game.id, Player.create(req.user.id, game.id)]);
         })
         .then(results => {
-            const response = {currentGameId: results[0], path: '/games/' + results[0]};
-
+            const response = {currentGameId: results[0], path: '/games/' + results[0], currentPlayerId: results[1].id};
+            console.log('results at index 1:', results[1][0].id);
             res.status(200).json(response);
         })
         .catch(error => {

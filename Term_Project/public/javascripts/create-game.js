@@ -23,6 +23,7 @@ function createGame(response) {
     console.log(response);
 
     localStorage.setItem('current-game-id', response.currentGameId);
+    localStorage.setItem('current-player-id', response.currentPlayerId);
 
     window.location = response.path;
 }
