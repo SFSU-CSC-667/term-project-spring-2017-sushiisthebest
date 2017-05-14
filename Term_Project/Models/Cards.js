@@ -47,16 +47,9 @@
 		})
 	},
 
-	create:() => {
-		return db.none({
-			name:'create-user',
-			text: 'INSERT INTO \"User\"(id, ruletext, name, imageid) VALUES ($1, $2, $3, $4)',
-			values: [id,ruletext, name, imageid]
-			})
-		.then(new_card_id => {
-			console.log('new card created with id:', new_card_id);
-			return new_user_id;
-		})
+	create:(card) => {
+		let query = 'INSERT INTO \"Card\" (face, suit, value) values($1, $2, $3)';
+		return db.none(query,card);
 
 	}
 

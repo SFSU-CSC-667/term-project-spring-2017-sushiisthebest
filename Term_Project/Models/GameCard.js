@@ -15,11 +15,20 @@ const db = require('../config/database');
             }))
        },
 
-    drawNextCard: gameid =>{
-        return db.oneOrNone({
-            name: 'draw-next-card',
-            text: 'SELECT * FROM \"GameCard\" WHERE \"GameCard\".played = false',
-            values: []
-        })
-    }
+        drawNextCard: gameID =>{
+               const initQuery = 'SELECT \"GameCard\".*, \"Card\".ruletext, \"Card\".ruletext, \"Card\".face, \"Card\".suit, \"Card\".value, '
+                                + 'imagetable.path AS imgurl FROM \"GameCard\" INNER JOIN \"Card\" ON \"GameCard\".cardid = \"Card\".id'
+                                +'INNER JOIN imagetable ON \"Card\".imageid = imagetable.id WHERE \"GameCard\".gameid = $1'
+                                +' AND \"GameCard\".played = f ORDER BY \"GameCard\".cardorder LIMIT 1';
+
+               return db.one(initQuery, gameID)
+        },
+
+       //TODO SOMEONE THINK OF A MORE DESCRIPTED NAME
+       updatePlayed: gameCardID => {
+           const query = 'UPDATE \"GameCard\" SET played = t WHERE id = $1';
+
+           return db.none(query,gameCardID)
+       }
+
 };
