@@ -26,10 +26,10 @@ router.get('/' , (req, res, next) => {
 });
 
 
-//might not be an actual page at one point
 router.get('/create', (req, res, next) => {
     res.render('createGame');
 });
+
 
 //TODO improve to check if a game with that name arleady exists
 router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, next) => {
@@ -47,6 +47,7 @@ router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, 
           res.redirect('/')
         })
 });
+
 
 router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, next) => {
     let gameID = req.body.gameid;
@@ -73,8 +74,8 @@ router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, n
             return Promise.all([game.id , Player.create(req.user.id, gameID, game.playercount)]);
         })
         .then(results => {
-            console.log('Updated Game Player Count:', results[1]);
             broadcast(req.app.get('io'), results[0], 'user-joined', req.user.username);
+
             res.status(200).json({
                 msg:'success',
                 path: '/' + results[0],
@@ -87,10 +88,12 @@ router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, n
 
 });
 
+
 router.get("/test", (req,res,next) => {
    const io = req.app.get('io');
    broadcast(io,34,'user-joined', 'BOOO')
 });
+
 
 router.get('/:gameID', (req, res, next) => {
    let view = {
@@ -98,7 +101,6 @@ router.get('/:gameID', (req, res, next) => {
        statusMessage: '',
        players: []
    };
-   console.log('game id from url: ', req.params.gameID);
 
    Games.getLobby(req.params.gameID)
        .then(lobby => {
@@ -112,9 +114,6 @@ router.get('/:gameID', (req, res, next) => {
                     username: item.username,
                     path: item.imageurl
                 };
-
-                console.log(player);
-
                 view.players.push(player);
             });
            res.render('gamelobby', view);
@@ -122,7 +121,7 @@ router.get('/:gameID', (req, res, next) => {
 });
 
 
-
-
-
+router.post('/leave', (req, res, next) => {
+    Promise.all(Player.destroyPlayer(req.body.playerid), Games.
+});
 module.exports = router;

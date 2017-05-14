@@ -19,9 +19,10 @@ module.exports = {
 		})
 	},
 
-	destroyPlayer: id => {
-		const psql = 'DELETE FROM \"Player\" WHERE id = $1';
-		return db.none(psql, id);
+	destroyPlayer: (id, gameid) => {
+		const query = 'DELETE FROM \"Player\" WHERE id = $1';
+		const updatePlayerCount = 'UPDATE \"Games\" SET playercount = playercount - 1 WHERE id = $1';
+		return Promise.all([db.none(query,id), db.none(updatePlayerCount,gameid)])
 	},
 
 	create:(userID, gameID, playerCount) => {
@@ -39,15 +40,4 @@ module.exports = {
                 })
          })
 	},
-
-	// findPlayersInGame: gameID => {
-	// 	let query = 'SELECT \"Player.*\", \"User.*\", imagetable.path, \"Avatar\".* FROM \"Player\"'+
-	// 				'INNER JOIN \"User\" ON \"Player.userid\"=\"User\".id'+
-	// 				'INNER JOIN \"Avatar\" ON (\"Avatar\".id = \"User\".avatarid)'+
-	// 				'INNER JOIN imagetable ON (imagetable.id = \"Avatar\".imageid)'+
-	// 				'WHERE \"Player\".gameid = $1';
-    //
-	// 	return db.any(query, gameid)
-    //
-	// }
 };

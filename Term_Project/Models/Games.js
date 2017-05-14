@@ -30,6 +30,8 @@ module.exports = {
     //
 	// },
 
+
+
 	getVisibleGames: () => {
 		return db.manyOrNone({
 			name:'get-visible-games',
