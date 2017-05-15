@@ -99,6 +99,10 @@ socket.on('reconnect' , () =>{
     console.log('you have been reconnected');
 });
 
+socket.on('user-left', (data) => {
+    $('#players').load(document.URL + ' #players')
+})
+
 });
 
 

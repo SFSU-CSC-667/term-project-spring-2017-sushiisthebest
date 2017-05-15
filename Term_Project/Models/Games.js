@@ -58,9 +58,4 @@ module.exports = {
 
 		return db.any(query,id);
     }
-
-
-
-
-
 };

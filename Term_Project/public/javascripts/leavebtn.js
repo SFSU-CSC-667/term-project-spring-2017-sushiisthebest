@@ -3,15 +3,13 @@
  */
 $(function () {
     $(".btnleave").on('click', (event)=>{
-        const playerid = localStorage.getItem('current-player-id');
         const gameid = localStorage.getItem('current-game-id');
 
         $.ajax({
-            url: window.location.href +'/leave',
+            url: window.location.origin +'/games/leave',
             type: 'post',
             data: {
                 'gameid' : gameid,
-                'playerid' : playerid
             },
             dataType: 'json',
             success: leave
@@ -24,5 +22,5 @@ function leave (response){
     console.log(response);
     localStorage.clear();
 
-    window.location = window.location + response.path;s
+    window.location = window.location.origin + response.path;
 }
