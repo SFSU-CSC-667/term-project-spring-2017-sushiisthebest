@@ -40,6 +40,7 @@ function start(response){
     $('#game-window').load('/PirateParty/'+ response.gameID + ' .container')
 }
 
+//-------------------------- Chat --------------------------------------
 function sendMessage(msg){
     // let msg = $input.val();
     msg = cleanInput(msg);
@@ -96,6 +97,17 @@ function cleanInput(input) {
 }
 });
 
+//-----------------------Game-------------------------------
+
+
+
+
+
+
+
+
+
+
 socket.on('user-joined', (data) =>{
     console.log(data);
     console.log(document.URL);
@@ -121,7 +133,10 @@ socket.on('start-game', (gameID) => {
         setTimeout(()=>{
             document.getElementById('gameMsg').innerHTML = 'Player One!!! Take Your turn !!!';
         },5000)
-    },1000)
+    },1000);
+
+    // const data = {gameID: localStorage.getItem('current-game-id')};
+
 });
 
 

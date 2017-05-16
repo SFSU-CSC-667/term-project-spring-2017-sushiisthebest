@@ -1,8 +1,7 @@
 	const db = require('../config/database');
 
 
-
-	const Cards = {
+module.exports = {
 	findCardByID: id =>{
 		return db.oneOrNone({
 			  name: 'find-card-by-id',
@@ -42,7 +41,7 @@
 	getPlayingCards: () =>{
 		return db.many({
 			name: 'get-playing-cards',
-			text: 'SELECT \"Card\".* FROM \"Card\" WHERE \"Card\".id > 8',
+			text: 'SELECT \"Card\".* FROM \"Card\" WHERE \"Card\".gamecard = true',
 			values:[]
 		})
 	},
@@ -52,8 +51,5 @@
 		return db.none(query,card);
 
 	}
-
-
 };
 
-	module.exports = Cards;

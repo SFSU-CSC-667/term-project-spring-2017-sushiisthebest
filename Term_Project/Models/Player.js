@@ -32,13 +32,14 @@ module.exports = {
 	},
 
 	create:(userID, gameID, playerCount) => {
-		const playerQuery = 'INSERT INTO \"Player\"(userid, gameid, health) VALUES ($1, $2, $3) RETURNING id';
+		const playerQuery = 'INSERT INTO \"Player\"(userid, gameid, health, order) VALUES ($1, $2, $3, $4) RETURNING id';
 		const incrementPlayerCount = 'UPDATE \"Game\" SET playercount = $1 WHERE id=$2';
 
-		if(playerCount === undefined) { playerCount = 0}
+		if(playerCount === undefined) { playerCount = 0;}
+		let order = playerCount + 1;
 
 		return db.task( t=> {
-			return t.one(playerQuery, [userID, gameID , HEALTH])
+			return t.one(playerQuery, [userID, gameID , HEALTH, order])
 				.then(player => {
 					console.log('Player ID inside new Player.create function', player.id);
 					playerCount++;

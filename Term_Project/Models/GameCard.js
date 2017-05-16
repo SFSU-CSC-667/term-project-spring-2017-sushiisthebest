@@ -5,7 +5,8 @@ const db = require('../config/database');
             return Promise.all(cards.map(card => {
                 console.log('Adding Card INDEX:',card.index);
                 const query = 'INSERT INTO \"GameCard\" (gameid, cardid, cardorder) VALUES ($1, $2, $3)';
-                db.any(query, [gameid, card.id, cards.index])
+
+                db.none(query, [gameid, card.id, card.index])
                 .then(results => {
                     console.log("Created new deck for Game ID:", gameid);
                 })

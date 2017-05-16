@@ -7,8 +7,6 @@ const socketioJwt = require('socketio-jwt');
 
 const broadcast = require('../config/messaging');
 
-const Games = require('../Models/Games');
-
 const init = (app, server) => {
     const io = socketIo(server);
     const gameIO = io.of('/game');
@@ -34,9 +32,6 @@ const init = (app, server) => {
             socket.to(data.room).emit('add-message', data);
         })
     });
-
-
-
 
 
     gameIO.on('connection', socket => {

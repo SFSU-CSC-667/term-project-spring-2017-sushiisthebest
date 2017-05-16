@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 
 const Games = require('../Models/Games');
+const GameCard = require('../Models/GameCard');
 const Player = require('../Models/Player');
 const Cards = require('../Models/Cards');
 
@@ -111,13 +112,30 @@ router.post("/start", (req,res,next) => {
     Games.startGame(req.body.gameid)
         .then(()=>{
             broadcast(req.app.get('io'),req.body.gameid,'start-game',req.body.gameid);
-            res.json({gameID: req.body.gameid})
+           next();
         })
         .catch(error => {
             console.log(error);
             console.log('Error in start route');
         })
-});
+
+}, (req, res, next) => {
+    Cards.getPlayingCards()
+        .then(cards => {
+            req.locals = cards;
+            next();
+        })
+        .catch(error => {
+            console.log(error);
+            res.send(500);
+        })
+
+}, (req, res, next) => {
+        GameCard.createNewDeck(req.body.gameid)
+
+ });
+
+
 
 
 router.get('/:gameID', (req, res, next) => {
