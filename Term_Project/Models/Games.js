@@ -11,7 +11,7 @@ module.exports = {
       name: 'find-game-by-id',
       text: 'SELECT * FROM \"Game\" WHERE id = $1' ,
       values: [id]
-    })
+    	})
 	},
 
 	findGameByName: name =>{
@@ -30,7 +30,11 @@ module.exports = {
     //
 	// },
 
-
+	startGame: gameID => {
+		console.log("gameID in model:",gameID);
+		const query = "UPDATE \"Game\" SET hasstarted=true WHERE id= $1";
+		return db.none(query,gameID)
+	},
 
 	getVisibleGames: () => {
 		return db.manyOrNone({

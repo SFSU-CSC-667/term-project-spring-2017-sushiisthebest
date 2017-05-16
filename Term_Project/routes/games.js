@@ -92,9 +92,31 @@ router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, n
 });
 
 
-router.get("/test", (req,res,next) => {
-   const io = req.app.get('io');
-   broadcast(io,34,'user-joined', 'BOOO')
+router.post('/leave',passport.authenticate('jwt', {session:false}),(req, res, next) => {
+    console.log('leave route entered');
+    Player.destroyPlayer(req.user.id, req.body.gameid)
+        .then(results => {
+            broadcast(req.app.get('io'),req.body.gameid, 'user-left');
+            res.json({path:'/games'})
+        })
+        .catch(error => {
+            console.log('error in leave route');
+            console.log(error);
+        })
+});
+
+
+router.post("/start", (req,res,next) => {
+    console.log('GameID: in start route:',req.body.gameid);
+    Games.startGame(req.body.gameid)
+        .then(()=>{
+            broadcast(req.app.get('io'),req.body.gameid,'start-game',req.body.gameid);
+            res.json({gameID: req.body.gameid})
+        })
+        .catch(error => {
+            console.log(error);
+            console.log('Error in start route');
+        })
 });
 
 
@@ -124,16 +146,4 @@ router.get('/:gameID', (req, res, next) => {
 });
 
 
-router.post('/leave',passport.authenticate('jwt', {session:false}),(req, res, next) => {
-    console.log('leave route entered');
-    Player.destroyPlayer(req.user.id, req.body.gameid)
-        .then(results => {
-            broadcast(req.app.get('io'),req.body.gameid, 'user-left');
-            res.json({path:'/games'})
-        })
-        .catch(error => {
-            console.log('error in leave route');
-            console.log(error);
-        })
-});
 module.exports = router;

@@ -20,7 +20,7 @@ $(function () {
 //TODO IMPLeMENT WAY TO COMMUNICATE to the USER < not the console when the game is full or has already started
 function leave (response){
     console.log(response);
-    localStorage.clear();
+    localStorage.clear('current-game-id');
 
     window.location = window.location.origin + response.path;
 }

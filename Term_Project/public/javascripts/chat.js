@@ -19,6 +19,13 @@ $(function () {
         }
     });
 
+    $('.start').on('click' , event => {
+        const id = localStorage.getItem('current-game-id');
+        hasStarted = true;
+
+        $.ajax({url:'/games/start', type:'post', data: {'gameid' : id}, success: start })
+    });
+
      let $lobbyMessages = $('.messages');
 
 
@@ -28,7 +35,10 @@ socket.on('connect', ()=> {
     socket.emit('join', data);
 });
 
-
+function start(response){
+    console.log(response.gameid);
+    $('#game-window').load('/PirateParty/'+ response.gameID + ' .container')
+}
 
 function sendMessage(msg){
     // let msg = $input.val();
@@ -84,6 +94,7 @@ function addElement(element){
 function cleanInput(input) {
     return $('<div/>').text(input).text();
 }
+});
 
 socket.on('user-joined', (data) =>{
     console.log(data);
@@ -101,9 +112,13 @@ socket.on('reconnect' , () =>{
 
 socket.on('user-left', (data) => {
     $('#players').load(document.URL + ' #players')
-})
-
 });
+
+socket.on('start-game', (gameID) => {
+    $('#game-window').load('/PirateParty/'+ gameID + ' .container');
+});
+
+
 
 
 

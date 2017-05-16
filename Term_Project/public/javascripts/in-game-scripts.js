@@ -13,6 +13,6 @@ $(function() {
     });
 
     $gameWindow.on('click', 'span.close', event => {
-        $('#chat-modal').style.display = "none";
+        document.getElementById('chat-modal').style.display = "none";
     });
 });
