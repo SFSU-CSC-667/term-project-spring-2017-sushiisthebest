@@ -1,9 +1,6 @@
-
 const db = require('../config/database');
 const User = require('../Models/User');
 const Player = require('../Models/Player');
-
-
 
 module.exports = {
 	findGameByID: id =>{
@@ -11,7 +8,7 @@ module.exports = {
       name: 'find-game-by-id',
       text: 'SELECT * FROM \"Game\" WHERE id = $1' ,
       values: [id]
-    })
+    	})
 	},
 
 	findGameByName: name =>{
@@ -22,8 +19,18 @@ module.exports = {
 		})
 	},
 
-	updatePlayerCount: (gameID, options) => {
-		return
+	// destroyGame: gameID => {
+	//     // this function deletes game and all players tied to game
+     //    // to be used when game ends or HOST leaves the game before it has started
+     //    const gameQuery = 'SELECT'
+	// 	return
+    //
+	// },
+
+	startGame: gameID => {
+		console.log("gameID in model:",gameID);
+		const query = "UPDATE \"Game\" SET hasstarted=true WHERE id= $1";
+		return db.none(query,gameID)
 	},
 
 	getVisibleGames: () => {
@@ -52,9 +59,4 @@ module.exports = {
 
 		return db.any(query,id);
     }
-
-
-
-
-
 };

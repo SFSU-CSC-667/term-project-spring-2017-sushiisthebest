@@ -24,11 +24,11 @@ const init = (app, server) => {
            socket.join(data.room);
            socket.username = data.username;
            socket.to(data.room).emit('user-joined', data.username);
-       })
+       });
 
         socket.on('disconnect', data => {
             console.log('client disconnected');
-        })
+        });
 
         socket.on('send-message', data => {
             socket.to(data.room).emit('add-message', data);

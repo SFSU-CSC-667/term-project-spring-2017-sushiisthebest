@@ -7,6 +7,7 @@ const router = express.Router();
 
 const Games = require('../Models/Games');
 const Player = require('../Models/Player');
+const Cards = require('../Models/Cards');
 
 const passport = require('passport');
 const broadcast = require('../socket/broadcast');
@@ -25,20 +26,22 @@ router.get('/' , (req, res, next) => {
 });
 
 
-//might not be an actual page at one point
 router.get('/create', (req, res, next) => {
     res.render('createGame');
 });
+
 
 //TODO improve to check if a game with that name arleady exists
 router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, next) => {
     Games.create(req.body.game_name, req.body.game_description)
         .then(game => {
+            console.log('Creating Game ID =', game.id);
             return Promise.all([game.id, Player.create(req.user.id, game.id)]);
         })
         .then(results => {
+            // const response = {currentGameId: results[0], path: '/games/' + results[0], currentPlayerId: results[1]};
             const response = {currentGameId: results[0], path: '/games/' + results[0]};
-
+            console.log('results at index 1:', results[1]);
             res.status(200).json(response);
         })
         .catch(error => {
@@ -46,6 +49,7 @@ router.post('/create', passport.authenticate('jwt',{session:false}), (req, res, 
           res.redirect('/')
         })
 });
+
 
 router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, next) => {
     let gameID = req.body.gameid;
@@ -72,12 +76,13 @@ router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, n
             return Promise.all([game.id , Player.create(req.user.id, gameID, game.playercount)]);
         })
         .then(results => {
-            console.log('Updated Game Player Count:', results[1]);
             broadcast(req.app.get('io'), results[0], 'user-joined', req.user.username);
+
+            console.log('results index 1', results[1]);
             res.status(200).json({
                 msg:'success',
                 path: '/' + results[0],
-                currentGameId: results[0]
+                currentGameId: results[0],
                 });
         })
         .catch(error => {
@@ -86,10 +91,34 @@ router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, n
 
 });
 
-router.get("/test", (req,res,next) => {
-   const io = req.app.get('io');
-   broadcast(io,34,'user-joined', 'BOOO')
+
+router.post('/leave',passport.authenticate('jwt', {session:false}),(req, res, next) => {
+    console.log('leave route entered');
+    Player.destroyPlayer(req.user.id, req.body.gameid)
+        .then(results => {
+            broadcast(req.app.get('io'),req.body.gameid, 'user-left');
+            res.json({path:'/games'})
+        })
+        .catch(error => {
+            console.log('error in leave route');
+            console.log(error);
+        })
 });
+
+
+router.post("/start", (req,res,next) => {
+    console.log('GameID: in start route:',req.body.gameid);
+    Games.startGame(req.body.gameid)
+        .then(()=>{
+            broadcast(req.app.get('io'),req.body.gameid,'start-game',req.body.gameid);
+            res.json({gameID: req.body.gameid})
+        })
+        .catch(error => {
+            console.log(error);
+            console.log('Error in start route');
+        })
+});
+
 
 router.get('/:gameID', (req, res, next) => {
    let view = {
@@ -97,7 +126,6 @@ router.get('/:gameID', (req, res, next) => {
        statusMessage: '',
        players: []
    };
-   console.log('game id from url: ', req.params.gameID);
 
    Games.getLobby(req.params.gameID)
        .then(lobby => {
@@ -111,17 +139,11 @@ router.get('/:gameID', (req, res, next) => {
                     username: item.username,
                     path: item.imageurl
                 };
-
-                console.log(player);
-
                 view.players.push(player);
             });
            res.render('gamelobby', view);
        });
 });
-
-
-
 
 
 module.exports = router;

@@ -6,10 +6,13 @@ const bcrypt = require('bcrypt');
 const User = require('../Models/User');
 const passport = require('passport');
 const jwt = require('jwt-simple');
+const Card = require('../Models/Cards');
+
 
 
 
 require('../config/passport.js')(passport);
+
 
 
 
@@ -84,18 +87,19 @@ router.get('/:username', passport.authenticate('jwt', {session: false}),  functi
 	let profile = {};
 	profile.username= req.user.username;
 
-	User.getUserProfileById(req.user.id)
-		.then(avatar=>{
-			//builds profile object for rendering
-			profile.avatarID = avatar.id;
-			profile.avatarName = avatar.name;
-			profile.avatarImgPath = avatar.path;
+	Promise.all([User.getUserProfileById(req.user.id),Card.findSushiCards(),Card.findRuleCards()])
+		.then(values => {
+            profile.avatarID = values[0].id;
+		   	profile.avatarName = values[0].name;
+		   	profile.avatarImgPath = values[0].path;
+			profile.sushiCardList = values[1];
+			profile.sushiruleText = values[1][0].ruletext;
+			profile.ruleCardList = values[2];
+			profile.rulecardText = values[2][0].ruletext;
 
-			console.log('profile object:',profile);
+			console.log(values);
 			res.render('profile', profile);
 		})
-		.catch(error => console.log(error));
-
 });
 
 
@@ -113,6 +117,40 @@ router.post('/:username/changeAvatar', passport.authenticate('jwt',{session:fals
 		.catch(error => {
 			console.log(error);
 		})
+
+
+});
+
+router.post('/:username/changeSushiCard', passport.authenticate('jwt',{session:false}) , (req, res, next) => {
+    console.log('---ENTERING /:username/changeSushiCard Route---');
+    console.log('userID FROM COOKIE', req.user.id);
+    console.log('sushiCardID from BODY', req.body.sushiCardID);
+
+    User.changeSushiCard(req.user.id, req.body.sushiCardID)
+        .then(sushiCard => {
+            console.log('sushicard', sushiCard[1]);
+            res.json(sushiCard[1]);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
+
+});
+
+router.post('/:username/changeRuleCard', passport.authenticate('jwt',{session:false}) , (req, res, next) => {
+    console.log('---ENTERING /:username/changeRuleCard Route---');
+    console.log('userID FROM COOKIE', req.user.id);
+    console.log('sushiRuleID from BODY', req.body.ruleCardID);
+
+    User.changeRuleCard(req.user.id, req.body.ruleCardID)
+        .then(ruleCard => {
+            console.log('rulecard', ruleCard[1]);
+            res.json(ruleCard[1]);
+        })
+        .catch(error => {
+            console.log(error);
+        })
 
 
 });

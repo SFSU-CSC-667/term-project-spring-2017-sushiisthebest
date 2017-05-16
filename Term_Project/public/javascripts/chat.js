@@ -1,19 +1,32 @@
-/**
- * Created by euphoric on 5/6/17.
- */
 const socket = io.connect();
 const FADE_TIME = 150;
 let connected = false;
-
+let hasStarted = false;
 
 $(function () {
     //init
     let $input = $('.input-messages');
-    $input.keydown( event => {
-        if(event.keyCode === 13) { console.log('enter pressed'); sendMessage()}
+    // $input.keydown( event => {
+    //     if(event.keyCode === 13) { console.log('enter pressed'); sendMessage()}
+    // });
+
+    $('div#game-window').on('keydown','input.input-messages', event => {
+        if(event.keyCode === 13) {
+            console.log('enter-pressed');
+            console.log('value being sent',event.target.value);
+            sendMessage(event.target.value);
+            event.target.value = '';
+        }
     });
 
-    let $messages = $('.messages');
+    $('.start').on('click' , event => {
+        const id = localStorage.getItem('current-game-id');
+        hasStarted = true;
+
+        $.ajax({url:'/games/start', type:'post', data: {'gameid' : id}, success: start })
+    });
+
+     let $lobbyMessages = $('.messages');
 
 
 socket.on('connect', ()=> {
@@ -22,8 +35,13 @@ socket.on('connect', ()=> {
     socket.emit('join', data);
 });
 
-function sendMessage(){
-    let msg = $input.val();
+function start(response){
+    console.log(response.gameid);
+    $('#game-window').load('/PirateParty/'+ response.gameID + ' .container')
+}
+
+function sendMessage(msg){
+    // let msg = $input.val();
     msg = cleanInput(msg);
     const data = {username:localStorage.getItem('username'), message: msg, room: localStorage.getItem('current-game-id')};
 
@@ -58,9 +76,17 @@ function addNewMessage(data) {
 function addElement(element){
     let $element = $(element).hide().fadeIn(FADE_TIME);
 
-    $messages.append($element);
 
-    $messages[0].scrollTop = $messages[0].scrollHeight;
+
+    if (hasStarted){
+       let $inGameMessages = $('#modal-messages');
+       $inGameMessages.append($element);
+       $inGameMessages[0].scrollTop = $inGameMessages[0].scrollHeight;
+
+    } else {
+        $lobbyMessages.append($element);
+        $lobbyMessages[0].scrollTop = $lobbyMessages[0].scrollHeight;
+    }
 }
 
 
@@ -68,6 +94,7 @@ function addElement(element){
 function cleanInput(input) {
     return $('<div/>').text(input).text();
 }
+});
 
 socket.on('user-joined', (data) =>{
     console.log(data);
@@ -83,7 +110,15 @@ socket.on('reconnect' , () =>{
     console.log('you have been reconnected');
 });
 
+socket.on('user-left', (data) => {
+    $('#players').load(document.URL + ' #players')
 });
+
+socket.on('start-game', (gameID) => {
+    $('#game-window').load('/PirateParty/'+ gameID + ' .container');
+});
+
+
 
 
 

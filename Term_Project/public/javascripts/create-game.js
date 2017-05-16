@@ -21,7 +21,6 @@ $(function(){
 
 function createGame(response) {
     console.log(response);
-
     localStorage.setItem('current-game-id', response.currentGameId);
 
     window.location = response.path;
