@@ -116,6 +116,12 @@ socket.on('user-left', (data) => {
 
 socket.on('start-game', (gameID) => {
     $('#game-window').load('/PirateParty/'+ gameID + ' .container');
+    setTimeout(()=>{
+        document.getElementById('gameMsg').innerHTML = 'Welcome to Pirate Party !!!';
+        setTimeout(()=>{
+            document.getElementById('gameMsg').innerHTML = 'Player One!!! Take Your turn !!!';
+        },5000)
+    },1000)
 });
 
 
