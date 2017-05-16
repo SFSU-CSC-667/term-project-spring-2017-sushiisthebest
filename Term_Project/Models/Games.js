@@ -1,9 +1,6 @@
-
 const db = require('../config/database');
 const User = require('../Models/User');
 const Player = require('../Models/Player');
-
-
 
 module.exports = {
 	findGameByID: id =>{
