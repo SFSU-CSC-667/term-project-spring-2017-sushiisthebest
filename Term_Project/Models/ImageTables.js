@@ -1,4 +1,4 @@
-var db = require('../config/database');
+const db = require('../config/database');
 
 module.exports = {
     findImageByID: id =>{
@@ -19,8 +19,5 @@ module.exports = {
                 console.log('new image added to imagetable with id:', new_image_id);
                 return new_image_id;
             })
-
     }
-
-
 };
