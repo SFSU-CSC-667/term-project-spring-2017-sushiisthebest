@@ -99,7 +99,9 @@ function cleanInput(input) {
 
 //-----------------------Game-------------------------------
 
+function draw(card){
 
+}
 
 
 

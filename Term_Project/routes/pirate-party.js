@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 
 const Games = require('../Models/Games');
+const GameCards = require('../Models/GameCard');
 const Player = require('../Models/Player');
 
 const passport = require('passport');
@@ -22,18 +23,25 @@ router.get('/load-view/:gameid', (req, res) => {
        })
 });
 
-// router.get('/test', (req,res, next) => {
-//     db.any('SELECT * FROM \"Card\"')
-//         .then(cards => {
-//             res.locals.cards = cards;
-//             next();
-//         })
-//
-//     }, (req, res) => {
-//      console.log(res.locals.cards);
-//      res.json('success');
-// });
+router.post('/draw/:gameid', (req,res,next) =>{
+    GameCards.drawNextCard(req.params.gameid)
+        .then(card => {
+            res.locals.card = card;
+            console.log(card);
+            next();
+        })
+        .catch(error => {
+            console.log(error);
+        })
+}, (req, res, next) => {
+    GameCards.updatePlayed(res.locals.card.id)
+        .then(()=>{
+            console.log('success');
+            next();
+        })
+}, (req, res, next) => {
 
+})
 
 
 

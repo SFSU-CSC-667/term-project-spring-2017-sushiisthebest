@@ -14,19 +14,19 @@ const db = require('../config/database');
        },
 
         drawNextCard: gameID =>{
-               const initQuery = 'SELECT \"GameCard\".*, \"Card\".ruletext, \"Card\".ruletext, \"Card\".face, \"Card\".suit, \"Card\".value, '
+            const initQuery = 'SELECT \"GameCard\".*, \"Card\".ruletext, \"Card\".face, \"Card\".value, '
                                 + 'imagetable.path AS imgurl FROM \"GameCard\" INNER JOIN \"Card\" ON \"GameCard\".cardid = \"Card\".id'
                                 +'INNER JOIN imagetable ON \"Card\".imageid = imagetable.id WHERE \"GameCard\".gameid = $1'
                                 +' AND \"GameCard\".played = f ORDER BY \"GameCard\".cardorder LIMIT 1';
-
-               return db.one(initQuery, gameID)
+                return db.one(initQuery, gameID)
         },
 
        //TODO SOMEONE THINK OF A MORE DESCRIPTED NAME
-       updatePlayed: gameCardID => {
+       updatePlayed: gameCard => {
            const query = 'UPDATE \"GameCard\" SET played = t WHERE id = $1';
+           const gameQuery = 'UPDATE \"Game\" SET currentcard=$1 WHERE id=$2';
 
-           return db.none(query,gameCardID)
+           return db.none(query,[gameCard.cardid, gameCard.gameid])
        }
 
 };
