@@ -156,6 +156,7 @@ router.get('/:gameID', (req, res, next) => {
    let view = {
        gameName: '',
        statusMessage: '',
+       currentCardURL: undefined,
        players: []
    };
 
@@ -173,8 +174,23 @@ router.get('/:gameID', (req, res, next) => {
                 };
                 view.players.push(player);
             });
-           res.render('gamelobby', view);
+           res.locals.lobby = lobby;
+           res.locals.view = view;
+           next();
        });
+
+}, (req, res, next) => {
+    if(lobby[0].currentcard) {
+    Cards.findCardByID(lobby[0].currentcard)
+        .then(card => {
+            res.locals.view.currentCardURL = card.path;
+            res.render(res.locals.view);
+        })
+    } else {
+        res.render(res.locals.view);
+    }
+
+
 });
 
 

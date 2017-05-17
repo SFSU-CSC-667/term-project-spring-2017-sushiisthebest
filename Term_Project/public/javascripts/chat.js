@@ -10,14 +10,21 @@ $(function () {
     //     if(event.keyCode === 13) { console.log('enter pressed'); sendMessage()}
     // });
 
-    $('div#game-window').on('keydown','input.input-messages', event => {
-        if(event.keyCode === 13) {
-            console.log('enter-pressed');
-            console.log('value being sent',event.target.value);
-            sendMessage(event.target.value);
-            event.target.value = '';
-        }
-    });
+    let $gameWindow = $('div#game-window');
+
+        $gameWindow.on('keydown','input.input-messages', event => {
+            if(event.keyCode === 13) {
+                console.log('enter-pressed');
+                console.log('value being sent',event.target.value);
+                sendMessage(event.target.value);
+                event.target.value = '';
+            }
+         });
+
+        $gameWindow.on('click', 'img#card', event => {
+            let url = localStorage.getItem('')
+            $.ajax({url:localStorage.getItem('cu')})
+        })
 
     $('.start').on('click' , event => {
         const id = localStorage.getItem('current-game-id');

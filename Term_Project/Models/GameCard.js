@@ -26,7 +26,10 @@ const db = require('../config/database');
            const query = 'UPDATE \"GameCard\" SET played = t WHERE id = $1';
            const gameQuery = 'UPDATE \"Game\" SET currentcard=$1 WHERE id=$2';
 
-           return db.none(query,[gameCard.cardid, gameCard.gameid])
+           return db.task(t => {
+              return t.batch([db.none(query, gameCard.id), db.none(gameQuery,[gameCard.cardid, gameCard.gameid])])
+           })
        }
+
 
 };

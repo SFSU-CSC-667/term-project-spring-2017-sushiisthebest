@@ -33,15 +33,18 @@ router.post('/draw/:gameid', (req,res,next) =>{
         .catch(error => {
             console.log(error);
         })
+
 }, (req, res, next) => {
     GameCards.updatePlayed(res.locals.card.id)
         .then(()=>{
             console.log('success');
             next();
         })
-}, (req, res, next) => {
+        .catch(error => {console.log(error)})
 
-})
+}, (req, res, next) => {
+    res.sendStatus(200).json(res.locals.card);
+});
 
 
 

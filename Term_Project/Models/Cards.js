@@ -5,7 +5,8 @@ module.exports = {
 	findCardByID: id =>{
 		return db.oneOrNone({
 			  name: 'find-card-by-id',
-			  text: 'SELECT * FROM \"Card\" WHERE ID = $1' ,
+			  text: 'SELECT \"Card\".*, imagetable.path FROM \"Card\" INNER JOIN imagetable ON \"Card\".imageid = imagetable.id' +
+			  'WHERE id = $1' ,
 			  values: [id]
     	})
 	},
