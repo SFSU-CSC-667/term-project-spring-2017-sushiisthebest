@@ -19,6 +19,10 @@ module.exports = {
 		})
 	},
 
+	hasStarted: gameID => {
+		const query = 'SELECT hasstarted FROM \"Game\" WHERE id = $1';
+		return db.one(query,gameID)
+	},
 	// destroyGame: gameID => {
 	//     // this function deletes game and all players tied to game
      //    // to be used when game ends or HOST leaves the game before it has started

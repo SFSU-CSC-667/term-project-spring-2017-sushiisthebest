@@ -29,7 +29,7 @@ const db = require('../config/database');
            return db.task(t => {
                console.log('GameCard ID DRAWN:', gameCard.id);
                console.log('GameCard Card ID DRAWN:',gameCard.cardid);
-               console.log('GameCard GAME ID' , gameCard.gameid)
+               console.log('GameCard GAME ID' , gameCard.gameid);
               return t.batch([
                   db.none(query, [gameCard.id]), db.none(gameQuery,[gameCard.cardid, gameCard.gameid])])
            })

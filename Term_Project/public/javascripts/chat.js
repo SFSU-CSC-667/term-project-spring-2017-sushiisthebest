@@ -22,12 +22,12 @@ $(function () {
          });
 
         $gameWindow.on('click', 'img#card', event => {
-            let url = '/PirateParty/draw/'+ localStorage.getItem('current-game-id')
+            let url = '/PirateParty/draw/'+ localStorage.getItem('current-game-id');
             $.ajax({
                 url: url,
                 type: 'get',
                 dataType: 'json',
-                success: data => {console.log('Success function',    data)}
+                success: data => {console.log('Success function', data)}
                 })
         });
 
@@ -48,7 +48,7 @@ socket.on('connect', ()=> {
 });
 
 function start(response){
-    console.log(response.gameid);
+    console.log('loading pirate party view at gameid:',response.gameID);
     $('#game-window').load('/PirateParty/load-view/'+ response.gameID + ' .container')
 }
 
@@ -121,7 +121,7 @@ function draw(card){
 
 socket.on('card-drawn', data => {
     console.log(data);
-    $('.game-play-area').load(document.URL +' .game-play-area');
+    $('.card-container').load('/PirateParty/load-view/'+localStorage.getItem('current-game-id') +' #card');
 });
 
 

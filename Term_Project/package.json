@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "populateCards": "node ./lib/populate_cards.js"
+    "populateCards": "node ./lib/populate_cards.js",
+    "populateImages":"node ./lib/populate_images.js",
+    "cleanImages": "node ./lib/cleanImgPaths.js",
+    "translateCardImgId": "node ./lib/translateCardImgId.js"
   },
   "dependencies": {
     "bcrypt": "^1.0.2",

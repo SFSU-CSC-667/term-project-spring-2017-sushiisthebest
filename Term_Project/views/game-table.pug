@@ -11,7 +11,8 @@ block content
         .game-play-area
             | Game-Play-Area
             img#deck(src='/images/PNG-cards-1.3/red_joker.png', width='300', height='300')
-            img#card(src=currentCardURL, width='300', height='300')
+            .card-container
+                img#card(src=currentCardURL, width='300', height='300')
             p ---------------------------------------------------------------------------
             p#gameMsg= gameMsg
         #user-interface

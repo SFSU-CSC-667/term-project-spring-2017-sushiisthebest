@@ -108,6 +108,20 @@ router.post('/leave',passport.authenticate('jwt', {session:false}),(req, res, ne
 });
 
 
+router.post('/start', (req, res, next)=> {
+    Games.hasStarted(req.body.gameid)
+        .then(game => {
+            //TODO THIS IS TEMPORARY!!!!!! needs to actually do more, THIS WILL ESENTIalLY RELOUD THE VIEW
+            //TODO FOR EVERYONE. if someone disc... this only to make my life easier for now
+            if(game.hasstarted === true) {
+                broadcast(req.app.get('io'), req.body.gameid, 'start-game', req.body.gameid);
+                res.json({gameID:req.body.gameid});
+            } else {
+                next('route');
+            }
+        })
+});
+
 router.post("/start", (req,res,next) => {
     console.log('GameID: in start route:',req.body.gameid);
     console.log('/Start middleware 1');
@@ -150,7 +164,13 @@ router.post("/start", (req,res,next) => {
  });
 
 
-
+// router.get('/:gameID', (req,res,next) => {
+//     Games.hasStarted(req.params.gameID)
+//         .then(game=> {
+//             game.hasstarted === true ?
+//                 res.redirect('/PirateParty/load-view/'+req.params.gameID) : next('route');
+//         })
+// });
 
 router.get('/:gameID', (req, res, next) => {
    let view = {
@@ -181,17 +201,7 @@ router.get('/:gameID', (req, res, next) => {
        });
 
 }, (req, res, next) => {
-    if(res.locals.lobby[0].currentcard) {
-    Cards.findCardByID(res.locals.lobby[0].currentcard)
-        .then(card => {
-            res.locals.view.currentCardURL = card.path;
-            res.render('[res.locals.view);
-        })
-    } else {
         res.render('gamelobby',res.locals.view);
-    }
-
-
 });
 
 
