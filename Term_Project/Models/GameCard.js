@@ -1,19 +1,16 @@
 const db = require('../config/database');
 
    module.exports = {
-       createNewDeck: (gameid, cards) =>{
-            return Promise.all(cards.map(card => {
-                console.log('Adding Card INDEX:',card.index);
-                const query = 'INSERT INTO \"GameCard\" (gameid, cardid, cardorder) VALUES ($1, $2, $3)';
+       createNewDeck: (gameID, cards) =>{
+           const query = 'INSERT INTO \"GameCard\" (gameid, cardid, cardorder) VALUES ($1, $2, $3)';
+           var queries = [];
 
-                db.none(query, [gameid, card.id, card.index])
-                .then(results => {
-                    console.log("Created new deck for Game ID:", gameid);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-            }))
+           return db.task(t=> {
+               cards.forEach( (card,index) => {
+                   queries.push(db.none(query, [gameID, card.id,index + 1]));
+               });
+               return t.batch(queries);
+           });
        },
 
         drawNextCard: gameID =>{

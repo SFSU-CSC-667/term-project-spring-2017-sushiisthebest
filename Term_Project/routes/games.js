@@ -12,6 +12,7 @@ const Cards = require('../Models/Cards');
 
 const passport = require('passport');
 const broadcast = require('../socket/broadcast');
+const shuffle = require('../lib/shuffle');
 
 
 
@@ -109,9 +110,9 @@ router.post('/leave',passport.authenticate('jwt', {session:false}),(req, res, ne
 
 router.post("/start", (req,res,next) => {
     console.log('GameID: in start route:',req.body.gameid);
+    console.log('/Start middleware 1');
     Games.startGame(req.body.gameid)
         .then(()=>{
-            broadcast(req.app.get('io'),req.body.gameid,'start-game',req.body.gameid);
            next();
         })
         .catch(error => {
@@ -120,9 +121,11 @@ router.post("/start", (req,res,next) => {
         })
 
 }, (req, res, next) => {
+    console.log('/start middleware 2');
     Cards.getPlayingCards()
         .then(cards => {
-            req.locals = cards;
+            console.log(cards);
+            res.locals.cards = shuffle(cards);
             next();
         })
         .catch(error => {
@@ -131,8 +134,19 @@ router.post("/start", (req,res,next) => {
         })
 
 }, (req, res, next) => {
-        GameCard.createNewDeck(req.body.gameid)
+    console.log('/start middle ware 3');
+        GameCard.createNewDeck(req.body.gameid, res.locals.cards)
+            .then(results => {
+                console.log('hello');
+                broadcast(req.app.get('io'),req.body.gameid,'start-game',req.body.gameid);
 
+                res.json({gameID: req.body.gameid})
+            })
+            .catch(error => {
+                console.log('error in create new deck');
+                console.log(error);
+                res.send(500);
+            })
  });
 
 

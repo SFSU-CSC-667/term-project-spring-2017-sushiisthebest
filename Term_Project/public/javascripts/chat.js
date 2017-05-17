@@ -37,7 +37,7 @@ socket.on('connect', ()=> {
 
 function start(response){
     console.log(response.gameid);
-    $('#game-window').load('/PirateParty/'+ response.gameID + ' .container')
+    $('#game-window').load('/PirateParty/load-view/'+ response.gameID + ' .container')
 }
 
 //-------------------------- Chat --------------------------------------
@@ -127,7 +127,7 @@ socket.on('user-left', (data) => {
 });
 
 socket.on('start-game', (gameID) => {
-    $('#game-window').load('/PirateParty/'+ gameID + ' .container');
+    $('#game-window').load('/PirateParty/load-view/'+ gameID + ' .container');
     setTimeout(()=>{
         document.getElementById('gameMsg').innerHTML = 'Welcome to Pirate Party !!!';
         setTimeout(()=>{
