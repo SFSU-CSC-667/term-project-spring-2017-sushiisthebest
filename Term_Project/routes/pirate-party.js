@@ -23,7 +23,7 @@ router.get('/load-view/:gameid', (req, res) => {
        })
 });
 
-router.post('/draw/:gameid', (req,res,next) =>{
+router.get('/draw/:gameid', (req,res,next) =>{
     GameCards.drawNextCard(req.params.gameid)
         .then(card => {
             res.locals.card = card;
@@ -35,7 +35,7 @@ router.post('/draw/:gameid', (req,res,next) =>{
         })
 
 }, (req, res, next) => {
-    GameCards.updatePlayed(res.locals.card.id)
+    GameCards.updatePlayed(res.locals.card)
         .then(()=>{
             console.log('success');
             next();
@@ -43,7 +43,8 @@ router.post('/draw/:gameid', (req,res,next) =>{
         .catch(error => {console.log(error)})
 
 }, (req, res, next) => {
-    res.sendStatus(200).json(res.locals.card);
+    broadcast(req.app.get('io'),req.params.gameid,'card-drawn',res.locals.card);
+    res.json(res.locals.card);
 });
 
 

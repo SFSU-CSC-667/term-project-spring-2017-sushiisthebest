@@ -173,6 +173,7 @@ router.get('/:gameID', (req, res, next) => {
                     path: item.imageurl
                 };
                 view.players.push(player);
+
             });
            res.locals.lobby = lobby;
            res.locals.view = view;
@@ -180,14 +181,14 @@ router.get('/:gameID', (req, res, next) => {
        });
 
 }, (req, res, next) => {
-    if(lobby[0].currentcard) {
-    Cards.findCardByID(lobby[0].currentcard)
+    if(res.locals.lobby[0].currentcard) {
+    Cards.findCardByID(res.locals.lobby[0].currentcard)
         .then(card => {
             res.locals.view.currentCardURL = card.path;
-            res.render(res.locals.view);
+            res.render('[res.locals.view);
         })
     } else {
-        res.render(res.locals.view);
+        res.render('gamelobby',res.locals.view);
     }
 
 

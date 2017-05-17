@@ -22,9 +22,14 @@ $(function () {
          });
 
         $gameWindow.on('click', 'img#card', event => {
-            let url = localStorage.getItem('')
-            $.ajax({url:localStorage.getItem('cu')})
-        })
+            let url = '/PirateParty/draw/'+ localStorage.getItem('current-game-id')
+            $.ajax({
+                url: url,
+                type: 'get',
+                dataType: 'json',
+                success: data => {console.log('Success function',    data)}
+                })
+        });
 
     $('.start').on('click' , event => {
         const id = localStorage.getItem('current-game-id');
@@ -113,6 +118,11 @@ function draw(card){
 
 
 
+
+socket.on('card-drawn', data => {
+    console.log(data);
+    $('.game-play-area').load(document.URL +' .game-play-area');
+});
 
 
 

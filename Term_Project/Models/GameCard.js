@@ -16,18 +16,22 @@ const db = require('../config/database');
         drawNextCard: gameID =>{
             const initQuery = 'SELECT \"GameCard\".*, \"Card\".ruletext, \"Card\".face, \"Card\".value, '
                                 + 'imagetable.path AS imgurl FROM \"GameCard\" INNER JOIN \"Card\" ON \"GameCard\".cardid = \"Card\".id'
-                                +'INNER JOIN imagetable ON \"Card\".imageid = imagetable.id WHERE \"GameCard\".gameid = $1'
-                                +' AND \"GameCard\".played = f ORDER BY \"GameCard\".cardorder LIMIT 1';
+                                +' INNER JOIN imagetable ON \"Card\".imageid = imagetable.id WHERE \"GameCard\".gameid = $1'
+                                +' AND \"GameCard\".played = false ORDER BY \"GameCard\".cardorder LIMIT 1';
                 return db.one(initQuery, gameID)
         },
 
        //TODO SOMEONE THINK OF A MORE DESCRIPTED NAME
        updatePlayed: gameCard => {
-           const query = 'UPDATE \"GameCard\" SET played = t WHERE id = $1';
-           const gameQuery = 'UPDATE \"Game\" SET currentcard=$1 WHERE id=$2';
+           const query = 'UPDATE \"GameCard\" SET played = true WHERE id = $1';
+           const gameQuery = 'UPDATE \"Game\" SET currentcard = $1 WHERE id = $2';
 
            return db.task(t => {
-              return t.batch([db.none(query, gameCard.id), db.none(gameQuery,[gameCard.cardid, gameCard.gameid])])
+               console.log('GameCard ID DRAWN:', gameCard.id);
+               console.log('GameCard Card ID DRAWN:',gameCard.cardid);
+               console.log('GameCard GAME ID' , gameCard.gameid)
+              return t.batch([
+                  db.none(query, [gameCard.id]), db.none(gameQuery,[gameCard.cardid, gameCard.gameid])])
            })
        }
 
