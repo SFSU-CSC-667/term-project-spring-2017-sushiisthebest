@@ -13,7 +13,7 @@ const Cards = require('../Models/Cards');
 const passport = require('passport');
 const broadcast = require('../socket/broadcast');
 const shuffle = require('../lib/shuffle');
-
+const turnControl = require('../lib/turn-control');
 
 
 router.get('/' , (req, res, next) => {
@@ -122,7 +122,7 @@ router.post('/start', (req, res, next)=> {
         })
 });
 
-router.post("/start", (req,res,next) => {
+router.post("/start", turnControl.init, (req,res,next) => {
     console.log('GameID: in start route:',req.body.gameid);
     console.log('/Start middleware 1');
     Games.startGame(req.body.gameid)
@@ -163,14 +163,6 @@ router.post("/start", (req,res,next) => {
             })
  });
 
-
-// router.get('/:gameID', (req,res,next) => {
-//     Games.hasStarted(req.params.gameID)
-//         .then(game=> {
-//             game.hasstarted === true ?
-//                 res.redirect('/PirateParty/load-view/'+req.params.gameID) : next('route');
-//         })
-// });
 
 router.get('/:gameID', (req, res, next) => {
    let view = {
