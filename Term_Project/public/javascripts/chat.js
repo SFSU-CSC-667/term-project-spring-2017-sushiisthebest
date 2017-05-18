@@ -5,6 +5,7 @@ let hasStarted = false;
 let myTurn = false;
 let targetable = false;
 let currentAction = undefined;
+let drawn = false;
 
 $(function () {
 
@@ -19,7 +20,11 @@ $(function () {
             data: {
                 'temp' : 'hello'
             },
-            dataType: 'json'
+            dataType: 'json',
+            success:(msg) => {
+                console.log(msg);
+                myTurn = false;
+            }
         })
     }
 
@@ -38,9 +43,7 @@ $(function () {
            $.ajax({
                url:'/PirateParty/' + localStorage.getItem('current-game-id') + '/target/' + event.currentTarget.id,
                type:'post',
-               data: {
-                   'type' : currentAction
-               },
+               data: currentAction,
                success: data => {
                    console.log(data);
                    endTurn();
@@ -70,7 +73,7 @@ $(function () {
     });
 
     $gameWindow.on('click', 'img#card', event => {
-        if(myTurn) {
+        if(myTurn && !drawn) {
             let url = '/PirateParty/draw/' + localStorage.getItem('current-game-id');
             $.ajax({
                 url: url,
@@ -164,15 +167,15 @@ function draw(clientCard){
     if(clientCard.targetable === true){
         targetable = true;
     }
-
-    currentAction = clientCard.type
+    drawn = true;
+    currentAction = clientCard
 
 }
 
 
 
 socket.on('take-turn', data => {
-    myTurn = true;
+    myTurn = true; drawn = false;
    // document.getElementById('gameMsg').innerHTML = data + ', Please Draw a Card';
 });
 

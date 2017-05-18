@@ -4,78 +4,83 @@
 
 module.exports = {
     checkCard: (req, res, next) =>{
-        let clientCard = {
-            name: '',
-            targetable: false,
-            type: '',
-        };
-
-       switch(res.locals.card.value){
+       let  clientCard = {};
+        switch(res.locals.card.value){
            case 1:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 2:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 3:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 4:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 5:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 6:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 7:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 8:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 9:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
-               clientCard.type ='Single Target';
+               clientCard.type ='Single Target'; clientCard.damage = 10;
                break;
            case 10:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 11:
                console.log('YOU');
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 12:
                console.log('YOU');
@@ -88,6 +93,7 @@ module.exports = {
                clientCard.name = 'YOU';
                clientCard.targetable =true;
                clientCard.type ='Single Target';
+               clientCard.damage = 10;
                break;
            case 14:
                break;

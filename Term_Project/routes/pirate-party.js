@@ -119,8 +119,13 @@ router.post('/:gameID/next-turn', (req, res, next) =>{
 
 
 router.post('/:gameID/target/:playerID' , (req, res, next) => {
-
-})
+    console.log(req.body.damage);
+    Player.damagePlayer(req.params.playerID, req.body.damage)
+        .then(player => {
+            console.log('Player:', req.params.playerID, 'damaged. Remaining Health =', player.health);
+            res.json({msg:'success'});
+        })
+});
 
 
 

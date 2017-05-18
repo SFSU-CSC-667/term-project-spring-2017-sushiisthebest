@@ -20,6 +20,17 @@ module.exports = {
 		})
 	},
 
+	damagePlayer: (id, damage) => {
+		let query = "UPDATE \"Player\" SET health=health - $1 WHERE id = $2 RETURNING health";
+		return db.one(query, [damage, id])
+	},
+
+	healerPlayer: (id, heal) => {
+        let query = "UPDATE \"Player\" SET health=health + $1 WHERE id = $2 RETURNING health";
+        return db.one(query, [damage, id])
+	},
+
+
 	destroyPlayer: (userID, gameID) => {
 		const query = 'DELETE FROM \"Player\" WHERE userid = $1';
 		const updatePlayerCount = 'UPDATE \"Game\" SET playercount = playercount - 1 WHERE id = $1';
