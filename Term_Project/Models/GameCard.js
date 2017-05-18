@@ -3,7 +3,7 @@ const db = require('../config/database');
    module.exports = {
        createNewDeck: (gameID, cards) =>{
            const query = 'INSERT INTO \"GameCard\" (gameid, cardid, cardorder) VALUES ($1, $2, $3)';
-           var queries = [];
+           let queries = [];
 
            return db.task(t=> {
                cards.forEach( (card,index) => {

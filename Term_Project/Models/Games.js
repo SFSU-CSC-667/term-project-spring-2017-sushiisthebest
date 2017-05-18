@@ -19,6 +19,16 @@ module.exports = {
 		})
 	},
 
+	updatePlayerTurnID: (gameID, playerid) => {
+		let query = 'UPDATE \"Game\" SET playerturnid = $1 WHERE id = $2'
+		return db.none(query, [playerid, gameID])
+	},
+
+	getCurrentTurnPlayerID: gameID => {
+		const query = 'SELECT playerturnid FROM \"Game\" WHERE id = $1'
+		return db.one(query, gameID)
+	},
+
 	hasStarted: gameID => {
 		const query = 'SELECT hasstarted FROM \"Game\" WHERE id = $1';
 		return db.one(query,gameID)

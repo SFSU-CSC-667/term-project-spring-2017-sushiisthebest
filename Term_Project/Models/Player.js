@@ -1,6 +1,5 @@
 const HEALTH =  100;
-
-var db = require('../config/database');
+const db = require('../config/database');
 
 module.exports = {
 	findPlayerByUserID: userID =>{
@@ -10,6 +9,8 @@ module.exports = {
       values: [id]
 		})
 	},
+
+
 
 	findPlayerByName: name =>{
 		return db.oneOrNone({
