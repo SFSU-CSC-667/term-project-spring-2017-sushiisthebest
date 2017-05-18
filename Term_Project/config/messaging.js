@@ -32,6 +32,14 @@ const init = (app, server) => {
         socket.on('send-message', data => {
             socket.to(data.room).emit('add-message', data);
         })
+
+        socket.on('hover-player', data => {
+            io.in(data.room).emit('on-target', data.playerID);
+        })
+
+        socket.on('unhover-player', data=> {
+            io.in(data.room).emit('off-target', data.playerID);
+        })
     });
 
 
@@ -47,7 +55,7 @@ const init = (app, server) => {
         });
 
     });
-    
+
 };
 
 

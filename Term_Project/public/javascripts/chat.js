@@ -3,6 +3,8 @@ const FADE_TIME = 150;
 let connected = false;
 let hasStarted = false;
 let myTurn = false;
+let targetable = false;
+let currentAction = undefined;
 
 $(function () {
 
@@ -10,7 +12,7 @@ $(function () {
     let $gameWindow = $('div#game-window');
 
 
-    function turnTest() {
+    function endTurn() {
         $.ajax({
             url: '/PirateParty/' + localStorage.getItem('current-game-id') + '/next-turn',
             type: 'post',
@@ -30,6 +32,43 @@ $(function () {
         }
      });
 
+    $gameWindow.on('click', '.box1', event => {
+        console.log('event target id', event.currentTarget.id);
+       if(myTurn && targetable){
+           $.ajax({
+               url:'/PirateParty/' + localStorage.getItem('current-game-id') + '/target/' + event.currentTarget.id,
+               type:'post',
+               data: {
+                   'type' : currentAction
+               },
+               success: data => {
+                   console.log(data);
+                   endTurn();
+               }
+           })
+       }
+    });
+
+    $gameWindow.on('mouseenter', 'div.box1', event =>{
+        console.log('targetable:', targetable);
+        console.log(event.currentTarget.id);
+       if(targetable){
+           // event.target.css({"border": "3px solid red"})
+               let data = {playerID: event.currentTarget.id, room: localStorage.getItem('current-game-id')};
+               console.log('mouse enters box1');
+               socket.emit('hover-player', data)
+           }
+    });
+
+    $gameWindow.on('mouseleave', 'div.box1', event => {
+        console.log(event.currentTarget.id);
+        if(targetable) {
+            let data = {playerID: event.currentTarget.id, room: localStorage.getItem('current-game-id')};
+            console.log('mouse leaves box1');
+            socket.emit('unhover-player', data)
+        }
+    });
+
     $gameWindow.on('click', 'img#card', event => {
         if(myTurn) {
             let url = '/PirateParty/draw/' + localStorage.getItem('current-game-id');
@@ -37,13 +76,7 @@ $(function () {
                 url: url,
                 type: 'get',
                 dataType: 'json',
-                success: data => {
-                    console.log('Success function', data);
-                    console.log('Passing Turn');
-                    myTurn = false;
-                    turnTest();
-
-                }
+                success: draw
             })
         } else {
             console.log('Its NOT YOUR TURN FUCK FACE')
@@ -127,7 +160,12 @@ function cleanInput(input) {
 
 //-----------------------Game-------------------------------
 
-function draw(card){
+function draw(clientCard){
+    if(clientCard.targetable === true){
+        targetable = true;
+    }
+
+    currentAction = clientCard.type
 
 }
 
@@ -135,12 +173,33 @@ function draw(card){
 
 socket.on('take-turn', data => {
     myTurn = true;
-    document.getElementById('gameMsg').innerHTML = data + ', Please Draw a Card';
+   // document.getElementById('gameMsg').innerHTML = data + ', Please Draw a Card';
 });
 
 socket.on('card-drawn', data => {
     console.log(data);
     $('.card-container').load('/PirateParty/load-view/'+localStorage.getItem('current-game-id') +' #card');
+});
+
+socket.on('on-target', playerID => {
+    try {
+        console.log('playerID', playerID);
+        console.log('playerID.playerID', playerID.playerID);
+
+        let elementName = '#' + playerID;
+        $(elementName).css({"border": "3px", "border-style": "solid", "border-color": "red"});
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+socket.on('off-target', playerID =>{
+    try {
+        let elementName = '#' + playerID;
+        $(elementName).css({"border": "none"});
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 

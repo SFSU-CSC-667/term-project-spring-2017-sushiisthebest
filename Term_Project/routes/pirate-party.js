@@ -14,6 +14,7 @@ const Player = require('../Models/Player');
 const turnControl = require('../lib/turn-control');
 const passport = require('passport');
 const broadcast = require('../socket/broadcast');
+const PirateParty = require('../lib/pirate-party');
 
 router.use(passport.authenticate('jwt', {session:false}));
 
@@ -72,10 +73,13 @@ router.get('/draw/:gameID', (req,res,next) =>{
         })
         .catch(error => {console.log(error)})
 
-}, (req, res, next) => {
+}, PirateParty.checkCard, (req, res, next) => {
+
     broadcast(req.app.get('io'),req.params.gameID,'card-drawn',res.locals.card);
-    res.json(res.locals.card);
+    res.json(res.locals.clientCard);
 });
+
+
 
 router.post('/:gameID/next-turn', (req, res, next) =>{
     Games.getCurrentTurn(req.params.gameID)
@@ -88,6 +92,7 @@ router.post('/:gameID/next-turn', (req, res, next) =>{
             res.locals.playerOrder = nextPlayerNumber;
             next();
         })
+
 }, (req,res,next) => {
 
     let newPlayerId;
