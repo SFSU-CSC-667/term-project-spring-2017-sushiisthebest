@@ -20,6 +20,7 @@ const init = (app, server) => {
        socket.on('join', data => {
            console.log('socket joining room',data.room);
            socket.join(data.room);
+           socket.join(data.username);
            socket.username = data.username;
            socket.to(data.room).emit('user-joined', data.username);
        });
@@ -46,9 +47,7 @@ const init = (app, server) => {
         });
 
     });
-
-
-
+    
 };
 
 

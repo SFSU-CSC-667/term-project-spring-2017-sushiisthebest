@@ -7,28 +7,24 @@ const User = require('../Models/User');
 
 module.exports = {
     init:(req,res,next) => {
-        db.task(t=> {
-            return User.getPlayer(req.user.id)
-                .then(player =>{
-                    return Game.updatePlayerTurnID(req.body.id, player.id)
-                })
-        })
-            .then(()=> {
-                next();
-            })
-            .catch(error => {
-                console.log(error);
-                console.log('error in turn control . init middleware');
-            })
+        const userQuery = 'SELECT \"Player\".id FROM \"User\" ' +
+            'INNER JOIN \"Player\" ON \"User\".id = \"Player\".userid ' +
+            'WHERE \"User\".id = $1';
+        const gameQuery = 'UPDATE \"Game\" SET playerturnid = $1 WHERE id = $2';
+
+
     },
 
 
     //TODO NAME PENDING
-    getPlayerTurn: (req, res, next) => {
-        Game.getCurrentTurnPlayerID(req.params.gameID)
+    getNextTurn: (req, res, next) => {
+        Game.getCurrentTurn(req.params.gameID)
             .then(game => {
                 console.log(game.playerturnid)
                 res.locals.playerTurnID = game.playerturnid;
+            next();
             })
     }
+
+
 };

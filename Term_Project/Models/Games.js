@@ -19,14 +19,17 @@ module.exports = {
 		})
 	},
 
+
 	updatePlayerTurnID: (gameID, playerid) => {
 		let query = 'UPDATE \"Game\" SET playerturnid = $1 WHERE id = $2'
 		return db.none(query, [playerid, gameID])
 	},
 
-	getCurrentTurnPlayerID: gameID => {
-		const query = 'SELECT playerturnid FROM \"Game\" WHERE id = $1'
-		return db.one(query, gameID)
+	getCurrentTurn: gameID => {
+		const query =  'select \"Game\".playerturnid, \"Game\".playercount, \"Player\".turnorder FROM \"Game\" INNER JOIN ' +
+			' \"Player\" ON  \"Game\".playerturnid = \"Player\".id WHERE \"Game\".id = $1';
+
+        return db.one(query, gameID)
 	},
 
 	hasStarted: gameID => {
@@ -43,8 +46,15 @@ module.exports = {
 
 	startGame: gameID => {
 		console.log("gameID in model:",gameID);
-		const query = "UPDATE \"Game\" SET hasstarted=true WHERE id= $1";
-		return db.none(query,gameID)
+		const playerQuery = 'SELECT id FROM \"Player\" WHERE gameid = $1 AND turnorder = 1';
+		const query = "UPDATE \"Game\" SET hasstarted=true, playerturnid=$1 WHERE id= $2";
+		return db.task(t=> {
+			return t.one(playerQuery, gameID)
+				.then(player => {
+					console.log('Settings playerturnid to:', player.id);
+					return t.none(query,[player.id, gameID])
+				})
+		})
 	},
 
 	getVisibleGames: () => {

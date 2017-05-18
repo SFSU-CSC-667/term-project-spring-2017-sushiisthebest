@@ -2,34 +2,53 @@ const socket = io.connect();
 const FADE_TIME = 150;
 let connected = false;
 let hasStarted = false;
+let myTurn = false;
 
 $(function () {
-    //init
-    let $input = $('.input-messages');
-    // $input.keydown( event => {
-    //     if(event.keyCode === 13) { console.log('enter pressed'); sendMessage()}
-    // });
 
+    let $input = $('.input-messages');
     let $gameWindow = $('div#game-window');
 
-        $gameWindow.on('keydown','input.input-messages', event => {
-            if(event.keyCode === 13) {
-                console.log('enter-pressed');
-                console.log('value being sent',event.target.value);
-                sendMessage(event.target.value);
-                event.target.value = '';
-            }
-         });
 
-        $gameWindow.on('click', 'img#card', event => {
-            let url = '/PirateParty/draw/'+ localStorage.getItem('current-game-id');
+    function turnTest() {
+        $.ajax({
+            url: '/PirateParty/' + localStorage.getItem('current-game-id') + '/next-turn',
+            type: 'post',
+            data: {
+                'temp' : 'hello'
+            },
+            dataType: 'json'
+        })
+    }
+
+    $gameWindow.on('keydown','input.input-messages', event => {
+        if(event.keyCode === 13) {
+            console.log('enter-pressed');
+            console.log('value being sent',event.target.value);
+            sendMessage(event.target.value);
+            event.target.value = '';
+        }
+     });
+
+    $gameWindow.on('click', 'img#card', event => {
+        if(myTurn) {
+            let url = '/PirateParty/draw/' + localStorage.getItem('current-game-id');
             $.ajax({
                 url: url,
                 type: 'get',
                 dataType: 'json',
-                success: data => {console.log('Success function', data)}
-                })
-        });
+                success: data => {
+                    console.log('Success function', data);
+                    console.log('Passing Turn');
+                    myTurn = false;
+                    turnTest();
+
+                }
+            })
+        } else {
+            console.log('Its NOT YOUR TURN FUCK FACE')
+        }
+    });
 
     $('.start').on('click' , event => {
         const id = localStorage.getItem('current-game-id');
@@ -69,7 +88,6 @@ function sendMessage(msg){
 }
 
 
-
 function addNewMessage(data) {
     let username = localStorage.getItem('username');
 
@@ -88,8 +106,6 @@ function addNewMessage(data) {
 
 function addElement(element){
     let $element = $(element).hide().fadeIn(FADE_TIME);
-
-
 
     if (hasStarted){
        let $inGameMessages = $('#modal-messages');
@@ -117,7 +133,10 @@ function draw(card){
 
 
 
-
+socket.on('take-turn', data => {
+    myTurn = true;
+    document.getElementById('gameMsg').innerHTML = data + ', Please Draw a Card';
+});
 
 socket.on('card-drawn', data => {
     console.log(data);
