@@ -117,7 +117,6 @@ router.post('/:gameID/next-turn', (req, res, next) =>{
 });
 
 
-
 router.post('/:gameID/target/:playerID' , (req, res, next) => {
     console.log(req.body.damage);
     Player.damagePlayer(req.params.playerID, req.body.damage)
@@ -125,6 +124,56 @@ router.post('/:gameID/target/:playerID' , (req, res, next) => {
             console.log('Player:', req.params.playerID, 'damaged. Remaining Health =', player.health);
             res.json({msg:'success'});
         })
+});
+
+router.post('/:gameID/me/:playerID', (req,res,next) =>{
+   let io = req.app.get('io');
+   Player.damagePlayer(req.params.playerID, req.body.damage)
+       .then(player => {
+           res.json({health: player.health});
+       })
+});
+
+router.post('/:gameID/wenches', (req,res,next) => {
+    console.log('wenches middleware 1');
+    Games.getWenches(req.params.gameID)
+        .then(wenches => {
+            res.locals.wenches = wenches;
+            next();
+        })
+
+}, (req,res,next) => {
+    console.log('wenches middleware 2');
+    Player.damagePlayers(res.locals.wenches)
+        .then(results => {
+            console.log('results');
+            const msg = "success";
+            res.json({msg:msg});
+            })
+
+});
+
+router.post('/:gameID/dudes', (req,res,next) => {
+    console.log('dudes middleware 1');
+    Games.getWenches(req.params.gameID)
+        .then(dudes => {
+            res.locals.dudes = dudes;
+            next();
+        })
+
+}, (req,res,next) => {
+    console.log('dudes middleware 2');
+    Player.damagePlayers(res.locals.dudes)
+        .then(results => {
+            console.log('results');
+            const msg = "success";
+            res.json({msg:msg});
+        })
+
+});
+
+router.post('/:gameID/king', (req,res,next)=> {
+
 });
 
 

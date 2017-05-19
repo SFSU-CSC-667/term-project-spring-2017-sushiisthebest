@@ -44,6 +44,10 @@ module.exports = {
     //
 	// },
 
+	getWenches: gameID => {
+		const query = 'SELECT \"Player\".id  FROM \"
+	},
+
 	startGame: gameID => {
 		console.log("gameID in model:",gameID);
 		const playerQuery = 'SELECT id FROM \"Player\" WHERE gameid = $1 AND turnorder = 1';

@@ -25,6 +25,16 @@ module.exports = {
 		return db.one(query, [damage, id])
 	},
 
+	damagePlayers: (players, damage) => {
+		let queries = [];
+		return db.task(t=> {
+            players.forEach(player => {
+                queries.push(this.damagePlayer(player.id,damage));
+            });
+            return t.batch(queries);
+        })
+	},
+
 	healerPlayer: (id, heal) => {
         let query = "UPDATE \"Player\" SET health=health + $1 WHERE id = $2 RETURNING health";
         return db.one(query, [damage, id])

@@ -13,6 +13,8 @@ $(function () {
     let $gameWindow = $('div#game-window');
 
 
+
+
     function endTurn() {
         $.ajax({
             url: '/PirateParty/' + localStorage.getItem('current-game-id') + '/next-turn',
