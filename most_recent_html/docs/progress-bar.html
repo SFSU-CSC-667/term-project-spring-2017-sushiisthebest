@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body>
+<div class="w3-container">
+
+<h2>Player 1</h2>
+
+
+<div class="w3-light-grey">
+  <div id="player-1-health" class="w3-container w3-red" style="height:24px;width:20%"></div>
+  </div>
+
+  <h3 id="player-health">100%</h3>
+
+  <button class="w3-button w3-grey" onclick="move()">Damage Player</button> 
+</div>
+
+<script>
+function move() {
+  var elem = document.getElementById("player-1-health");   
+  var width = 0;
+  var id = setInterval(frame, 30);
+  function frame() {
+    if (width >= 100) {
+      clearInterval(id);
+    } else {
+      width++; 
+      elem.style.width = width + '%'; 
+      document.getElementById("player-1-health").innerHTML = width * 1  + '%';
+    }
+  }
+}
+</script>
+
+</body>
+</html>
