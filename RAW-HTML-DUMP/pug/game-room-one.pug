@@ -1,0 +1,135 @@
+doctype html
+html(lang='en')
+  head
+    //
+      Basic Page Needs
+      ––––––––––––––––––––––––––––––––––––––––––––––––––
+    meta(charset='utf-8')
+    title Party Pirate Pals
+    meta(name='description', content='')
+    meta(name='author', content='')
+    //
+      Favicon
+      ––––––––––––––––––––––––––––––––––––––––––––––––––
+    link(rel='icon', type='image/png', href='images/favicon.png')
+    //
+      Mobile Specific Metas
+      ––––––––––––––––––––––––––––––––––––––––––––––––––
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', type='text/css', href='css/normalize.css')
+    link(rel='stylesheet', type='text/css', href='css/game-room-one.css')
+  body
+    .container
+      #players-group
+        .box1
+          img.avatar-on-plate(src='images/game-room/player-avatar-1.png')
+          img(src='images/game-room/player-healthbar.png')
+          h3.health-text 99%
+          h3.xp-text 100
+        .box2
+          img.avatar-on-plate(src='images/game-room/player-avatar-2.png')
+          img(src='images/game-room/player-healthbar.png')
+          h3.health-text 99%
+          h3.xp-text 100
+        .box3
+          img.avatar-on-plate(src='images/game-room/player-avatar-3.png')
+          img(src='images/game-room/player-healthbar.png')
+          h3.health-text 99%
+          h3.xp-text 100
+        .box4
+          img.avatar-on-plate(src='images/game-room/player-avatar-4.png')
+          img(src='images/game-room/player-healthbar.png')
+          h3.health-text 99%
+          h3.xp-text 100
+      .game-play-area
+        img(src='images/game-room/game-card-placeholder.png', width='240px', height='320px')
+        div
+          h2 Rule:
+          p This is some rule text. Player Loses -10 Health!
+      #user-interface
+        .player-card-board
+          img.sushi-ability(src='images/game-room/sushi-ability-1.png')
+          img.jack-card-ability(src='images/game-room/jack-card-ability-1.png')
+          img(src='images/game-room/player-card-board.png')
+          h3.health-text 99%
+        .mood-board
+          img(src='images/game-room/avatar-default-state.png')
+        .chat
+          img#modal-btn(src='images/game-room/chat-icon.png')
+          // The Modal
+          #chat-modal.modal
+            // Modal content
+            .modal-content
+              span.close ×
+              h4 Zack:
+              p Whaddup chats working
+              br
+              h4 Logan:
+              p No its not this is just text in a box
+              br
+              h4 Zack:
+              p well i mean its working enough for a grade...
+              br
+              h4 Logan:
+              p How dare you...
+              br
+              h4 Zack:
+              p Youre right what was i thinking
+              br
+              h4 Zack:
+              p BRB quitting life
+              br
+              h4 Logan:
+              p kk, just make it fast i dont got all day
+              br
+              h4 Zack:
+              p Whaddup chats working
+              br
+              h4 Zack:
+              p Whaddup chats working
+              br
+              h4 Zack:
+              p Whaddup chats working
+              br
+              h4 Zack:
+              p Whaddup chats working
+              br
+              h4 Zack:
+              p Whaddup chats working
+              br
+              h4 Zack:
+              p Whaddup chats working
+              br
+              h4 Zack:
+              p Whaddup chats working
+              br
+              h4 Zack:
+              p Whaddup chats working
+              br
+              h4 Zack:
+              p Whaddup chats working
+              br
+              h4 Zack:
+              p Whaddup chats working
+              br
+      script.
+        // Get the modal
+        var modal = document.getElementById('chat-modal');
+        // Get the button that opens the modal
+        var btn = document.getElementById("modal-btn");
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        // When the user clicks the button, open the modal
+        btn.onclick = function() {
+        modal.style.display = "block";
+        }
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+        modal.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+        if (event.target == modal) {
+        modal.style.display = "none";
+        }
+        }
