@@ -41,7 +41,6 @@ input[type=text]:focus {
   outline: none;
   border: 2px solid #502e98;
 }
-
 h1,h2,h3,h4{
   -webkit-text-stroke-color: #502e98;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #91a9cb));
@@ -65,8 +64,6 @@ table th {
   border: 1px solid rgba(147, 128, 108, 0.5);
   padding: .5em;
 }
-
-
 @-webkit-keyframes wiggle {
   0% {-webkit-transform:rotate(4deg);}
   50% {-webkit-transform:rotate(-4deg);}
@@ -104,8 +101,6 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
   -moz-animation: wiggle 0.5s infinite;
   animation: wiggle 0.5s infinite;
 }
-
-
 /* PAGE SPECIFIC CSS */
 .container {
   width: 100vw;
@@ -113,92 +108,57 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
   margin: 0 auto;
 }
 
-/*box holds the form data in outer container*/
-.box{
+.col > div{
+  background-color: #ADADAD;
+}
+
+.demo {
+  width: 100%;
+  background: rgba(147, 128, 108, 0.2);
+  text-align: center;
+}
+/* Tooltip */
+section:nth-child(n+3) [class*="grid-"],
+section:nth-child(n+3) [class*="col-"] {
+  position: relative;
+  cursor: help;
+}
+section:nth-child(n+3) [class*="grid-"]:hover:after,
+section:nth-child(n+3) [class*="col-"]:hover:after {
+  content: attr(class);
+  padding: 2px 8px;
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  white-space: nowrap;
+  z-index: 20;
+  background-color: #555;
+  color: #fff;
+  font-size: .8rem;
+}
+
+.avatar-select{
+  padding-top: 150px;
+  background-image: url("../images/character-select/avatar.png");
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.character-select-box{
   height: 60vh;
   min-height: 75vh;
   border : solid 1px rgba(0,0,0,0.0);
-  background-image: url("../images/box.png");
+  background-image: url("../images/character-select/character-create-box.png");
   background-repeat: no-repeat;
   background-position: 50% 50%;
-  background-size: 920px 685px;
-  max-height:685px;
-}
-.box form{
-  margin-top: 10%;
-}
-.spacer{
-  height: 10vh;
-}
-.login {
-  width: 100%;
-  text-align: center;
-  margin: 0 auto;
-}
-.login p {
-  margin: 0;
-  padding: 1rem;
+  background-size: 920px 700px;
+  min-height: 700px;
+
 }
 
-@media screen and (max-width: 120em) {
-  .box h1{
-    margin-top: 8vh;
-  }
-  .btn-sign-in h1{
-    margin-top:5vh;
-  }
-}
-@media screen and (max-width: 100em) {
-  .box h1{
-    margin-top: 15vh;
-  }
-  .btn-sign-in h1{
-    margin-top: 8vh;
-  }
-}
+/*WIDTH*/
 @media screen and (max-width: 80em) {
-  .box{
-    background-size: contain;
-  }
-  .box h1{
-    margin-top: 18vh;
-  }
-  .btn-sign-in h1{
-    margin-top: 8vh;
-  }
-}
-@media screen and (max-width: 60em) {
-  h2{
-    font-size: 2vw;
-  }
-  .box h1{
-    margin-top: 18vh;
-  }
-  .btn-sign-in h1{
-    margin-top: 4vh;
-  }
-}
-
-@media screen and (max-width: 45em) {
-  .login p {
-    padding: .5rem;
-  }
-  .box h1{
-    margin-top: 25vh;
-    padding: 0;
-  }
-  .btn-sign-in h1{
-    margin-top: 1.5vh;
-  }
-}
-@media screen and (max-height: 440px) {
-  .spacer{
-    display: none;
-  }
-  h1,h2{
-    font-size: 1vw;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    margin: 0 auto;
-  }
+.character-select-box{
+  background-size: contain;
 }

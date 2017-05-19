@@ -1,0 +1,500 @@
+@font-face { font-family: Heroes_Legend; src: url('../fonts/Heroes_Legend.ttf'); } 
+html, body{
+  height: 100%;
+}
+body {
+  background-image: url('../images/game-room/bg-game-room.jpg');
+  background-position: center center;
+  background-repeat:  no-repeat;
+  background-attachment: fixed;
+  background-size:  cover;
+  background-color: #000;
+  font-family: Heroes_Legend !important;
+}
+input[type=text] {
+  width: 60%;
+  height: 4.5%;
+  background-color: #120600;
+  color: #fff;
+  border: 2px solid #e9e9e9;
+  -webkit-box-shadow: 0px 9px 5px -1px rgba(0,0,0,0.59);
+  -moz-box-shadow: 0px 9px 5px -1px rgba(0,0,0,0.59);
+  box-shadow: 0px 9px 5px -1px rgba(0,0,0,0.59);
+}
+input[type=text]:focus {
+  outline: none;
+  border: 2px solid #502e98;
+}
+h1,h2,h3,h4{
+  -webkit-text-stroke-color: #502e98;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #91a9cb));
+  background-image: -webkit-linear-gradient(#ffffff,#b3adb5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #fff;
+}
+h1{
+  font-size: 1.8vw;
+  -webkit-text-stroke-width: .05em;
+}
+h2{
+  font-size: 1.3vw;
+  -webkit-text-stroke-width: .025em;
+}
+h3{
+  font-size: 1.4vw;
+  -webkit-text-stroke-width: .025em;
+}
+h4{
+  font-size: .8vw;
+  -webkit-text-stroke-width: .025em;
+}
+a{
+  text-decoration: none;
+}
+ul{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+
+@-webkit-keyframes wiggle {
+  0% {-webkit-transform:rotate(4deg);}
+  50% {-webkit-transform:rotate(-4deg);}
+  100% {-webkit-transform:rotate(4deg);}
+}
+ 
+/* firefox */
+@-moz-keyframes wiggle {
+  0% {-moz-transform:rotate(4deg);}
+  50% {-moz-transform:rotate(-4deg);}
+  100% {-moz-transform:rotate(4deg);}
+}
+ 
+/* anyone brave enough to implement the ideal method */
+@keyframes wiggle {
+  0% {transform:rotate(4deg);}
+  50% {transform:rotate(-4deg);}
+  100% {transform:rotate(4deg);}
+}
+.rotate {
+/* Safari */
+-webkit-transform: rotate(-6deg);
+/* Firefox */
+-moz-transform: rotate(-6deg);
+/* IE */
+-ms-transform: rotate(-6deg);
+/* Opera */
+-o-transform: rotate(-6deg);
+/* Internet Explorer */
+filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
+}
+.wiggler:hover {
+  -webkit-animation: wiggle 0.5s infinite;
+  -moz-animation: wiggle 0.5s infinite;
+  animation: wiggle 0.5s infinite;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  padding-right: 2em;
+  padding-left: 2em;
+  background-color: #6D899F;
+
+}
+
+#user-interface {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+
+  -webkit-align-items: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  }
+
+.player-card-board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-order: 1;
+  -ms-flex-order: 1;
+  order: 1;
+
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+
+  -webkit-align-self: auto;
+  -ms-flex-item-align: auto;
+  align-self: auto;
+}
+
+.mood-board {
+  /*
+  border: 2px solid blue;
+  background-color: #6D899E;*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-order: 2;
+  -ms-flex-order: 2;
+  order: 2;
+
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+
+  -webkit-align-self: auto;
+  -ms-flex-item-align: auto;
+  align-self: auto;
+
+  width: 100%;
+}
+
+.chat{
+  -webkit-order: 3;
+  -ms-flex-order: 3;
+  order: 3;
+
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+
+  -webkit-align-self: auto;
+  -ms-flex-item-align: auto;
+  align-self: auto;
+
+  width: 100%;
+
+}/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    -webkit-animation-name: fadeIn; /* Fade in the background */
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s
+}
+
+/* Modal Content */
+.modal-content {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    background-color: #fefefe;
+    width: 45%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s;
+    height: 300px;
+    overflow: scroll;
+    border: 3px solid black;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fffcfc+23,d1cedb+100 */
+background: #fffcfc; /* Old browsers */
+background: -moz-linear-gradient(left,  #fffcfc 23%, #d1cedb 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(left,  #fffcfc 23%,#d1cedb 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to right,  #fffcfc 23%,#d1cedb 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fffcfc', endColorstr='#d1cedb',GradientType=1 ); /* IE6-9 */
+
+}
+.modal-content h4, p{
+  padding-top: 1em;
+}
+
+
+/* The Close Button */
+.close {
+    color: #000;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+.modal-content{
+  padding: 2em;
+}
+.chat{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+    from {bottom: -300px; opacity: 0} 
+    to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+.game-play-area{
+  margin-top: 5em;
+  margin-bottom: 3em;
+  background-color: rgba(0, 0, 0, 0.0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sushi-ability{
+  position: relative;
+  top: -1.250em;
+  left: 582px;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+}
+.jack-card-ability{
+  position: relative;
+  top: -24px;
+  left: 560px;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+}
+.player-card-board h3{
+  position: relative;
+  top: -2.5em;
+  bottom: 0;
+  left: -8.75em;
+  right: 0;
+}
+.player-card-board{
+  margin-bottom: -1em;
+  margin-left: -13em;
+  width: 100%;
+}
+
+#players-group{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+  margin-bottom: 2em;
+}
+.box1{
+  display: flex;
+  position: relative;
+  width: 20%;
+
+  -webkit-box-ordinal-group: 2; 
+  -moz-box-ordinal-group: 2;
+  -ms-flex-order: 1;
+  -webkit-order: 1;
+  order: 1;/*
+  background-color: #CE9B64;*/
+
+  align-items: center;
+  justify-content: center;
+}
+.avatar-on-plate{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.health-text{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #fff;
+  position: absolute;
+  top: 0;
+  left: -2.5em;
+  right: 0;
+  bottom: 0;
+  font-size: 1.5vh;
+}
+.xp-text{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #fff;
+  position: absolute;
+  top: 8.5em;
+  left: -9em;
+  right: 0;
+  bottom: 0;
+  font-size: 1vh;
+}
+
+/*
+.centered-name{
+  position: absolute;
+  left: -25%;
+  top: 75%;
+  transform: translateY(-50%);
+  width: 100%;
+  text-align:right;
+  font-size: 1.5vh;
+  border: 1px solid #000;
+}*/
+
+.box2{
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  -webkit-box-ordinal-group: 2;
+  -moz-box-ordinal-group: 2;
+  -ms-flex-order: 2;
+  -webkit-order: 2;
+  order: 2;/*
+  background-color: #CE9B64;*/
+}
+.box3{
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  -webkit-box-ordinal-group: 3;
+  -moz-box-ordinal-group: 3;
+  -ms-flex-order: 3;
+  -webkit-order: 3;
+  order: 3;/*
+  background-color: #62626D;*/
+}
+.box4{
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  -webkit-box-ordinal-group: 4;
+  -moz-box-ordinal-group: 4;
+  -ms-flex-order: 4;
+  -webkit-order: 4;
+  order: 4;/*
+  background-color: #502e98;*/
+}
+
+.box1 img, .box2 img, .box3 img, .box4 img{
+  max-width:100%;
+  max-height:100%;
+}
+
+.lobby-title, .game-select, .game-join{
+  border: 2px solid green;
+  background-color: #efefef;*/
+}
+
+/* mobile layout */
+@media (max-width: 480px){
+  .container{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+  
+    width: 100%;
+  
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -ms-flex-orient: vertical;
+    -webkit-orient: vertical;
+    orient: vertical;
+  }
+  .box1{
+    -webkit-box-ordinal-group: 1;
+    -moz-box-ordinal-group: 1;
+    -ms-flex-order: 1;
+    -webkit-order: 1;
+    order: 1;
+  }
+  .box2{
+    -webkit-box-ordinal-group: 2;
+    -moz-box-ordinal-group: 2;
+    -ms-flex-order: 2;
+    -webkit-order: 2;
+    order: 2; }
+  .box3{
+    -webkit-box-ordinal-group: 3;
+    -moz-box-ordinal-group: 3;
+    -ms-flex-order: 3;
+    -webkit-order: 3;
+    order: 3; 
+  }
+  .box4{
+      -webkit-box-ordinal-group: 4;
+      -moz-box-ordinal-group: 4;
+      -ms-flex-order: 4;
+      -webkit-order: 4;
+      order: 4; 
+  }
+
+}
