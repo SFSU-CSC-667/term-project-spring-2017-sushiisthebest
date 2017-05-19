@@ -262,6 +262,8 @@ router.post('/:gameID/king' , (req, res, next) => {
         })
 });
 
+router.post('/:gameID/bomb')
+
 
 
 

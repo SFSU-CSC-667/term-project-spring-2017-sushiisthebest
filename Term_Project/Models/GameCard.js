@@ -42,7 +42,7 @@ const db = require('../config/database');
                'GROUP BY "Card".value, "GameCard".played ' +
                ' HAVING "GameCard".played = false AND "Card".value = 13';
 
-           return db.one(query,)
+           return db.one(query)
        }
 
 

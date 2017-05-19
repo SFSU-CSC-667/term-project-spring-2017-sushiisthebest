@@ -1,13 +1,45 @@
-form#login(method="post" action="/users/login")
-	div
-		label(for='username') Username:
-		input#username(type='text', placeholder='username', name='username')
-
-	div
-		label(for='password') Password:
-		input#password(type='password', name='password')
-	button(type="submit") login
-
-
-script(src="https://code.jquery.com/jquery-3.2.1.min.js")
-script(src="/javascripts/login.js")
+extends login-layout
+block content
+	.grid-1
+		.col
+			.login.spacer
+				// <p>SPACER</p>
+	.grid-6
+		.col
+			.login
+				// <p>spacer</p>
+		.col-8
+			.login.box
+				// NEST BEGINS
+				form#login.signup-form(method="post" action="/users/login")
+					h1.login-text LOGIN
+					.grid-6
+						.col
+							.login
+								// <p>col</p>
+						.col-8
+							.login
+								h2 UserName
+								input#username(type='text', name='username')
+						.col
+							.login
+								// <p>col</p>
+					.grid-6
+						.col
+							.login
+								// <p>col</p>
+						.col-8
+							.login
+								h2 Password
+								input#password(type='text', name='password')
+						.col
+							.login
+								// <p>col</p>
+					.grid-1
+						.col
+							.rotate.wiggler
+								.login-button
+									button(type="submit") SIGN IN
+block foot
+	script(src='/javascripts/jquery-3.2.1.js')
+	script(src='/javascripts/login.js')

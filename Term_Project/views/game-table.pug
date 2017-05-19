@@ -12,12 +12,15 @@ block content
             | Game-Play-Area
             img#deck(src='/images/PNG-cards-1.3/red_joker.png', width='300', height='300')
             .card-container
-                 img#card(src=currentCardURL, width='300', height='300')
+                 img#card(src=currentCardURL)
             p ---------------------------------------------------------------------------
             p#gameMsg= gameMsg
         #user-interface
             .player-card-board
-                img(src='/images/in-game-static-images/card-board.png')
+                img.sushi-ability(src='/images/game-room/sushi-ability-1.png')
+                img.jack-card-ability(src='/images/game-room/jack-card-ability-1.png')
+                img(src='/images/game-room/player-card-board.png')
+                h3.health-text 99%
             .mood-board
                 img(src=player.imageurl)
             .chat
