@@ -10,6 +10,13 @@ module.exports = {
 		})
 	},
 
+	findPlayersByGame: gameID => {
+		const query = 'SELECT * FROM \"Player\" WHERE gameid = $!'
+
+		return db.any = (query, gameID);
+	},
+
+
 
 
 	findPlayerByName: name =>{

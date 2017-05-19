@@ -40,7 +40,7 @@ const db = require('../config/database');
                ' INNER JOIN "Card" ON "GameCard".cardid = "Card".id ' +
                'INNER JOIN "Game" ' +
                'GROUP BY "Card".value, "GameCard".played ' +
-               ' HAVING "GameCard".played = false AND "Card".value = 13'
+               ' HAVING "GameCard".played = false AND "Card".value = 13';
 
            return db.one(query,)
        }

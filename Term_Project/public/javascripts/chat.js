@@ -171,6 +171,14 @@ function draw(clientCard){
         targetable = true;
     }
     drawn = true;
+
+    if(clientCard.type = 'auto') {
+        switch (card.name) {
+            case 'bomb':
+                socket.emit('bomb')
+                break;
+        }
+    }
     currentAction = clientCard
 
 }
@@ -206,6 +214,10 @@ socket.on('off-target', playerID =>{
     } catch (error) {
         console.log(error);
     }
+});
+
+socket.on('bomb-animation', data => {
+    setTimeout()
 });
 
 

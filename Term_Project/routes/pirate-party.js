@@ -92,6 +92,10 @@ router.post('/:gameID/next-turn', (req, res, next) =>{
             res.locals.playerOrder = nextPlayerNumber;
             next();
         })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
 
 }, (req,res,next) => {
 
@@ -114,6 +118,10 @@ router.post('/:gameID/next-turn', (req, res, next) =>{
             broadcast(req.app.get('io'), nextTurnUserName, 'take-turn', nextTurnUserName);
             res.json({msg:'hello'})
         })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
 });
 
 
@@ -124,6 +132,10 @@ router.post('/:gameID/target/:playerID' , (req, res, next) => {
             console.log('Player:', req.params.playerID, 'damaged. Remaining Health =', player.health);
             res.json({msg:'success'});
         })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
 });
 
 router.post('/:gameID/me/:playerID', (req,res,next) =>{
@@ -131,6 +143,10 @@ router.post('/:gameID/me/:playerID', (req,res,next) =>{
    Player.damagePlayer(req.params.playerID, req.body.damage)
        .then(player => {
            res.json({health: player.health});
+       })
+       .catch(error => {
+           console.log(error);
+           res.sendStatus(500);
        })
 });
 
@@ -141,6 +157,9 @@ router.post('/:gameID/wenches', (req,res,next) => {
             res.locals.wenches = wenches;
             next();
         })
+        .catch(error => {
+            console.log(error);
+        })
 
 }, (req,res,next) => {
     console.log('wenches middleware 2');
@@ -149,16 +168,25 @@ router.post('/:gameID/wenches', (req,res,next) => {
             console.log('results');
             const msg = "success";
             res.json({msg:msg});
-            })
+            res.sendStatus(500);
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
 
 });
 
 router.post('/:gameID/dudes', (req,res,next) => {
     console.log('dudes middleware 1');
-    Games.getWenches(req.params.gameID)
+    Games.getDudes(req.params.gameID)
         .then(dudes => {
             res.locals.dudes = dudes;
             next();
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
         })
 
 }, (req,res,next) => {
@@ -169,11 +197,69 @@ router.post('/:gameID/dudes', (req,res,next) => {
             const msg = "success";
             res.json({msg:msg});
         })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
 
 });
 
 router.post('/:gameID/king', (req,res,next)=> {
+    console.log('Pirate Party King Route');
+    GameCards.countKings(req.params.gameID)
+        .then(remainingKings => {
+            if(remainingKings.count === 0) { next('route')}
+            next();
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
 
+}, (req, res, next) =>{
+    console.log('King Route Main Branch mw 2');
+    Player.findPlayersByGame(req.params.gameID)
+        .then(players =>{
+            res.locals.players = players;
+            next();
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
+
+}, (req, res, next) => {
+    console.log('King Route Main Branch mw 3')
+    Player.damagePlayers(res.locals.players, req.body.damage)
+        .then(health => {
+            console.log(health)
+            res.json({msg: 'yolo'});
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
+});
+
+router.post('/:gameID/king' , (req, res, next) => {
+    console.log('King Route OHHHH FUCK Branch mw 1');
+    Player.findPlayerByName(req.user.username)
+        .then(player => {
+            res.locals.player = player;
+            next()
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
+}, (req, res, next) => {
+    console.log('King Route OHHHH FUCK Branch mw 2');
+    console.log ('DEALING OH FUCK LAST KING DAMAGE');
+    Player.damagePlayer(res.locals.player.id, req.body.ohFuckDamage)
+        .then(health => {
+            console.log('PlayerID:',res.locals.player.id,',','health after last king');
+            res.json({msg:'success'});
+        })
 });
 
 

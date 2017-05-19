@@ -33,6 +33,10 @@ const init = (app, server) => {
             socket.to(data.room).emit('add-message', data);
         })
 
+        socket.on('bomb', data => {
+            io.in(data.room).emit('bomb-animation', data);
+        })
+
         socket.on('hover-player', data => {
             io.in(data.room).emit('on-target', data.playerID);
         })
