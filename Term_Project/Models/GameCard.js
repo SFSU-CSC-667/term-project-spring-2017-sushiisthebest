@@ -33,6 +33,16 @@ const db = require('../config/database');
               return t.batch([
                   db.none(query, [gameCard.id]), db.none(gameQuery,[gameCard.cardid, gameCard.gameid])])
            })
+       },
+
+       countKings: gameID => {
+           const query = 'Select "Card".value, COUNT("Card".value) FROM "GameCard" ' +
+               ' INNER JOIN "Card" ON "GameCard".cardid = "Card".id ' +
+               'INNER JOIN "Game" ' +
+               'GROUP BY "Card".value, "GameCard".played ' +
+               ' HAVING "GameCard".played = false AND "Card".value = 13'
+
+           return db.one(query,)
        }
 
 
