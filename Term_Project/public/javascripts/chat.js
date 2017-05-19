@@ -46,6 +46,7 @@ $(function () {
                data: currentAction,
                success: data => {
                    console.log(data);
+                   targetable = false;
                    endTurn();
                }
            })
