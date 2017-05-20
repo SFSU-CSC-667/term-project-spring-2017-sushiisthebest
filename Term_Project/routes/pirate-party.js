@@ -35,6 +35,9 @@ router.get('/load-view/:gameID', (req, res, next) =>{
                 res.render('game-table', view);
             }
         })
+        .catch(error => {
+            console.log(error);
+        })
 });
 
 router.get('/load-view/:gameID', (req, res, next) => {
@@ -138,11 +141,14 @@ router.post('/:gameID/target/:playerID' , (req, res, next) => {
         })
 });
 
-router.post('/:gameID/me/:playerID', (req,res,next) =>{
+router.post('/:gameID/me', (req,res,next) =>{
    let io = req.app.get('io');
-   Player.damagePlayer(req.params.playerID, req.body.damage)
+   Player.damagePlayerByName(req.user.username, req.body.damage)
        .then(player => {
-           res.json({health: player.health});
+           const debugMSG = '(ME) Player With Username: ' + req.user.username + ' takes 10 damage ' +
+               '\nRemaining Health: ' + player.health;
+           console.log(debugMSG);
+           res.json(player);
        })
        .catch(error => {
            console.log(error);
@@ -164,10 +170,16 @@ router.post('/:gameID/wenches', (req,res,next) => {
 }, (req,res,next) => {
     console.log('wenches middleware 2');
     Player.damagePlayers(res.locals.wenches)
-        .then(results => {
-            console.log('results');
+        .then(players => {
+            let debugMSG = '(Wenches) Female Avatars takes 10 damage ' +
+                '\nRemaining Health: [';
+            players.forEach(player => {
+                debugMSG +=  player.health + ', ';
+
+            });
+            console.log(debugMSG);
             const msg = "success";
-            res.json({msg:msg});
+            res.json({msg:msg, players:players});
             res.sendStatus(500);
         })
         .catch(error => {

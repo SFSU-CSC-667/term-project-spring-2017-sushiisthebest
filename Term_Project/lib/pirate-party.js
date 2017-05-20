@@ -98,11 +98,11 @@ module.exports = {
            // case 14:
            //     break;
             default:
-                console.log('bomb');
-                clientCard.name = 'bomb';
-                clientCard.targetable =true;
+                console.log('me');
+                clientCard.name = 'me';
+                clientCard.targetable =false;
                 clientCard.type ='auto';
-                clientCard.damage = 15;
+                clientCard.damage = 10;
                 break;
        }
        res.locals.clientCard = clientCard;

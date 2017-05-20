@@ -11,24 +11,22 @@ module.exports = {
 	},
 
 	findPlayersByGame: gameID => {
-		const query = 'SELECT * FROM \"Player\" WHERE gameid = $!'
+		const query = 'SELECT * FROM \"Player\" WHERE gameid = $!';
 
 		return db.any = (query, gameID);
 	},
 
 
-
-
-	findPlayerByName: name =>{
+	findPlayerByName: username =>{
 		return db.oneOrNone({
 			name:'find-player-by-name',
 			text: 'SELECT * FROM \"Player\" WHERE name = $1',
-			values: [name]
+			values: [username]
 		})
 	},
 
 	damagePlayer: (id, damage) => {
-		let query = "UPDATE \"Player\" SET health=health - $1 WHERE id = $2 RETURNING health";
+		let query = "UPDATE \"Player\" SET health=health - $1 WHERE id = $2 RETURNING health, id";
 		return db.one(query, [damage, id])
 	},
 
@@ -42,7 +40,15 @@ module.exports = {
         })
 	},
 
-	healerPlayer: (id, heal) => {
+	//TODO TO BE REPLACed eVentuALLY done with time in mind
+	damagePlayerByName: (username,damage) => {
+		const query = 'UPDATE \"Player\" SET health=health - $1 FROM \"Player\" ' +
+			'INNER JOIN \"User\" ON \"Player\".userid = \"User\".id WHERE \"User\".username = $2 RETURNING health, \"Player\".id' ;
+
+		return db.none(query,[damage,username]);
+	},
+
+	healerPlayerById: (id, heal) => {
         let query = "UPDATE \"Player\" SET health=health + $1 WHERE id = $2 RETURNING health";
         return db.one(query, [damage, id])
 	},

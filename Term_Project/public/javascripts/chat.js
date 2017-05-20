@@ -42,16 +42,15 @@ $(function () {
     $gameWindow.on('click', '.box1', event => {
         console.log('event target id', event.currentTarget.id);
        if(myTurn && targetable){
-           $.ajax({
-               url:'/PirateParty/' + localStorage.getItem('current-game-id') + '/target/' + event.currentTarget.id,
-               type:'post',
-               data: currentAction,
-               success: data => {
-                   console.log(data);
-                   targetable = false;
-                   endTurn();
-               }
-           })
+           switch (currentAction.name) {
+               case 'you':
+                   you(currentAction);
+                   break;
+               case'mate':
+                   break;
+               case 'heal':
+                   break;
+           }
        }
     });
 
@@ -175,16 +174,141 @@ function draw(clientCard){
     if(clientCard.type = 'auto') {
         switch (card.name) {
             case 'bomb':
-                socket.emit('bomb')
+                bomb(clientCard);
                 break;
+            case 'wenches':
+                wenches(clientCard);
+                break;
+            case 'dudes':
+                dudes(clientCard);
+                break;
+            case 'king':
+                king(clientCard);
+                break;
+            case 'me':
+                me(clientCard);
+                break;
+
         }
     }
     currentAction = clientCard
 
 }
+// ---------------------------------------------- Targetable ----------------------------------------------
+function you(clientCard){
+    const url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/target/' + event.currentTarget.id;
+    const type = 'post';
+    const data = clientCard;
+    const dataType = 'json';
+    const debugMsg = 'Me client side function called. Data Returned From Server:';
+    $.ajax({
+        url: url,
+        type:'post',
+        data: currentAction,
+        success: data => {
+            console.log(data);
+            targetable = false;
+            endTurn();
+        }
+    })
+}
+
+// ------------------------------------------ Automatically resolved -------------------------------------------
+function bomb(clientCard){
+    const url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/bomb';
+    const type = 'post';
+    const data = clientCard;
+    const dataType = 'json';
+    const debugMsg = 'Me client side function called. Data Returned From Server:';
+
+    $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        dataType: dataType,
+        success: data => {
+            console.log(debugMsg,data);
+            socket.emit('bomb', data);
+        }
+    })
+}
 
 
+function me(clientCard){
+    const url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/me';
+    const type = 'post';
+    const data = clientCard;
+    const dataType = 'json';
+    const debugMsg = 'Me client side function called. Data Returned From Server:';
 
+    $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        dataType: dataType,
+        success: data => {
+            console.log(debugMsg,data);
+            socket.emit('me', data);
+
+        }
+    })
+}
+
+function king(clientCard){
+    let url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/king';
+    const type = 'post';
+    const data = clientCard;
+    const dataType = 'json';
+    const debugMsg = 'Me client side function called. Data Returned From Server:';
+
+    $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        dataType: dataType,
+        success: data => {
+            console.log(debugMsg,data);
+            socket.emit('king', data);
+        }
+    })
+}
+
+function wenches(clientCard){
+    let url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/wenches';
+    const type = 'post';
+    const data = clientCard;
+    const dataType = 'json';
+    const debugMsg = 'Me client side function called. Data Returned From Server:';
+
+    $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        dataType: dataType,
+        success: data => {
+            console.log(debugMsg,data);
+            socket.emit('wenches', data);
+        }
+    })
+}
+function dudes(clientCard){
+    let url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/dudes';
+    const type = 'post';
+    const data = clientCard;
+    const dataType = 'json';
+    const debugMsg = 'Me client side function called. Data Returned From Server:';
+
+    $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        dataType: dataType,
+        success: data => {
+            console.log(debugMsg,data);
+            socket.emit('dudes', data);
+        }
+    })
+}
 socket.on('take-turn', data => {
     myTurn = true; drawn = false;
    // document.getElementById('gameMsg').innerHTML = data + ', Please Draw a Card';

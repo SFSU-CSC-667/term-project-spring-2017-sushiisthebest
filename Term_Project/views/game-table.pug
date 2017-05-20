@@ -10,9 +10,9 @@ block content
                     h3.xp-text 100
         .game-play-area
             | Game-Play-Area
-            img#deck(src='/images/PNG-cards-1.3/red_joker.png', width='300', height='300')
+            img#deck(src='/images/PNG-cards-1.3/red_joker.png', width='240px', height='320px')
             .card-container
-                 img#card(src=currentCardURL)
+                 img#card(src=currentCardURL, width='240px', height='320px')
             p ---------------------------------------------------------------------------
             p#gameMsg= gameMsg
         #user-interface
@@ -22,7 +22,7 @@ block content
                 img(src='/images/game-room/player-card-board.png')
                 h3.health-text 99%
             .mood-board
-                img(src=player.imageurl)
+                img(src=players[0].imageurl , width='200', height='200')
             .chat
                 img#modal-btn(src='/images/in-game-static-images/chat-icon.png')
                 // The Modal
