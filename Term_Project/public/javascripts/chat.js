@@ -186,10 +186,9 @@ function endTurn() {
         dataType: 'json',
         success:(msg) => {
             console.log(msg);
+            targetable = false;
             myTurn = false;
-            $('.box1').each(player => {
-                  
-            })
+
         }
     })
 }
@@ -430,6 +429,15 @@ socket.on('reconnect' , () =>{
 
 socket.on('user-left', (data) => {
     $('#players').load(document.URL + ' #players')
+});
+
+socket.on('reset-targets', data => {
+    console.log(data);
+    let elements = document.getElementsByClassName('box1');
+
+    for(let i = 0; i < elements.length; i++){
+        elements[i].style.border = "none";
+    }
 });
 
 socket.on('start-game', (gameID) => {

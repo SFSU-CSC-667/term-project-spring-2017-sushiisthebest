@@ -120,6 +120,7 @@ router.post('/:gameID/next-turn', (req, res, next) =>{
             })
     })
         .then(()=>{
+            broadcast(req.app.get('io'), req.params.gameID, 'reset-targets', 'target animation reset');
             broadcast(req.app.get('io'), nextTurnUserName, 'take-turn', nextTurnUserName);
             res.json({msg:'hello'})
         })
