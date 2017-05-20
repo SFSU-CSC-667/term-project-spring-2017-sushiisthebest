@@ -9,7 +9,7 @@ html, body{
   min-height: 100vw;
 }
 body{ 
-  background-image: url('../images/bg1.jpg');
+  background-image: url('/images/game-list-lobby/bg1.jpg');
   background-position: center center;
   background-repeat:  no-repeat;
   background-attachment: fixed;

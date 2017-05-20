@@ -1,27 +1,70 @@
 extends game-layout
 block content
-    div#game-window(class="container")
-        div(class= "game-lobby")
-            h1 Game Lobby
-            div(class="title-section")
-                h2= gameName
-                h3= statusMessage
-            div#players
-                each player in players
-                    img(class=player.id, src=player.path, width="150", height="150")
-                    h3=player.username
-            div(class="chat-area")
-                ul(class ="messages")
-            input(class = "input-messages" placeholder = ".. Chat ..")
-        button.start start
-        button.btnleave Leave Game
+    -var index = 0;
+    .container
+    .grid-1
+        .col
+            .demo.spacer
+    .grid-6
+        .col
+            .demo
+        .col-8.game-board
+            .demo.board-container
+                .grid-1
+                    .col
+                        .demo
+                            h1=gameName + "GAME LOBBY"
+                            h2=statusMessage
+                .grid-6
+                    .col
+                        .demo
+                    .col-8
+                        .demo
+                            .flex-container
+                                each player in players
+                                    .flex-item
+                                        h3=player.username
+                                        img(src='/images/game-lobby/player-avatar-1.png')
+                    .col
+                        .demo
+                // NEST END
+                .grid-1
+                    .col-4
+                    .col-4
+                        .join-game-btn
+                            h3.start START GAME!
+                            h3.btnleave LEAVE GAME!
+                    .col-4
+        .col
+            .demo
+    .grid-1
+        .col
+            .demo.spacer
+
+
+
+
+
+
+
+
+
+
+
+        //    div#players
+        //        each player in players
+        //            img(class=player.id, src=player.path, width="356", height="186")
+        //            h3=player.username
+        //    div(class="chat-area")
+        //        ul(class ="messages")
+        //    input(class = "input-messages" placeholder = ".. Chat ..")
+        //button.start start
+        //button.btnleave Leave Game
 block foot
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/jquery-3.2.1.js')
     script(src='/javascripts/chat.js')
     script(src='/javascripts/in-game-scripts.js')
     script(src='/javascripts/leavebtn.js')
-
-
 
 

@@ -24,8 +24,3 @@ function join (response){
     localStorage.setItem('current-game-id', response.currentGameId);
 
     window.location = window.location + response.path;
-}
-
-
-
-

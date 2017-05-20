@@ -36,7 +36,7 @@ block content
                                             td=game.description
                                             td=game.playercount + "/5"
                                             td
-                                                .join-game-btn.btnjoin
+                                                .join-game-btn.btnjoin(id=game.id)
                                                     h3 JOIN
                         .col
                             .demo
@@ -51,5 +51,5 @@ block content
     div
         button(type="submit" onclick="location.href='/games/create'" value='Next') Create a Game
 block foot
-    script(src='javascripts/jquery-3.2.1.js')
-    script(src='javascripts/joinbtn')
+    script(src='/javascripts/jquery-3.2.1.js')
+    script(src='/javascripts/joinbtn.js')
