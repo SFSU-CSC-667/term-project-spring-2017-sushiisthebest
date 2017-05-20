@@ -21,18 +21,10 @@ $(function () {
         }
      });
 
+//targeting mechanizm
     $gameWindow.on('click', '.box1', event => {
-        console.log('event target id', event.currentTarget.id);
        if(myTurn && targetable){
-           switch (currentAction.name) {
-               case 'you':
-                   you(currentAction);
-                   break;
-               case'mate':
-                   break;
-               case 'heal':
-                   break;
-           }
+        target(event.target.id);
        }
     });
 
@@ -151,6 +143,7 @@ function draw(clientCard){
     if(clientCard.targetable === true){
         targetable = true;
     }
+
     drawn = true;
 
     if(clientCard.type = 'auto') {
@@ -171,8 +164,7 @@ function draw(clientCard){
                 me(clientCard);
                 break;
             default:
-                console.log('something went wronge');
-
+                console.log('Targetable');
         }
     }
     currentAction = clientCard
@@ -195,10 +187,9 @@ function endTurn() {
 
 
 // ---------------------------------------------- Targetable ----------------------------------------------
-function you(clientCard){
-    const url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/target/' + event.currentTarget.id;
+function target(id){
+    const url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/target/' + id;
     const type = 'post';
-    const data = clientCard;
     const dataType = 'json';
     const debugMsg = 'Me client side function called. Data Returned From Server:';
     $.ajax({
@@ -229,6 +220,7 @@ function bomb(clientCard){
         success: data => {
             console.log(debugMsg,data);
             socket.emit('bomb', data);
+            endTurn();
         }
     })
 }
@@ -372,8 +364,6 @@ socket.on('bomb-animation', data => {
 });
 
 
-
-
 socket.on('user-joined', (data) =>{
     console.log(data);
     console.log(document.URL);
@@ -400,9 +390,6 @@ socket.on('start-game', (gameID) => {
             document.getElementById('gameMsg').innerHTML = 'Player One!!! Take Your turn !!!';
         },5000)
     },1000);
-
-    // const data = {gameID: localStorage.getItem('current-game-id')};
-
 });
 
 

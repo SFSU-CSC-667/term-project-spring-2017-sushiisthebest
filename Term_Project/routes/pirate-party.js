@@ -132,31 +132,56 @@ router.post('/:gameID/next-turn', (req, res, next) =>{
 
 router.post('/:gameID/target/:playerID' , (req, res, next) => {
     console.log(req.body.damage);
+    res.locals.players = [];
+    if(req.body.name === 'you' || req.body.name === 'jack'){
+        Player.damagePlayer(req.params.playerID, req.body.damage)
+            .then(player => {
+                console.log('Player:', req.params.playerID, 'damaged. Remaining Health =', player.health);
 
-    switch(req.body.name) {
-        case 'you':
-            Player.damagePlayer(req.params.playerID, req.body.damage)
-                .then(player => {
-                    console.log('Player:', req.params.playerID, 'damaged. Remaining Health =', player.health);
-                    res.json({msg:'success'});
-                })
-                .catch(error => {
-                    console.log(error);
-                    res.sendStatus(500);
-                });
-            break;
-        case 'vampire':
-            break;
-        case 'heal':
-            break;
-        case 'paladin':
-            break;
-        case 'jack':
-            break;
+                res.json({msg:'success', player: player});
+            })
+            .catch(error => {
+                console.log(error);
+                res.sendStatus(500);
+            });
+    } else {
+        Player.damagePlayer(req.params.playerID, req.body.damage)
+            .then(player => {
+                console.log('Player:', req.params.playerID, 'damaged. Remaining Health =', player.health);
+                res.locals.players.push(player);
+                next()
+            })
+            .catch(error => {
+                console.log(error);
+                res.sendStatus(500);
+            });
     }
 
 
+}, (req, res, next) => {
+    Player.findPlayerByName(req.user.username)
+        .then(player => {
+            res.locals.healTarget = player;
+            next();
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        });
+
+
+}, (req, res, next) => {
+    Player.healPlayer(res.locals.healTarget, req.body.heal)
+        .then(player => {
+            res.locals.players.push(player);
+            res.json({msg:req.body.name, players:res.locals.players})
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        });
 });
+
 
 router.post('/:gameID/bard', (req, res, next) => {
     console.log('bard mw2');
