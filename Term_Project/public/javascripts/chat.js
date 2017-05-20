@@ -172,7 +172,7 @@ function draw(clientCard){
     drawn = true;
 
     if(clientCard.type = 'auto') {
-        switch (card.name) {
+        switch (clientCard.name) {
             case 'bomb':
                 bomb(clientCard);
                 break;
@@ -188,6 +188,8 @@ function draw(clientCard){
             case 'me':
                 me(clientCard);
                 break;
+            default:
+                console.log('something went wronge');
 
         }
     }
@@ -235,6 +237,8 @@ function bomb(clientCard){
 
 
 function me(clientCard){
+    console.log('inside me function');
+
     const url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/me';
     const type = 'post';
     const data = clientCard;
@@ -249,7 +253,7 @@ function me(clientCard){
         success: data => {
             console.log(debugMsg,data);
             socket.emit('me', data);
-
+            endTurn();
         }
     })
 }
@@ -288,6 +292,7 @@ function wenches(clientCard){
         success: data => {
             console.log(debugMsg,data);
             socket.emit('wenches', data);
+            endTurn();
         }
     })
 }
@@ -306,6 +311,7 @@ function dudes(clientCard){
         success: data => {
             console.log(debugMsg,data);
             socket.emit('dudes', data);
+            endTurn();
         }
     })
 }
@@ -340,8 +346,28 @@ socket.on('off-target', playerID =>{
     }
 });
 
+socket.on('player-damaged', data => {
+    if(data.isArray){
+        data.forEach(damagedPlayer => {
+            let elementName = '#' + damagedPlayer.playerID;
+            $(elementName).css("border", "3px solid red");
+            setTimeout(()=>{
+                $(elementName).css("border", "none");
+            },800)
+        })
+    } else {
+        // let elementName = '#' + playerID;
+        // $(elementName).css.toggleClass('.damage-trans');
+        let elementName = '#' + damagedPlayer.playerID;
+        $(elementName).css("border", "3px solid red");
+        setTimeout(()=>{
+            $(elementName).css("border", "none");
+        },800)
+    }
+});
+
 socket.on('bomb-animation', data => {
-    setTimeout()
+    // setTimeout()
 });
 
 

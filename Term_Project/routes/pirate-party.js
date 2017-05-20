@@ -141,9 +141,27 @@ router.post('/:gameID/target/:playerID' , (req, res, next) => {
         })
 });
 
-router.post('/:gameID/me', (req,res,next) =>{
+router.post('/:gameID/me', (req, res, next) => {
+    console.log('ME MW 1');
+    Player.findPlayerByName(req.user.username)
+        .then(player => {
+            res.locals.playerID = player.id;
+            next();
+        })
+        .catch( error => {
+            console.log('me error in mw 1 ');
+            console.log(error);
+        })
+
+
+
+
+}, (req,res,next) =>{
+    console.log('ME MW 2');
    let io = req.app.get('io');
-   Player.damagePlayerByName(req.user.username, req.body.damage)
+
+   console.log('damage field in body:', req.body.damage);
+   Player.damagePlayer(res.locals.playerID, req.body.damage)
        .then(player => {
            const debugMSG = '(ME) Player With Username: ' + req.user.username + ' takes 10 damage ' +
                '\nRemaining Health: ' + player.health;
@@ -160,8 +178,12 @@ router.post('/:gameID/wenches', (req,res,next) => {
     console.log('wenches middleware 1');
     Games.getWenches(req.params.gameID)
         .then(wenches => {
-            res.locals.wenches = wenches;
-            next();
+            if(wenches[0]) {
+                res.locals.wenches = wenches;
+                next();
+            } else {
+                res.json({msg:'No Wenches'});
+            }
         })
         .catch(error => {
             console.log(error);
@@ -180,7 +202,6 @@ router.post('/:gameID/wenches', (req,res,next) => {
             console.log(debugMSG);
             const msg = "success";
             res.json({msg:msg, players:players});
-            res.sendStatus(500);
         })
         .catch(error => {
             console.log(error);
@@ -193,8 +214,13 @@ router.post('/:gameID/dudes', (req,res,next) => {
     console.log('dudes middleware 1');
     Games.getDudes(req.params.gameID)
         .then(dudes => {
-            res.locals.dudes = dudes;
-            next();
+
+            if(dudes[0]){
+                res.locals.dudes = dudes;
+                next();
+            } else {
+                res.json({msg:'no dudes'});
+            }
         })
         .catch(error => {
             console.log(error);
@@ -204,8 +230,18 @@ router.post('/:gameID/dudes', (req,res,next) => {
 }, (req,res,next) => {
     console.log('dudes middleware 2');
     Player.damagePlayers(res.locals.dudes)
-        .then(results => {
-            console.log('results');
+        .then(players => {
+            let debugMSG = '(Wenches) Mail Avatars takes 10 damage ' +
+                '\nRemaining Health: [';
+            players.forEach(player => {
+                debugMSG +=  player.health + ', ';
+
+            });
+
+            console.log(debugMSG);
+
+
+
             const msg = "success";
             res.json({msg:msg});
         })

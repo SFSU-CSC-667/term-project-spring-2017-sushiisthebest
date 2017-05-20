@@ -20,7 +20,8 @@ module.exports = {
 	findPlayerByName: username =>{
 		return db.oneOrNone({
 			name:'find-player-by-name',
-			text: 'SELECT * FROM \"Player\" WHERE name = $1',
+			text: 'SELECT \"Player\".id FROM \"Player\" INNER JOIN \"User\" ' +
+			'ON \"Player\".userid = \"User\".id WHERE \"User\".username = $1',
 			values: [username]
 		})
 	},
@@ -31,22 +32,23 @@ module.exports = {
 	},
 
 	damagePlayers: (players, damage) => {
+        let query = "UPDATE \"Player\" SET health=health - $1 WHERE id = $2 RETURNING health, id";
 		let queries = [];
 		return db.task(t=> {
             players.forEach(player => {
-                queries.push(this.damagePlayer(player.id,damage));
+                queries.push(db.one(query, [damage, player.id]))
             });
             return t.batch(queries);
         })
 	},
 
 	//TODO TO BE REPLACed eVentuALLY done with time in mind
-	damagePlayerByName: (username,damage) => {
-		const query = 'UPDATE \"Player\" SET health=health - $1 FROM \"Player\" ' +
-			'INNER JOIN \"User\" ON \"Player\".userid = \"User\".id WHERE \"User\".username = $2 RETURNING health, \"Player\".id' ;
-
-		return db.none(query,[damage,username]);
-	},
+	// damagePlayerByName: (username,damage) => {
+	// 	const query = 'UPDATE \"Player\" SET \"Player\".health = \"Player\".health - $1 FROM \"User\" '
+	// 	+ 'WHERE \"Player\".userid = \"User\".id AND \"User\".username = $2 ';
+    //
+	// 	return db.none(query,[damage,username]);
+	// },
 
 	healerPlayerById: (id, heal) => {
         let query = "UPDATE \"Player\" SET health=health + $1 WHERE id = $2 RETURNING health";

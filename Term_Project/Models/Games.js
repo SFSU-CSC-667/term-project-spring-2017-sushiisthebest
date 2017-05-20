@@ -48,7 +48,7 @@ module.exports = {
         const query = 'SELECT \"Player\".id FROM \"Game\" INNER JOIN ' +
             '\"Player" ON \"Game\".id = \"Player\".gameid INNER JOIN \"User\" ON \"Player\".userid = \"User\".id WHERE \"User\".avatarid != 3 AND \"Game\".id = $1';
 
-		return db.any(query, gameID);
+		return db.manyOrNone(query, gameID);
 	},
 
 	getDudes: gameID => {
