@@ -34,6 +34,7 @@ module.exports = {
 	damagePlayers: (players, damage) => {
         let query = "UPDATE \"Player\" SET health=health - $1 WHERE id = $2 RETURNING health, id";
 		let queries = [];
+
 		return db.task(t=> {
             players.forEach(player => {
                 queries.push(db.one(query, [damage, player.id]))
@@ -50,9 +51,21 @@ module.exports = {
 	// 	return db.none(query,[damage,username]);
 	// },
 
-	healerPlayerById: (id, heal) => {
-        let query = "UPDATE \"Player\" SET health=health + $1 WHERE id = $2 RETURNING health";
+	healPlayer: (id, heal) => {
+        let query = "UPDATE \"Player\" SET health=health + $1 WHERE id = $2 RETURNING id, health";
         return db.one(query, [damage, id])
+	},
+
+	healPlayers: (players, heal) => {
+        let query = "UPDATE \"Player\" SET health=health + $1 WHERE id = $2 RETURNING id, health";
+        let queries = [];
+
+        return db.task(t=> {
+            players.forEach(player => {
+                queries.push(db.one(query, [heal, player.id]))
+            });
+            return t.batch(queries);
+        })
 	},
 
 

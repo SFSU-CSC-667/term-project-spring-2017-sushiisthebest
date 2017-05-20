@@ -42,7 +42,8 @@ const init = (app, server) => {
             io.in(data.room).emit('player-damaged', data);
         });
         socket.on('dudes', data => {
-            io.in(data.room).emit('player-damaged', data);
+            console.log(data);
+            io.in(data.room).emit('player-damaged', data.players);
         });
 
         socket.on('wenches', data => {

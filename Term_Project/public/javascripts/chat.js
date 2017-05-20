@@ -12,24 +12,6 @@ $(function () {
     let $input = $('.input-messages');
     let $gameWindow = $('div#game-window');
 
-
-
-
-    function endTurn() {
-        $.ajax({
-            url: '/PirateParty/' + localStorage.getItem('current-game-id') + '/next-turn',
-            type: 'post',
-            data: {
-                'temp' : 'hello'
-            },
-            dataType: 'json',
-            success:(msg) => {
-                console.log(msg);
-                myTurn = false;
-            }
-        })
-    }
-
     $gameWindow.on('keydown','input.input-messages', event => {
         if(event.keyCode === 13) {
             console.log('enter-pressed');
@@ -194,8 +176,24 @@ function draw(clientCard){
         }
     }
     currentAction = clientCard
-
 }
+
+function endTurn() {
+    $.ajax({
+        url: '/PirateParty/' + localStorage.getItem('current-game-id') + '/next-turn',
+        type: 'post',
+        data: {
+            'temp' : 'hello'
+        },
+        dataType: 'json',
+        success:(msg) => {
+            console.log(msg);
+            myTurn = false;
+        }
+    })
+}
+
+
 // ---------------------------------------------- Targetable ----------------------------------------------
 function you(clientCard){
     const url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/target/' + event.currentTarget.id;
@@ -310,6 +308,7 @@ function dudes(clientCard){
         dataType: dataType,
         success: data => {
             console.log(debugMsg,data);
+            data.room = localStorage.getItem('current-game-id');
             socket.emit('dudes', data);
             endTurn();
         }
@@ -347,6 +346,8 @@ socket.on('off-target', playerID =>{
 });
 
 socket.on('player-damaged', data => {
+    console.log(data);
+
     if(data.isArray){
         data.forEach(damagedPlayer => {
             let elementName = '#' + damagedPlayer.playerID;
@@ -358,7 +359,7 @@ socket.on('player-damaged', data => {
     } else {
         // let elementName = '#' + playerID;
         // $(elementName).css.toggleClass('.damage-trans');
-        let elementName = '#' + damagedPlayer.playerID;
+        let elementName = '#' + data.playerID;
         $(elementName).css("border", "3px solid red");
         setTimeout(()=>{
             $(elementName).css("border", "none");

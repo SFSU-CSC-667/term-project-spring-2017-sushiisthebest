@@ -3,7 +3,7 @@ block content
     .container
         #players-group
             each player in players
-                .box1(id=player.id
+                .box1(id=player.id)
                     img.avatar-on-plate(src=player.imageurl)
                     img.plate(src='/images/in-game-static-images/avatar-plate.png')
                     h3.health-text 99%
@@ -14,7 +14,7 @@ block content
             .card-container
                  img#card(src=currentCardURL, width='240px', height='320px')
             p ---------------------------------------------------------------------------
-            p#gameMsg= gameMsg
+            p#gameMsg=gameMsg
         #user-interface
             .player-card-board
                 img.sushi-ability(src='/images/game-room/sushi-ability-1.png')

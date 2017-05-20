@@ -46,16 +46,17 @@ module.exports = {
 
 	getWenches: gameID => {
         const query = 'SELECT \"Player\".id FROM \"Game\" INNER JOIN ' +
-            '\"Player" ON \"Game\".id = \"Player\".gameid INNER JOIN \"User\" ON \"Player\".userid = \"User\".id WHERE \"User\".avatarid != 3 AND \"Game\".id = $1';
+            '\"Player\" ON \"Game\".id = \"Player\".gameid ' +
+			' INNER JOIN \"User\" ON \"Player\".userid = \"User\".id WHERE \"User\".avatarid = 3 AND \"Game\".id = $1';
 
 		return db.manyOrNone(query, gameID);
 	},
 
-	getDudes: gameID => {
-        const query = 'SELECT \"Player\".id FROM \"Game\" INNER JOIN ' +
-            '\"Player" ON \"Game\".id = \"Player\".gameid INNER JOIN \"User\" ON \"Player\".userid = \"User\".id WHERE \"User\".avatarid != 3 AND \"Game\".id = $1'
+	getPlayers: gameID => {
+		const query = 'SELECT \"Player\".id, \"User\".avatarid FROM \"Game\" INNER JOIN ' +
+            '\"Player\" ON \"Game\".id = \"Player\".gameid INNER JOIN \"User\" ON \"Player\".userid = \"User\".id WHERE \"Game\".id = $1';
 
-		return db.any(query, gameID)
+		return db.manyOrNone(query, gameID)
 	},
 
 	startGame: gameID => {

@@ -15,6 +15,8 @@ const turnControl = require('../lib/turn-control');
 const passport = require('passport');
 const broadcast = require('../socket/broadcast');
 const PirateParty = require('../lib/pirate-party');
+const shuffle = require('../lib/pirate-party');
+
 
 router.use(passport.authenticate('jwt', {session:false}));
 
@@ -130,16 +132,113 @@ router.post('/:gameID/next-turn', (req, res, next) =>{
 
 router.post('/:gameID/target/:playerID' , (req, res, next) => {
     console.log(req.body.damage);
-    Player.damagePlayer(req.params.playerID, req.body.damage)
-        .then(player => {
-            console.log('Player:', req.params.playerID, 'damaged. Remaining Health =', player.health);
-            res.json({msg:'success'});
+
+    switch(req.body.name) {
+        case 'you':
+            Player.damagePlayer(req.params.playerID, req.body.damage)
+                .then(player => {
+                    console.log('Player:', req.params.playerID, 'damaged. Remaining Health =', player.health);
+                    res.json({msg:'success'});
+                })
+                .catch(error => {
+                    console.log(error);
+                    res.sendStatus(500);
+                });
+            break;
+        case 'vampire':
+            break;
+        case 'heal':
+            break;
+        case 'paladin':
+            break;
+        case 'jack':
+            break;
+    }
+
+
+});
+
+router.post('/:gameID/bard', (req, res, next) => {
+    console.log('bard mw2');
+    Games.getPlayers(req.params.gameID)
+        .then(players => {
+            res.locals.players = players;
+            next();
         })
         .catch(error => {
             console.log(error);
-            res.sendStatus(500);
+        })
+
+}, (req,res,next) => {
+    console.log('bard mw2');
+    Player.healPlayers(res.locals.players, req.body.heal)
+        .then(players => {
+            res.json({msg:'All players get healed', players: players});
+        })
+        .catch(error => {
+            console.log(error);
         })
 });
+
+router.post('/:gameID/mayham', (req, res, next) => {
+    Games.getPlayers(req.params.gameID)
+        .then(players => {
+            res.locals.players = players;
+            next();
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
+
+    //TODO  <<< animations
+} , (req, res, next) => {
+    let shuffledPlayers = shuffle(res.locals.players);
+    let playersToHeal = [];
+    let playersToDamage = [];
+    let healLength = Math.floor(shuffledPlayers.length/2);
+    let damageLength = shuffledPlayers.length - healLength;
+
+
+   for(let i = 0; i<healLength ; i++){
+        playersToHeal.push(shuffledPlayers.pop);
+   }
+
+    for(let i = 0; i<damageLength ; i++){
+        playersToDamage.push(shuffledPlayers.pop);
+    }
+
+    res.locals.playersToHeal = playersToHeal;
+    res.locals.playersToDamage = playersToDamage;
+
+    next();
+
+}, (res, req, next) => {
+    Player.healPlayers(res.locals.playersToHeal, req.body.heal)
+        .then(players => {
+            res.locals.healedPlayers = players;
+            next();
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
+
+},(res, req, next) => {
+    Player.damagePlayers(res.locals.playersToDamage, req.body.damage)
+        .then(players => {
+            res.locals.damagedPlayers = players;
+            next();
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
+},(req, res, next) => {
+    let newArr = res.locals.damagedPlayers.concat(res.locals.healedPlayers);
+    res.json({msg:'mayham', players:newArr});
+});
+
 
 router.post('/:gameID/me', (req, res, next) => {
     console.log('ME MW 1');
@@ -176,50 +275,70 @@ router.post('/:gameID/me', (req, res, next) => {
 
 router.post('/:gameID/wenches', (req,res,next) => {
     console.log('wenches middleware 1');
-    Games.getWenches(req.params.gameID)
-        .then(wenches => {
-            if(wenches[0]) {
-                res.locals.wenches = wenches;
-                next();
-            } else {
-                res.json({msg:'No Wenches'});
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
 
-}, (req,res,next) => {
-    console.log('wenches middleware 2');
-    Player.damagePlayers(res.locals.wenches)
+    Games.getPlayers(req.params.gameID)
         .then(players => {
-            let debugMSG = '(Wenches) Female Avatars takes 10 damage ' +
-                '\nRemaining Health: [';
-            players.forEach(player => {
-                debugMSG +=  player.health + ', ';
-
+            console.log(players);
+            let targets = [];
+            players.forEach( player => {
+                if(player.avatarid === 3){
+                    targets.push(player);
+                }
             });
-            console.log(debugMSG);
-            const msg = "success";
-            res.json({msg:msg, players:players});
+
+            if (targets.length === 0){
+                res.json({msg:'no dudes'});
+            } else {
+                res.locals.targets = targets;
+                next();
+            }
         })
         .catch(error => {
             console.log(error);
             res.sendStatus(500);
         })
+}, (req,res,next) => {
+    console.log('wenches middleware 2');
+    Player.damagePlayers(res.locals.targets, req.body.damage)
+        .then(players => {
+            console.log('Players object');
+            let debugMSG = '(Wenches) Mail Avatars takes 10 damage ' +
+                '\nRemaining Health: [';
+            players.forEach(player => {
+                debugMSG +=  player.health + ', ';
 
+            });
+            debugMSG += ']';
+            console.log(debugMSG);
+
+            const msg = "success";
+            res.json({msg:msg, players: players});
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
 });
 
 router.post('/:gameID/dudes', (req,res,next) => {
     console.log('dudes middleware 1');
-    Games.getDudes(req.params.gameID)
-        .then(dudes => {
+    console.log('getting dudes from game:', req.params.gameID);
 
-            if(dudes[0]){
-                res.locals.dudes = dudes;
-                next();
-            } else {
+    Games.getPlayers(req.params.gameID)
+        .then(players => {
+            console.log(players);
+            let targets = [];
+            players.forEach( player => {
+                if(player.avatarid !== 3){
+                    targets.push(player);
+                }
+            });
+
+            if (targets.length === 0){
                 res.json({msg:'no dudes'});
+            } else {
+                res.locals.targets = targets;
+                next();
             }
         })
         .catch(error => {
@@ -229,21 +348,20 @@ router.post('/:gameID/dudes', (req,res,next) => {
 
 }, (req,res,next) => {
     console.log('dudes middleware 2');
-    Player.damagePlayers(res.locals.dudes)
+    Player.damagePlayers(res.locals.targets, req.body.damage)
         .then(players => {
+            console.log('Players object');
             let debugMSG = '(Wenches) Mail Avatars takes 10 damage ' +
                 '\nRemaining Health: [';
             players.forEach(player => {
                 debugMSG +=  player.health + ', ';
 
             });
-
+            debugMSG += ']';
             console.log(debugMSG);
 
-
-
             const msg = "success";
-            res.json({msg:msg});
+            res.json({msg:msg, players:players});
         })
         .catch(error => {
             console.log(error);
