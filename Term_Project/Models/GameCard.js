@@ -35,15 +35,9 @@ const db = require('../config/database');
            })
        },
 
-       countKings: gameID => {
-           const query = 'Select "Card".value, COUNT("Card".value) FROM "GameCard" ' +
-               ' INNER JOIN "Card" ON "GameCard".cardid = "Card".id ' +
-               'INNER JOIN "Game" ' +
-               'GROUP BY "Card".value, "GameCard".played ' +
-               ' HAVING "GameCard".played = false AND "Card".value = 13';
+       getKings: gameID => {
+           const query = 'select \"GameCard\".* From \"Game\" INNER JOIN \"GameCard\" ON \"Game"\.id = \"GameCard\".gameid INNER JOIN \"Card\" ON \"GameCard\".cardid = \"Card\".id WHERE \"Card\".face = $1 AND "Game".id = $2';
 
-           return db.one(query)
+           return db.any(query, ['king',gameID])
        }
-
-
 };

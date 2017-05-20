@@ -187,6 +187,9 @@ function endTurn() {
         success:(msg) => {
             console.log(msg);
             myTurn = false;
+            $('.box1').each(player => {
+                  
+            })
         }
     })
 }
@@ -309,6 +312,7 @@ function king(clientCard){
         success: data => {
             console.log(debugMsg,data);
             // socket.emit('king', data);
+            endTurn();
         }
     })
 }

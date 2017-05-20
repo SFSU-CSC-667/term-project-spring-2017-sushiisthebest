@@ -131,8 +131,12 @@ router.post('/:gameID/next-turn', (req, res, next) =>{
 
 
 router.post('/:gameID/target/:playerID' , (req, res, next) => {
-    console.log(req.body.damage);
+    console.log('event name', req.body.name);
+    console.log('event heal', req.body.heal);
+    console.log('event damage', req.body.damage);
+
     res.locals.players = [];
+
     if(req.body.name === 'you' || req.body.name === 'jack'){
         Player.damagePlayer(req.params.playerID, req.body.damage)
             .then(player => {
@@ -149,7 +153,7 @@ router.post('/:gameID/target/:playerID' , (req, res, next) => {
             .then(player => {
                 console.log('Player:', req.params.playerID, 'damaged. Remaining Health =', player.health);
                 res.locals.players.push(player);
-                next()
+                next();
             })
             .catch(error => {
                 console.log(error);
@@ -161,7 +165,10 @@ router.post('/:gameID/target/:playerID' , (req, res, next) => {
 }, (req, res, next) => {
     Player.findPlayerByName(req.user.username)
         .then(player => {
-            res.locals.healTarget = player;
+            console.log('heal target found');
+            console.log(player);
+            res.locals.healTarget = player.id;
+
             next();
         })
         .catch(error => {
@@ -171,8 +178,10 @@ router.post('/:gameID/target/:playerID' , (req, res, next) => {
 
 
 }, (req, res, next) => {
+    console.log('final middle where');
     Player.healPlayer(res.locals.healTarget, req.body.heal)
         .then(player => {
+            console.log('Player ')
             res.locals.players.push(player);
             res.json({msg:req.body.name, players:res.locals.players})
         })
@@ -187,7 +196,6 @@ router.post('/:gameID/bard', (req, res, next) => {
     console.log('bard mw2');
     Games.getPlayers(req.params.gameID)
         .then(players => {
-            c
             res.locals.players = players;
             next();
         })
@@ -398,10 +406,16 @@ router.post('/:gameID/dudes', (req,res,next) => {
 
 router.post('/:gameID/king', (req,res,next)=> {
     console.log('Pirate Party King Route');
-    GameCards.countKings(req.params.gameID)
-        .then(remainingKings => {
-            if(remainingKings.count === 0) { next('route')}
-            next();
+    GameCards.getKings(req.params.gameID)
+        .then(kings => {
+            let allKingsDrawn = true;
+            kings.forEach(king => {
+                if(king.played === false){allKingsDrawn = false;}
+            });
+
+           if(allKingsDrawn){next('route')}
+
+           next();
         })
         .catch(error => {
             console.log(error);
@@ -410,7 +424,7 @@ router.post('/:gameID/king', (req,res,next)=> {
 
 }, (req, res, next) =>{
     console.log('King Route Main Branch mw 2');
-    Player.findPlayersByGame(req.params.gameID)
+    Games.getPlayers(req.params.gameID)
         .then(players =>{
             res.locals.players = players;
             next();
@@ -421,11 +435,10 @@ router.post('/:gameID/king', (req,res,next)=> {
         })
 
 }, (req, res, next) => {
-    console.log('King Route Main Branch mw 3')
+    console.log('King Route Main Branch mw 3');
     Player.damagePlayers(res.locals.players, req.body.damage)
-        .then(health => {
-            console.log(health)
-            res.json({msg: 'yolo'});
+        .then(players => {
+            res.json({msg: 'yolo', players: players});
         })
         .catch(error => {
             console.log(error);
@@ -448,13 +461,33 @@ router.post('/:gameID/king' , (req, res, next) => {
     console.log('King Route OHHHH FUCK Branch mw 2');
     console.log ('DEALING OH FUCK LAST KING DAMAGE');
     Player.damagePlayer(res.locals.player.id, req.body.ohFuckDamage)
-        .then(health => {
+        .then(player => {
             console.log('PlayerID:',res.locals.player.id,',','health after last king');
-            res.json({msg:'success'});
+            res.json({msg:'success', players:player});
         })
 });
 
-router.post('/:gameID/bomb')
+router.post('/:gameID/bomb' , (req, res, next) => {
+   Games.getPlayers(req.params.gameID)
+       .then(players => {
+            res.locals.players = players;
+            next();
+       })
+       .catch(error => {
+           console.log(error);
+       })
+}, (res, req, next) => {
+    let shuffledPlayers = shuffle(res.locals.players);
+
+    Player.damagePlayer(shuffledPlayers.pop().id, req.body.damage)
+        .then(player => {
+           console.log(player);
+           res.json({msg:'bomb', players: player});
+        })
+        .catch(error => {
+            console.log(error);
+        })
+});
 
 
 

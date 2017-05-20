@@ -13,7 +13,7 @@ module.exports = {
 	findPlayersByGame: gameID => {
 		const query = 'SELECT * FROM \"Player\" WHERE gameid = $!';
 
-		return db.any = (query, gameID);
+		return db.any(query, gameID);
 	},
 
 
@@ -53,7 +53,7 @@ module.exports = {
 
 	healPlayer: (id, heal) => {
         let query = "UPDATE \"Player\" SET health=health + $1 WHERE id = $2 RETURNING id, health";
-        return db.one(query, [damage, id])
+        return db.one(query, [heal, id])
 	},
 
 	healPlayers: (players, heal) => {
