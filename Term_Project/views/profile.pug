@@ -1,31 +1,43 @@
-extends layout
-
-
+extends profile-layout
 
 block content
-    h1= username
-
-    h2#avatarName= avatarName
-    h2(class="jack-card")
-    h2(class="sushi-ability")
-
-    img#previousAvatar(src='/images/leftArrow.jpg', width='50' , height='50')
-    img#avatar(src=avatarImgPath, alt="Image Title", data-avatarid = avatarID , height="200", width = '200')
-    img#nextAvatar(src= '/images/rightArrow.jpg', width = '50' , height = '50')
-
-    each card in sushiCardList
-        img.sushicardimg(src=card.path, alt="Image Title", id=card.id , height="200", width = '200')
-
-    h3#sushiruletext=sushiruleText
-    each card in ruleCardList
-        img.rulecardimg(src=card.path, alt="Image Title", id=card.id , height="200", width = '200')
-
-    h3#rulecardtext=rulecardText
-
-    h2(class="create-character")
-    img#create-button(src='/images/create-button.jpg')
-
-    h1(class= "sushi-ability")
+        .grid-1
+            .col
+                .demo.spacer
+        .grid-6
+            .col-3
+                .demo
+            .outer-profile-container
+                .inner-profile-container
+                    .grid-1
+                        .col-4
+                            .demo.avatar
+                                img#previousAvatar(src='/images/leftArrow.jpg', width='50' , height='50')
+                                img#nextAvatar(src= '/images/rightArrow.jpg', width = '50' , height = '50')
+                                img(src='images/character-select/avatar.png')
+                                img#avatar(src=avatarImgPath, alt="Avatar Portrait", data-avatarid = avatarID , height="195", width = '150')
+                                h2#avatarName= avatarName
+                            h3 SUSHI CARD
+                        .col-8
+                            .demo.abilities
+                                h1.rotate SUSHI CARDS!
+                                p
+                                    | The Sushi Card is a special use card ability of your choosing. Once chosen, you may not change it in game, so choose wisely!
+                                each card in sushiCardList
+                                    img.sushicardimg(src=card.path, alt="Ability", id=card.id , height="70", width = '70')
+                    .grid-1
+                        .col-3
+                        .col-6
+                            .demo
+                                .join-game-btn
+                                    h3 FIND A GAME!
+                        .col-3
+        .col-3
+            .demo
+        .grid-1
+            .col
+                .demo.spacer
+block foot
     script(src='/javascripts/jquery-3.2.1.js')
     script(src='/javascripts/toggle-avatar.js')
     script(src='/javascripts/static-sushicard.js')

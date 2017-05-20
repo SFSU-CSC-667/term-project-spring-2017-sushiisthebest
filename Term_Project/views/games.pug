@@ -1,24 +1,55 @@
-extends layout
+extends games-layout
 block content
-    div
-        table
-            thead
-                tr: th Game
-                    th playersCount
-                    th Description
-                    th Join A Game
-            tbody
-            each game in games
-                tr: td=game.name
-                    td=game.playercount + "/5"
-                    td= 'some description'
-                    td
-                        button.btnjoin(id=game.id) JOIN
+    .container
+        .grid-1
+            .col
+                .demo.spacer
+        .grid-6
+            .col
+                .demo
+            .col-8.box
+                .demo.table-container
+                    .grid-1
+                        .col
+                            .demo
+                                h1 GAME LOBBY
+                                h2 SELECT A GAME ROOM TO PLAY!
+                    .grid-6
+                        .col
+                            .demo
+                        .col-8
+                            .demo.table
+                                table.table-list
+                                    thead
+                                        tr
+                                            td
+                                                h3 Game Title
+                                            td
+                                                h3 Description
+                                            td
+                                                h3 Players
+                                            td
+                                                h3 Join Game
+                                    tbody
+                                    each game in games
+                                        tr: td=game.name
+                                            td=game.description
+                                            td=game.playercount + "/5"
+                                            td
+                                                .join-game-btn.btnjoin
+                                                    h3 JOIN
+                        .col
+                            .demo
+            .col
+                .demo
+        .grid-1
+            .col
+                .demo.spacer
     div.modal-content(style="display:none")
         span.close &times
         p 'Game is no longer available
     div
         button(type="submit" onclick="location.href='/games/create'" value='Next') Create a Game
-
-    script(src='/javascripts/jquery-3.2.1.js')
-    script(src='/javascripts/joinbtn.js')
+block foot
+    script(src='javascripts/jquery-3.2.1.js')
+    script(src='javascripts/joinbtn')
