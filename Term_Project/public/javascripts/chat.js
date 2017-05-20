@@ -24,7 +24,7 @@ $(function () {
 //targeting mechanizm
     $gameWindow.on('click', '.box1', event => {
        if(myTurn && targetable){
-        target(event.target.id);
+        target(event.currentTarget.id);
        }
     });
 
@@ -163,6 +163,12 @@ function draw(clientCard){
             case 'me':
                 me(clientCard);
                 break;
+            case 'bard':
+                bard(clientCard);
+                break;
+            case 'mayhem':
+                mayhem(clientCard);
+                break;
             default:
                 console.log('Targetable');
         }
@@ -219,7 +225,47 @@ function bomb(clientCard){
         dataType: dataType,
         success: data => {
             console.log(debugMsg,data);
-            socket.emit('bomb', data);
+            // socket.emit('bomb', data);
+            endTurn();
+        }
+    })
+}
+
+function bard(clientCard){
+    const url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/bard';
+    const type = 'post';
+    const data = clientCard;
+    const dataType = 'json';
+    const debugMsg = 'bard client side';
+
+    $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        dataType: dataType,
+        success: data => {
+            console.log(debugMsg,data);
+            // socket.emit('bomb', data);
+            endTurn();
+        }
+    })
+}
+
+function mayhem(clientCard){
+    const url = '/PirateParty/' + localStorage.getItem('current-game-id') + '/mayhem';
+    const type = 'post';
+    const data = clientCard;
+    const dataType = 'json';
+    const debugMsg = 'mayhem client side';
+
+    $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        dataType: dataType,
+        success: data => {
+            console.log(debugMsg,data);
+            // socket.emit('bomb', data);
             endTurn();
         }
     })
@@ -242,7 +288,7 @@ function me(clientCard){
         dataType: dataType,
         success: data => {
             console.log(debugMsg,data);
-            socket.emit('me', data);
+            // socket.emit('me', data);
             endTurn();
         }
     })
@@ -262,7 +308,7 @@ function king(clientCard){
         dataType: dataType,
         success: data => {
             console.log(debugMsg,data);
-            socket.emit('king', data);
+            // socket.emit('king', data);
         }
     })
 }
@@ -281,7 +327,7 @@ function wenches(clientCard){
         dataType: dataType,
         success: data => {
             console.log(debugMsg,data);
-            socket.emit('wenches', data);
+            // socket.emit('wenches', data);
             endTurn();
         }
     })
@@ -301,7 +347,7 @@ function dudes(clientCard){
         success: data => {
             console.log(debugMsg,data);
             data.room = localStorage.getItem('current-game-id');
-            socket.emit('dudes', data);
+            // socket.emit('dudes', data);
             endTurn();
         }
     })

@@ -57,7 +57,7 @@ module.exports = {
                clientCard.damage = 15;
                break;
            case 8:
-               console.log('mayham');
+               console.log('mayhem');
                clientCard.name = 'YOU';
                clientCard.targetable =false;
                clientCard.type ='mate';

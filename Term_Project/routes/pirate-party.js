@@ -187,6 +187,7 @@ router.post('/:gameID/bard', (req, res, next) => {
     console.log('bard mw2');
     Games.getPlayers(req.params.gameID)
         .then(players => {
+            c
             res.locals.players = players;
             next();
         })
@@ -205,7 +206,7 @@ router.post('/:gameID/bard', (req, res, next) => {
         })
 });
 
-router.post('/:gameID/mayham', (req, res, next) => {
+router.post('/:gameID/mayhem', (req, res, next) => {
     Games.getPlayers(req.params.gameID)
         .then(players => {
             res.locals.players = players;
@@ -290,7 +291,7 @@ router.post('/:gameID/me', (req, res, next) => {
            const debugMSG = '(ME) Player With Username: ' + req.user.username + ' takes 10 damage ' +
                '\nRemaining Health: ' + player.health;
            console.log(debugMSG);
-           res.json(player);
+           res.json({msg:'msg', player: player});
        })
        .catch(error => {
            console.log(error);
