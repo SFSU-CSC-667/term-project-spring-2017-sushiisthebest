@@ -1,22 +1,73 @@
-
-
-form(method ="POST", action="register")
-	div
-		label(for="username") Username:
-		input#username(
-		type="text"
-		placeholder="Enter Email"
-		name="username"
-		)
-	div
-		label(for="email") Email:
-		input#email(type="email" placeholder="email", name="email")
-	div
-		label(for="pw") Password:
-		input#pw(type="password", name="password")
-	div
-		label(for="pw2") Confirm Password:
-		input#pw2(type='password', name ="confirmPassword")
-	button(type="submit") Sign Up
-	
+extends register-layout
+block content
+    .container
+        // =================================================================================
+        // LOGIN PAGE
+        // =================================================================================
+        .grid-1
+            .col
+                .login.spacer
+                    // <p>SPACER</p>
+        .grid-6
+            .col
+                .login
+                    // <p>spacer</p>
+            .col-8
+                .login.box
+                    // NEST BEGINS
+                    form.signup-form(method="post" action="register")
+                        h1 SIGN UP
+                        .grid-6
+                            .col
+                                .login
+                                    // <p>col</p>
+                            .col-8
+                                .login
+                                    h2 UserName
+                                    input#username(type='text', name='username')
+                            .col
+                                .login
+                                    // <p>col</p>
+                        .grid-6
+                            .col
+                                .login
+                                    // <p>col</p>
+                            .col-8
+                                .login
+                                    h2 Email
+                                    input#email(type='text', name='email')
+                            .col
+                                .login
+                                    // <p>col</p>
+                        .grid-6
+                            .col
+                                .login
+                                    // <p>col</p>
+                            .col-8
+                                .login
+                                    h2 Password
+                                    input#pw(type='text', name='password')
+                            .col
+                                .login
+                                    // <p>col</p>
+                        .grid-6
+                            .col
+                                .login
+                                    // <p>col</p>
+                            .col-8
+                                .login
+                                    h2 Re-Enter Password
+                                    input#pw2(type='text', name='confirmPassword')
+                            .col
+                                .login
+                                    // <p>col</p>
+                        .grid-1
+                            .col
+                                .login.rotate.wiggler
+                                    button.btn-sign-in(type='submit') Sign Up
+                    // NEST END
+            .col
+                .login
+                    // <p>spacer</p>
+block foot
 

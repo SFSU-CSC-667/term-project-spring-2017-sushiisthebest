@@ -19,22 +19,42 @@ module.exports = {
 		})
 	},
 
+
+	updatePlayerTurnID: (gameID, playerid) => {
+		let query = 'UPDATE \"Game\" SET playerturnid = $1 WHERE id = $2'
+		return db.none(query, [playerid, gameID])
+	},
+
+	getCurrentTurn: gameID => {
+		const query =  'select \"Game\".playerturnid, \"Game\".playercount, \"Player\".turnorder FROM \"Game\" INNER JOIN ' +
+			' \"Player\" ON  \"Game\".playerturnid = \"Player\".id WHERE \"Game\".id = $1';
+
+        return db.one(query, gameID)
+	},
+
 	hasStarted: gameID => {
 		const query = 'SELECT hasstarted FROM \"Game\" WHERE id = $1';
 		return db.one(query,gameID)
 	},
-	// destroyGame: gameID => {
-	//     // this function deletes game and all players tied to game
-     //    // to be used when game ends or HOST leaves the game before it has started
-     //    const gameQuery = 'SELECT'
-	// 	return
-    //
-	// },
+
+	getPlayers: gameID => {
+		const query = 'SELECT \"Player\".id, \"User\".avatarid FROM \"Game\" INNER JOIN ' +
+            '\"Player\" ON \"Game\".id = \"Player\".gameid INNER JOIN \"User\" ON \"Player\".userid = \"User\".id WHERE \"Game\".id = $1';
+
+		return db.manyOrNone(query, gameID)
+	},
 
 	startGame: gameID => {
 		console.log("gameID in model:",gameID);
-		const query = "UPDATE \"Game\" SET hasstarted=true WHERE id= $1";
-		return db.none(query,gameID)
+		const playerQuery = 'SELECT id FROM \"Player\" WHERE gameid = $1 AND turnorder = 1';
+		const query = "UPDATE \"Game\" SET hasstarted=true, playerturnid=$1 WHERE id= $2";
+		return db.task(t=> {
+			return t.one(playerQuery, gameID)
+				.then(player => {
+					console.log('Settings playerturnid to:', player.id);
+					return t.none(query,[player.id, gameID])
+				})
+		})
 	},
 
 	getVisibleGames: () => {

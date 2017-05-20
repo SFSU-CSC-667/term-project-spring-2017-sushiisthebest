@@ -1,0 +1,155 @@
+@font-face { font-family: Heroes_Legend; src: url('../fonts/Heroes_Legend.ttf'); } 
+html, body{
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  min-width: 100vw;
+  min-height: 100vw;
+}
+body{ 
+  background-image: url('../images/bg1.jpg');
+  background-position: center center;
+  background-repeat:  no-repeat;
+  background-attachment: fixed;
+  background-size:  cover;
+  background-color: #efefef;
+  font-family: Heroes_Legend !important;
+  color: #fff;
+}
+*{ box-sizing: border-box; }
+*::after,*::before{ box-sizing: border-box; }
+h1{ font-size: 1.3vw; }
+h2{ font-size: .75vw; }
+h3{ font-size: .6vw; }
+p { font-size: .4vw; }
+
+input[type=text] {
+  font-family: Heroes_Legend !important;
+  width: 100%;
+  max-width: 20vw;
+  background-color: #120600;
+  color: #fff;
+  border: 2px solid #e9e9e9;
+  -webkit-box-shadow: 0px 9px 5px -1px rgba(0,0,0,0.59);
+  -moz-box-shadow: 0px 9px 5px -1px rgba(0,0,0,0.59);
+  box-shadow: 0px 9px 5px -1px rgba(0,0,0,0.59);
+}
+input[type=text]:focus {
+  outline: none;
+  border: 2px solid #502e98;
+}
+
+h1,h2,h3,h4{
+  -webkit-text-stroke-color: #502e98;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #91a9cb));
+  background-image: -webkit-linear-gradient(#ffffff,#b3adb5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #fff;
+  -webkit-text-stroke-width: .05em;
+}
+a{
+  text-decoration: none;
+}
+table {
+  border-collapse: collapse;
+  overflow-y:scroll;
+}
+table td,
+table th {
+  border: 1px solid red;
+  font-size: .6em;
+  padding: .8em;
+}
+
+@-webkit-keyframes wiggle {
+  0% {-webkit-transform:rotate(4deg);}
+  50% {-webkit-transform:rotate(-4deg);}
+  100% {-webkit-transform:rotate(4deg);}
+}
+ 
+/* firefox */
+@-moz-keyframes wiggle {
+  0% {-moz-transform:rotate(4deg);}
+  50% {-moz-transform:rotate(-4deg);}
+  100% {-moz-transform:rotate(4deg);}
+}
+ 
+/* anyone brave enough to implement the ideal method */
+@keyframes wiggle {
+  0% {transform:rotate(4deg);}
+  50% {transform:rotate(-4deg);}
+  100% {transform:rotate(4deg);}
+}
+
+.rotate {
+/* Safari */
+-webkit-transform: rotate(-6deg);
+/* Firefox */
+-moz-transform: rotate(-6deg);
+/* IE */
+-ms-transform: rotate(-6deg);
+/* Opera */
+-o-transform: rotate(-6deg);
+/* Internet Explorer */
+filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.wiggler:hover {
+  -webkit-animation: wiggle 0.5s infinite;
+  -moz-animation: wiggle 0.5s infinite;
+  animation: wiggle 0.5s infinite;
+}
+
+/* PAGE SPECIFIC CSS */
+.container {
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+}
+.game-table{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/*box holds the form data in outer container*/
+.box{
+  height: 60vh;
+  min-height: 75vh;
+  border : solid 1px rgba(0,0,0,0.0);
+  background-image: url("../images/box.png");
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 920px 685px;
+  background-size: contain;
+  max-height:685px;
+}
+.spacer{
+  height: 10vh;
+}
+.demo {
+  width: 100%;
+  background: rgba(147, 128, 108, 0.2);
+  text-align: center;
+}
+.demo p {
+  margin: 0;
+  padding: 1rem;
+}
+@media screen and (max-width: 35.5em) {
+  .demo p {
+    padding: .5rem;
+  }
+}
+.demo-explain {
+  margin: 0;
+  padding: 0;
+}
+.demo img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+

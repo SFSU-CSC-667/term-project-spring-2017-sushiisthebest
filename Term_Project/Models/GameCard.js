@@ -3,7 +3,7 @@ const db = require('../config/database');
    module.exports = {
        createNewDeck: (gameID, cards) =>{
            const query = 'INSERT INTO \"GameCard\" (gameid, cardid, cardorder) VALUES ($1, $2, $3)';
-           var queries = [];
+           let queries = [];
 
            return db.task(t=> {
                cards.forEach( (card,index) => {
@@ -33,7 +33,11 @@ const db = require('../config/database');
               return t.batch([
                   db.none(query, [gameCard.id]), db.none(gameQuery,[gameCard.cardid, gameCard.gameid])])
            })
+       },
+
+       getKings: gameID => {
+           const query = 'select \"GameCard\".* From \"Game\" INNER JOIN \"GameCard\" ON \"Game"\.id = \"GameCard\".gameid INNER JOIN \"Card\" ON \"GameCard\".cardid = \"Card\".id WHERE \"Card\".face = $1 AND "Game".id = $2';
+
+           return db.any(query, ['king',gameID])
        }
-
-
 };

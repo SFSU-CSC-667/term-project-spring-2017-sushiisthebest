@@ -15,6 +15,14 @@ module.exports = {
 		})
 	},
 
+    getPlayer: id => {
+	    const query = 'SELECT \"Player\".id FROM \"User\" ' +
+            'INNER JOIN \"Player\" ON \"User\".id = \"Player\".userid ' +
+            'WHERE \"User\".id = $1';
+
+        return db.one(query, id)
+    },
+
     getUserProfileById: id => {
         const initialQuery = 'SELECT * FROM \"User\" WHERE id = $1';
         const avatarQuery = 'SELECT \"Avatar\".name, \"Avatar\".id, imagetable.path FROM \"Avatar\"'+

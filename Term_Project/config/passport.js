@@ -23,8 +23,6 @@ var options = {
 };
 
 
-
-
 var passport_config = function(passport){
 	/* NO LONGER USING SESSIONS CODE IS HERE FOR REFERENCE. TO BE REMOVED
 	passport.serializeUser(function(user,done) {
@@ -48,8 +46,6 @@ var passport_config = function(passport){
 		passwordField: 'password',
 		session: false
 },function(email,password,done){
-
-	debug ? console.log('searching for user:',email, 'password:',password) : null;
 
 	User.findUserByEmail(email)
 	.then( user => {
@@ -76,9 +72,6 @@ var passport_config = function(passport){
 }));
 
 	passport.use('jwt', new JwtStrategy(options, function(jwt_payload, done){
-		 console.log('Hello from the jwt verifi');
-		debug ? console.log('ID',jwt_payload.id,'username:', jwt_payload.username) : null;
-
 		User.findUserById(jwt_payload.id)
 		.then(user=>{
 

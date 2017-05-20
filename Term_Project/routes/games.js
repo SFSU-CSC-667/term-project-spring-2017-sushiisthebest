@@ -13,7 +13,7 @@ const Cards = require('../Models/Cards');
 const passport = require('passport');
 const broadcast = require('../socket/broadcast');
 const shuffle = require('../lib/shuffle');
-
+const turnControl = require('../lib/turn-control');
 
 
 router.get('/' , (req, res, next) => {
@@ -84,7 +84,7 @@ router.post('/join', passport.authenticate('jwt', {session:false}), (req, res, n
             res.status(200).json({
                 msg:'success',
                 path: '/' + results[0],
-                currentGameId: results[0],
+                currentGameId: results[0]
                 });
         })
         .catch(error => {
@@ -122,7 +122,7 @@ router.post('/start', (req, res, next)=> {
         })
 });
 
-router.post("/start", (req,res,next) => {
+router.post("/start", passport.authenticate('jwt', {session:false}), (req,res,next) => {
     console.log('GameID: in start route:',req.body.gameid);
     console.log('/Start middleware 1');
     Games.startGame(req.body.gameid)
@@ -138,7 +138,7 @@ router.post("/start", (req,res,next) => {
     console.log('/start middleware 2');
     Cards.getPlayingCards()
         .then(cards => {
-            console.log(cards);
+            //console.log(cards);
             res.locals.cards = shuffle(cards);
             next();
         })
@@ -153,7 +153,7 @@ router.post("/start", (req,res,next) => {
             .then(results => {
                 console.log('hello');
                 broadcast(req.app.get('io'),req.body.gameid,'start-game',req.body.gameid);
-
+                broadcast(req.app.get('io'),req.user.username, 'take-turn', 'hello');
                 res.json({gameID: req.body.gameid})
             })
             .catch(error => {
@@ -163,14 +163,6 @@ router.post("/start", (req,res,next) => {
             })
  });
 
-
-// router.get('/:gameID', (req,res,next) => {
-//     Games.hasStarted(req.params.gameID)
-//         .then(game=> {
-//             game.hasstarted === true ?
-//                 res.redirect('/PirateParty/load-view/'+req.params.gameID) : next('route');
-//         })
-// });
 
 router.get('/:gameID', (req, res, next) => {
    let view = {
@@ -186,7 +178,6 @@ router.get('/:gameID', (req, res, next) => {
             view.statusMessage = "Waiting For Players";
 
             lobby.forEach(item => {
-                console.log('item id:',item.id,'item username:',item.username,'item path:', item.imageurl);
                 let player = {
                     id: item.id,
                     username: item.username,
