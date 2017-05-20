@@ -7,8 +7,15 @@
 var app = require('../app');
 var debug = require('debug')('term-project:server');
 var http = require('http');
+var https = require('https');
 var socket = require('../config/messaging');
 
+var privateKey  = fs.readFileSync('./file.pem', 'utf8');
+var certificate = fs.readFileSync('./file.crt', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+
+// your express configuration here
 
 /**
  * Get port from environment and store in Express.
@@ -17,11 +24,14 @@ var socket = require('../config/messaging');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+var httpPort = 3443;
+
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 socket.init(app,server);
 
 /**
@@ -29,6 +39,7 @@ socket.init(app,server);
  */
 
 server.listen(port);
+httpsServer.listen(httpPort)
 server.on('error', onError);
 server.on('listening', onListening);
 
