@@ -25,31 +25,15 @@ h2{ font-size: .75vw; }
 h3{ font-size: .6vw; }
 p { font-size: .4vw; }
 
-input[type=text] {
-  font-family: Heroes_Legend !important;
-  width: 100%;
-  max-width: 20vw;
-  background-color: #120600;
-  color: #fff;
-  border: 2px solid #e9e9e9;
-  -webkit-box-shadow: 0px 9px 5px -1px rgba(0,0,0,0.59);
-  -moz-box-shadow: 0px 9px 5px -1px rgba(0,0,0,0.59);
-  box-shadow: 0px 9px 5px -1px rgba(0,0,0,0.59);
-}
-input[type=text]:focus {
-  outline: none;
-  border: 2px solid #502e98;
-}
-
 h1,h2,h3,h4{
   -webkit-text-stroke-color: #502e98;
+  -webkit-text-stroke-width: .08em;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #91a9cb));
   background-image: -webkit-linear-gradient(#ffffff,#b3adb5);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   color: #fff;
-  -webkit-text-stroke-width: .05em;
 }
+
 a{
   text-decoration: none;
 }
@@ -59,9 +43,10 @@ table {
 }
 table td,
 table th {
-  border: 1px solid red;
+  border: 1px solid #412F1F;
   font-size: .6em;
-  padding: .8em;
+  padding-left: .3em;
+  padding-right: .3em;
 }
 
 @-webkit-keyframes wiggle {
@@ -109,17 +94,100 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
   height: 100vh;
   margin: 0 auto;
 }
-.game-table{
+
+.join-game-btn {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  background: #7252b6;
+  background-image: -webkit-linear-gradient(top, #7252b6, #250075);
+  background-image: -moz-linear-gradient(top, #7252b6, #250075);
+  background-image: -ms-linear-gradient(top, #7252b6, #250075);
+  background-image: -o-linear-gradient(top, #7252b6, #250075);
+  background-image: linear-gradient(to bottom, #7252b6, #250075);
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  color: #ffffff;
+  padding: 0px 45px 0px 45px;
+  border: solid #502e98 3px;
+  text-decoration: none;
+}
+
+.join-game-btn:hover {
+  background: #250075;
+  background-image: -webkit-linear-gradient(top, #250075, #250075);
+  background-image: -moz-linear-gradient(top, #250075, #250075);
+  background-image: -ms-linear-gradient(top, #250075, #250075);
+  background-image: -o-linear-gradient(top, #250075, #250075);
+  background-image: linear-gradient(to bottom, #250075, #250075);
+  text-decoration: none;
+  -webkit-box-shadow: 0px 0px 30px 0px rgba(105,51,222,1);
+  -moz-box-shadow: 0px 0px 30px 0px rgba(105,51,222,1);
+  box-shadow: 0px 0px 30px 0px rgba(105,51,222,1);
+}
+
+.table-container{
+  margin-top: 10%;
+  text-align: center;
+}
+.table{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.table-list {
+  width: 700px;
+  height: 306px;
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 3px solid #401700;
+}
+.table-list thead {
+  width: 100%;
+  display: -webkit-flex;
+  -webkit-flex-flow: row;
+  border-bottom: 2px solid #401700;
+  background-color: #bd9673;
+}
+.table-list thead tr {
+  display: -webkit-flex;
+  width: 100%;
+  -webkit-align-items: stretch;
+}
+.table-list tbody {
+  display: -webkit-flex;
+  overflow: auto;
+  -webkit-flex-flow: row wrap;
+  /*border: 3px solid #401700;*/
+  background: #976f4b; /* Old browsers */
+  background: -moz-linear-gradient(top,  #976f4b 0%, #422C19 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #976f4b 0%,#422C19 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #976f4b 0%,#422C19 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#976f4b', endColorstr='#593c22',GradientType=0 ); /* IE6-9 */
+  text-shadow: 0px 2px 2px #000000;
+}
+.table-list tbody tr{
+  display: -webkit-flex;
+  width: 100%;
+}
+.table-list tr td {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  line-height: 1vw;
+}
+
+.enter-game{
+  margin-top: 5em;
 }
 /*box holds the form data in outer container*/
 .box{
   height: 60vh;
   min-height: 75vh;
   border : solid 1px rgba(0,0,0,0.0);
-  background-image: url("../images/box.png");
+  background-image: url("../images/game-list-lobby/box.png");
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 920px 685px;
@@ -129,27 +197,5 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 .spacer{
   height: 10vh;
 }
-.demo {
-  width: 100%;
-  background: rgba(147, 128, 108, 0.2);
-  text-align: center;
-}
-.demo p {
-  margin: 0;
-  padding: 1rem;
-}
-@media screen and (max-width: 35.5em) {
-  .demo p {
-    padding: .5rem;
-  }
-}
-.demo-explain {
-  margin: 0;
-  padding: 0;
-}
-.demo img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
+
 
