@@ -5,7 +5,7 @@ $(function () {
     $(".btnjoin").on('click', (event)=>{
 
         //console.log(event.target.id);
-        let id = parseInt(event.target.id);
+        let id = parseInt(event.currentTarget.id);
         console.log(id);
         $.ajax({
             url: window.location.href +'/join',

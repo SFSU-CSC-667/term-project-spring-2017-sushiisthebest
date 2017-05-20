@@ -7,7 +7,6 @@ block content
                 h2= gameName
                 h3= statusMessage
             div#players
-                each player in players
                     img(class=player.id, src=player.path, width="150", height="150")
                     h3=player.username
             div(class="chat-area")
